@@ -1,0 +1,48 @@
+<LanguageBar>:
+    size_hint_y: None
+    height: 130
+    md_bg_color: (1, 1, 1, 1)
+    MDScreen:
+        pos_hint: {'x':40/self.width, 'y': .20}
+        MDRectangleFlatIconButton:
+            # pos_hint: {'center_x':150/self.width, 'center_y': .5}
+            markup: True
+            text: "[size=48][b]English[/b][/size]"
+            font_size:50
+            icon: 'bookshelf'
+            line_color: (0, 0, 0, 0)
+            text_color: (0, 0, 0, 1)
+            icon_color: (0, 0, 0, 1)
+    # MDScreen:
+    #     pos_hint: {'x':960/self.width, 'y': .15}
+    #     MDIconButton:
+    #         icon: 'exit-to-app'
+    #         icon_size: '52pt'
+
+<MainWindow>:
+    orientation: 'vertical'
+
+    LanguageBar:
+
+    MDFloatLayout:
+        md_bg_color: (0, 166/255, 1, 0.25)
+        MDRectangleFlatButton:
+            id: lear_button
+            markup: True
+            text: "[size=48][b]Learn[/b][/size]"
+            pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
+            _min_width: 410
+            _min_height: 150
+            text_color: (0, 0, 0, 1)
+            md_bg_color: (1,1,1,1)
+            line_color: (0,0,0,0)
+            
+        MDRectangleFlatButton:
+            markup: True
+            text: "[size=48][b]Edit[/b][/size]"
+            pos_hint: {'center_x': 0.5,  'center_y': 900/1960}
+            _min_width: lear_button._min_width
+            _min_height: lear_button._min_height
+            text_color: (0, 0, 0, 1)
+            md_bg_color: (1,1,1,1)
+            line_color: (0,0,0,0)

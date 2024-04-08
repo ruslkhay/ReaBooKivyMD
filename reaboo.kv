@@ -19,6 +19,31 @@
     #         icon: 'exit-to-app'
     #         icon_size: '52pt'
 
+<DictionaryWindow>:
+    orientation: 'vertical'
+    MDFloatLayout:
+        size_hint_y: None
+        height: 130
+        md_bg_color: (0, 166/255, 1, 0.25)
+        MDScreen:
+            pos_hint: {'x':960/self.width, 'y': .15}
+            MDIconButton:
+                icon: 'exit-to-app'
+                icon_size: '52pt'
+
+        MDScreen:
+            pos_hint: {'x':40/self.width, 'y': .15}
+            MDIconButton:
+                icon: 'playlist-plus'
+                icon_size: '52pt'
+                
+    MDScrollView:
+        MDList:
+            id: container
+        
+
+
+
 <MainWindow>:
     orientation: 'vertical'
 

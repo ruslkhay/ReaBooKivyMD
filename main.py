@@ -1,12 +1,9 @@
 from kivymd.app import MDApp
 # from kivy.lang import Builder
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.floatlayout import MDFloatLayout
-
 from kivymd.uix.list import TwoLineAvatarIconListItem, IconRightWidget
-# from kivymd.uix.screen import MDScreen
-# from kivymd.uix.button import MDButton
-# from kivy.lang import Builder
+from kivymd.uix.screen import MDScreen
+from kivy.uix.screenmanager import ScreenManager
 
 # Builder.load_file("tracker.kv")
 
@@ -19,26 +16,16 @@ class LanguageBar(MDFloatLayout):
     pass
 
 
-class MainWindow(MDBoxLayout):
+class MainWindow(MDScreen):
     """Initial loading window"""
     pass
 
 
-class DictionaryWindow(MDBoxLayout):
+class DictionaryWindow(MDScreen):
     """Window for handling and mending dictionary """
-    pass
-
-
-class ReabooApp(MDApp):
-    """Main application"""
-
-    def build(self):
-        """Returns the root of your widget tree"""
-        return DictionaryWindow()
-
-    def on_start(self):
+    def on_enter(self):
         for i in range(50):
-            self.root.ids.container.add_widget(
+            self.ids.container.add_widget(
                 TwoLineAvatarIconListItem(
                     IconRightWidget(
                         icon="dots-vertical"
@@ -47,6 +34,21 @@ class ReabooApp(MDApp):
                     secondary_text=f"Square = {i**2}"
                 )
             )
+    # pass
+
+
+class MyScreenManager(ScreenManager):
+    """Screen stack controller"""
+    pass
+
+
+class ReabooApp(MDApp):
+    """Main application"""
+
+    def build(self):
+        """Returns the root of your widget tree"""
+        # return MainWindow()
+        return MyScreenManager()
 
 
 if __name__ == "__main__":

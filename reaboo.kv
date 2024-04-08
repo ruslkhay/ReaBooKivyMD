@@ -1,3 +1,10 @@
+#: import NoTransition kivy.uix.screenmanager.NoTransition
+
+<MyScreenManager>:
+    transition: NoTransition()
+    MainWindow:
+    DictionaryWindow:
+
 <LanguageBar>:
     size_hint_y: None
     height: 130
@@ -19,55 +26,62 @@
     #         icon: 'exit-to-app'
     #         icon_size: '52pt'
 
+
 <DictionaryWindow>:
-    orientation: 'vertical'
-    MDFloatLayout:
-        size_hint_y: None
-        height: 130
-        md_bg_color: (0, 166/255, 1, 0.25)
-        MDScreen:
-            pos_hint: {'x':960/self.width, 'y': .15}
-            MDIconButton:
-                icon: 'exit-to-app'
-                icon_size: '52pt'
+    name: 'dictionary_window'
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDFloatLayout:
+            size_hint_y: None
+            height: 130
+            md_bg_color: (0, 166/255, 1, 0.25)
+            MDScreen:
+                pos_hint: {'x':960/self.width, 'y': .15}
+                MDIconButton:
+                    icon: 'exit-to-app'
+                    icon_size: '52pt'
+                    on_release: app.root.current = 'main_window'
 
-        MDScreen:
-            pos_hint: {'x':40/self.width, 'y': .15}
-            MDIconButton:
-                icon: 'playlist-plus'
-                icon_size: '52pt'
-                
-    MDScrollView:
-        MDList:
-            id: container
-        
-
+            MDScreen:
+                pos_hint: {'x':40/self.width, 'y': .15}
+                MDIconButton:
+                    icon: 'playlist-plus'
+                    icon_size: '52pt'
+                    
+        MDScrollView:
+            MDList:
+                id: container
 
 
 <MainWindow>:
-    orientation: 'vertical'
+    name: 'main_window'
+    MDBoxLayout:
+        orientation: 'vertical'
 
-    LanguageBar:
+        LanguageBar:
 
-    MDFloatLayout:
-        md_bg_color: (0, 166/255, 1, 0.25)
-        MDRectangleFlatButton:
-            id: lear_button
-            markup: True
-            text: "[size=48][b]Learn[/b][/size]"
-            pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
-            _min_width: 410
-            _min_height: 150
-            text_color: (0, 0, 0, 1)
-            md_bg_color: (1,1,1,1)
-            line_color: (0,0,0,0)
-            
-        MDRectangleFlatButton:
-            markup: True
-            text: "[size=48][b]Edit[/b][/size]"
-            pos_hint: {'center_x': 0.5,  'center_y': 900/1960}
-            _min_width: lear_button._min_width
-            _min_height: lear_button._min_height
-            text_color: (0, 0, 0, 1)
-            md_bg_color: (1,1,1,1)
-            line_color: (0,0,0,0)
+        MDFloatLayout:
+            md_bg_color: (0, 166/255, 1, 0.25)
+            MDRectangleFlatButton:
+                id: learn_button
+                markup: True
+                text: "[size=48][b]Learn[/b][/size]"
+                pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
+                _min_width: 410
+                _min_height: 150
+                text_color: (0, 0, 0, 1)
+                md_bg_color: (1,1,1,1)
+                line_color: (0,0,0,0)
+                on_release: 
+                
+            MDRectangleFlatButton:
+                markup: True
+                text: "[size=48][b]Edit[/b][/size]"
+                pos_hint: {'center_x': 0.5,  'center_y': 900/1960}
+                _min_width: learn_button._min_width
+                _min_height: learn_button._min_height
+                text_color: (0, 0, 0, 1)
+                md_bg_color: (1,1,1,1)
+                line_color: (0,0,0,0)
+                on_release: app.root.current = 'dictionary_window'
+

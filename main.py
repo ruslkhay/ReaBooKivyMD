@@ -4,6 +4,7 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import TwoLineAvatarIconListItem, IconRightWidget
 from kivymd.uix.screen import MDScreen
 from kivy.uix.screenmanager import ScreenManager
+from kivymd.uix.card import MDCard
 
 # Builder.load_file("tracker.kv")
 
@@ -36,6 +37,20 @@ class DictionaryWindow(MDScreen):
                     # secondary_font_style='H5'
                 )
             )
+
+    def add_new_card(self):
+        self.add_widget(
+            NewCard()
+        )
+
+    def close_card(self, name):
+        self.remove_widget(name)
+
+
+class NewCard(MDCard):
+    '''Implements a material card.'''
+    # text = StringProperty('NewCard text here')
+    pass
 
 
 class MyScreenManager(ScreenManager):

@@ -49,10 +49,18 @@
                 MDIconButton:
                     icon: 'playlist-plus'
                     icon_size: '52pt'
+                    on_release:
+                        root.add_new_card()
+                    
                     
         MDScrollView:
             MDList:
                 id: container
+                # ThreeLineListItem:
+                #     text: "Three-line item"
+                #     secondary_text: "This is a multi-line label where you can"
+                #     tertiary_text: "fit more text than usual"
+        # NewCard:
 
 
 <MainWindow>:
@@ -88,4 +96,63 @@
                 on_release: 
                     app.root.current = 'dictionary_window'
                     app.root.transition.direction = 'left'
+            
+            # NewCard: 
 
+<NewCard>:
+    id: new_card
+    style: 'outlined'
+    padding: "64dp"
+    size_hint: None, None
+    size: "880dp", "1550dp"
+    pos_hint: {'center_x': 0.5,  'center_y': 0.5}
+    md_bg_color: (186/255, 210/255, 255/255, 1)
+
+    MDRelativeLayout:
+
+        MDIconButton:
+            icon: "close"
+            icon_size: '52pt'
+            pos_hint: {"top": 1, "right": 1}
+            on_release:
+                print(app.root.children[0].close_card(new_card))
+                # app.remove_card()
+
+        MDRoundFlatButton:
+            text: "[size=48]Save[/size]"
+            text_color: "white"
+            line_color: "47525E"
+            pos_hint: {"bottom": 0.0, "right": 1}
+            _min_width: 250
+            _min_height: 100
+            md_bg_color: '#47525E'
+
+        MDRoundFlatButton:
+            text: "[size=48]Delete[/size]"
+            text_color: "white"
+            line_color: "CE8081"
+            pos_hint: {"bottom": 0.0, "left": 0.0}
+            _min_width: 250
+            _min_height: 100
+            md_bg_color: '#CE8081'
+
+        MDTextField:
+            hint_text: "New word"
+            # font_name_hint_text: 'H1'
+            helper_text: "Type a new word"
+            _hint_lbl_font_size: '54pt'
+            # mode:"rectangle"
+            font_size: '24pt'
+            helper_text_mode: "on_focus"
+            pos_hint: {'center_x': 0.5,  'center_y': 0.65}
+            
+        MDTextField:
+            hint_text: "Translation"
+            helper_text: "This will disappear when you click off"
+            helper_text_mode: "on_focus"
+            font_size: '24pt'
+            pos_hint: {'center_x': 0.5,  'center_y': 0.5}
+
+        #     multiline: True
+        #     hint_text: "Example"
+        #     pos_hint: {'center_x': 0.5,  'center_y': 0.3}

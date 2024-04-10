@@ -31,10 +31,11 @@ class DictionaryWindow(MDScreen):
                         icon="dots-vertical"
                     ),
                     text=f"item{i}",
-                    secondary_text=f"Square = {i**2}"
+                    secondary_text=f"Square = {i**2}",
+                    # font_style='H4',
+                    # secondary_font_style='H5'
                 )
             )
-    # pass
 
 
 class MyScreenManager(ScreenManager):

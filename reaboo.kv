@@ -1,7 +1,7 @@
-#: import NoTransition kivy.uix.screenmanager.NoTransition
+# : import NoTransition kivy.uix.screenmanager.NoTransition
 
 <MyScreenManager>:
-    transition: NoTransition()
+    # transition: NoTransition()
     MainWindow:
     DictionaryWindow:
 
@@ -40,7 +40,9 @@
                 MDIconButton:
                     icon: 'exit-to-app'
                     icon_size: '52pt'
-                    on_release: app.root.current = 'main_window'
+                    on_release: 
+                        app.root.current = 'main_window'
+                        app.root.transition.direction = 'right'
 
             MDScreen:
                 pos_hint: {'x':40/self.width, 'y': .15}
@@ -80,8 +82,10 @@
                 pos_hint: {'center_x': 0.5,  'center_y': 900/1960}
                 _min_width: learn_button._min_width
                 _min_height: learn_button._min_height
-                text_color: (0, 0, 0, 1)
-                md_bg_color: (1,1,1,1)
-                line_color: (0,0,0,0)
-                on_release: app.root.current = 'dictionary_window'
+                text_color: learn_button.text_color
+                md_bg_color: learn_button.md_bg_color
+                line_color: learn_button.line_color
+                on_release: 
+                    app.root.current = 'dictionary_window'
+                    app.root.transition.direction = 'left'
 

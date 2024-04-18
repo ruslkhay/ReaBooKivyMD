@@ -5,3 +5,5 @@ Literture/
 JOTTING.md
 __pycache__*
 *.db
+.buildozer/*
+*buildozer

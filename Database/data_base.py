@@ -24,7 +24,7 @@ def dummy_insert(word=None, translation=None):
     else:
         query = """
             INSERT INTO "dictionary"("word", "meaning")
-            VALUES (?, ?)
+            VALUES (?, ?);
             """
     cur.execute(query, [word, translation])
     con.commit()  # saving database manipulations above
@@ -33,50 +33,6 @@ def dummy_insert(word=None, translation=None):
 def delete_word(word=None, translation=None):
     """Remove word out of a database."""
     pass
-
-# def insert_data(word=None, translations=None):
-#     """Insert new data into two tables below."""
-#     from re import split
-#     separate_trans = split('[,.;\\/]', translations)
-#     trans = list(map(str.strip, separate_trans)) # remove whitespaces
-#     print(word)
-
-#     # Insert new 'foreign' word
-#     query = """
-#         INSERT INTO "words"("name")
-#         VALUES (?)
-#         """
-#     cur.execute(query, [word])
-
-#     # Getting current (MAX) id for words table
-#     query = """
-#             SELECT "id" FROM "words"
-#             WHERE "name" = (?);
-#             """
-#     word_id = cur.execute(query, [word]).fetchall()[0][0]
-#     print(word_id)
-#     # Insert new word's translation
-#     for tran in trans:
-#         query = """
-#             INSERT INTO "translations"("meaning")
-#             VALUES (?);
-#             """
-#         cur.execute(query, [tran])
-
-#     # # Getting current (MAX) id for translations table
-#     # query = """
-#     #         SELECT "id" FROM "translations"
-#     #         WHERE "name" = (?);
-#     #         """
-#     # word_id = cur.execute(query, [word]).fetchall()[0][0]
-#     # for i in range(3):
-#     #     query = """
-#     #         INSERT INTO "translate"("word_id", "translation_id")
-#     #         VALUES (?,?);
-#     #         """
-#     #     cur.execute(query, (word_id, i+1))
-
-#     con.commit()  # saving database manipulations above
 
 
 def read_data() -> dict:
@@ -92,13 +48,17 @@ def read_data() -> dict:
 
 def run_process():
     """Call all initial functions for creating database."""
-    db_init()
+    # db_init()
     dictionary = cur.execute(""" SELECT * FROM "dictionary";""").fetchall()
     return dictionary
 
 
 if __name__ == "__main__":
     (db_init())
+    dummy_insert(word='pace', translation="темп")
     dummy_insert(word='race', translation="гонка")
+    dummy_insert(word='pace', translation="ритм")
+    dummy_insert(word='tempo', translation="темп")
+    dummy_insert(word='racing', translation="гонка")
     # cur.execute("""DELETE FROM "words" WHERE "name" = 'spring'; """)
     print(run_process())

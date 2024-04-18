@@ -42,14 +42,14 @@ class DictionaryWindow(MDScreen):
     # dictionary = my_db.run_process()
     def load_dict(self):
         """Load up data from dictionary database."""
-        for elem in my_db.read_data():
+        for word, trans in my_db.run_process():
             self.ids.container.add_widget(
                 TwoLineAvatarIconListItem(
                     IconRightWidget(
-                        icon="dots-vertical"
+                        icon="dots-vertical",
                     ),
-                    text=elem[1],
-                    secondary_text=elem[2]
+                    text=word,
+                    secondary_text=trans
                 )
             )
 
@@ -71,14 +71,26 @@ class DictionaryWindow(MDScreen):
             NewCard()
         )
 
-    def close_card(self, name):
+    def close_card(self, name, bool=True):
         """Close up 'NewCard' pop-up widget."""
-        self.remove_widget(name)
+        if bool:
+            self.remove_widget(name)
 
 
 class NewCard(MDCard):
     """Implements a material card."""
 
+    def save_to_db(self, word, translation):
+        """Insert data into database."""
+        if not word or not translation:
+            print('in one')
+            self.ids.word.error = True
+        elif word == 'do error':
+            print('in two')
+            self.ids.word.error = True
+        else:
+            print('in three')
+            my_db.dummy_insert(word, translation)
     # text = StringProperty('NewCard text here')
     pass
 

@@ -23,10 +23,33 @@ CREATE TABLE IF NOT EXISTS "translate"(
     ON DELETE CASCADE
 );
 
+-- 'foreign' words next to their translation, i.e. dictionary itself
+CREATE VIEW IF NOT EXISTS "dictionary" AS 
+SELECT "name" AS 'word', "meaning" FROM "words"
+JOIN "translate" ON "words"."id" = "translate"."word_id"
+JOIN "translations" ON "translate"."translation_id" = "translations"."id";
 
+-- bind new translations with last 'foreign' word in table
+CREATE TRIGGER IF NOT EXISTS "add_translation"
+AFTER INSERT ON "translations"
+BEGIN
+    INSERT INTO "translate"("word_id", "translation_id")
+    VALUES ((SELECT MAX("id") FROM "words"), NEW."id");
+END;
 
--- CREATE TRIGGER "auto_translate_fill"
--- AFTER INSERT ON translations
--- BEGIN
---     INSERT INTO "translate"("word_id","translation_id")
---     VALUES ('')
+-- 
+CREATE TRIGGER IF NOT EXISTS "add_if_not_exists"
+INSTEAD OF INSERT ON "dictionary"
+FOR EACH ROW 
+WHEN NEW."word" NOT IN (
+    SELECT "name" FROM "words"
+)
+BEGIN
+    INSERT INTO "words"("name")
+    VALUES (NEW."word")
+    ON CONFLICT ("name") DO NOTHING;
+    INSERT INTO "translations"("meaning")
+    VALUES (NEW."meaning")
+    ON CONFLICT ("name") DO NOTHING;
+END;
+

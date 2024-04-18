@@ -44,6 +44,7 @@
                     on_release: 
                         app.root.current = 'main_window'
                         app.root.transition.direction = 'right'
+                        root.ids.container.clear_widgets()
 
             MDScreen:
                 pos_hint: {'x':40/self.width, 'y': .15}
@@ -116,7 +117,7 @@
             icon_size: '52pt'
             pos_hint: {"top": 1, "right": 1}
             on_release:
-                print(app.root.children[0].close_card(new_card))
+                app.root.children[0].close_card(new_card)
                 # app.remove_card()
 
         MDRoundFlatButton:
@@ -127,6 +128,8 @@
             _min_width: 250
             _min_height: 100
             md_bg_color: '#47525E'
+            on_release:
+                root.save_to_db(word = word.text, translation = translation.text)
 
         MDRoundFlatButton:
             text: "[size=48]Delete[/size]"
@@ -138,19 +141,24 @@
             md_bg_color: '#CE8081'
 
         MDTextField:
+            id: word
             hint_text: "New word"
             # font_name_hint_text: 'H1'
             helper_text: "Type a new word"
             _hint_lbl_font_size: '54pt'
             # mode:"rectangle"
             font_size: '24pt'
+            required: True
             helper_text_mode: "on_focus"
             pos_hint: {'center_x': 0.5,  'center_y': 0.65}
+            # helper_text_mode: "on_error"
             
         MDTextField:
+            id: translation
             hint_text: "Translation"
-            helper_text: "This will disappear when you click off"
+            helper_text: "Type a translation for given word"
             helper_text_mode: "on_focus"
+            required: True
             font_size: '24pt'
             pos_hint: {'center_x': 0.5,  'center_y': 0.5}
 

@@ -1,21 +1,63 @@
 """Module for handling flesh-cards storage."""
 
 import sqlite3 as sql
+from os import chdir
 
-con = sql.connect("Database/dictionary.db")
+chdir('Database')
+
+con = sql.connect("dictionary.db")
 cur = con.cursor()
 
 
 def db_init():
     """Make necessary tables for database."""
-    query = """ CREATE TABLE IF NOT EXISTS
-                dictionary(
-                p_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                initial_word TINYTEXT,
-                translation TINYTEXT
-                )
+    with open("schema.sql") as f:
+        cur.executescript(f.read())
+
+
+def insert_data(word=None, translations=None):
+    """Insert new data into two tables below."""
+    from re import split
+    separate_trans = split('[,.;\\/]', translations)
+    trans = list(map(str.strip, separate_trans)) # remove whitespaces
+    print(word)
+
+    # Insert new 'foreign' word
+    query = """
+        INSERT INTO "words"("name")
+        VALUES (?)
+        """
+    cur.execute(query, [word])
+
+    # Getting current (MAX) id for words table
+    query = """
+            SELECT "id" FROM "words"
+            WHERE "name" = (?);
             """
-    cur.execute(query)
+    word_id = cur.execute(query, [word]).fetchall()[0][0]
+    print(word_id)
+    # Insert new word's translation
+    for tran in trans:
+        query = """
+            INSERT INTO "translations"("meaning")
+            VALUES (?);
+            """
+        cur.execute(query, [tran])
+
+    # # Getting current (MAX) id for translations table
+    # query = """
+    #         SELECT "id" FROM "translations"
+    #         WHERE "name" = (?);
+    #         """
+    # word_id = cur.execute(query, [word]).fetchall()[0][0]
+    for i in range(3):
+        query = """
+            INSERT INTO "translate"("word_id", "translation_id")
+            VALUES (?,?);
+            """
+        cur.execute(query, (word_id, i+1))
+
+    con.commit() # saving database manipulations above 
 
 
 def feed_data():
@@ -36,9 +78,16 @@ def feed_data():
     # con.commit()
 
 
-def read_data():
-    """Return list with database contents."""
-    return cur.execute(""" SELECT * FROM dictionary""").fetchall()
+def read_data() -> dict:
+    """ """
+    words = cur.execute(""" SELECT * FROM words""").fetchall()
+    translations = cur.execute(""" SELECT * FROM translations""").fetchall()
+    translate = cur.execute(""" SELECT * FROM translate""").fetchall()
+    content = dict(words=words, 
+                   translations=translations,
+                   translate=translate)
+    return content
+
 
 
 def run_process():
@@ -49,4 +98,7 @@ def run_process():
 
 
 if __name__ == "__main__":
-    (run_process())
+    (db_init())
+    insert_data(word='spring', translations="весна, прыгать;пружина")
+    # cur.execute("""DELETE FROM "words" WHERE "name" = 'spring'; """)
+    print(read_data())

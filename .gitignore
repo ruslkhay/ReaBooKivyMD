@@ -4,3 +4,4 @@ Literture/
 .vscode/
 JOTTING.md
 __pycache__*
+*.db

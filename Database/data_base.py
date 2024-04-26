@@ -32,6 +32,7 @@ def dummy_insert(word=None, translation=None):
 
 def delete_word(word=None, translation=None):
     """Remove word out of a database."""
+
     pass
 
 
@@ -62,3 +63,4 @@ if __name__ == "__main__":
     dummy_insert(word='racing', translation="гонка")
     # cur.execute("""DELETE FROM "words" WHERE "name" = 'spring'; """)
     print(run_process())
+    con.close()

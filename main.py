@@ -21,7 +21,9 @@ import Database.data_base as my_db
 
 
 from kivy.core.window import Window
+
 Window.size = (1080, 1920)
+# Window.fullscreen = 'auto'
 
 
 class LanguageBar(MDFloatLayout):
@@ -39,19 +41,23 @@ class MainWindow(MDScreen):
 class DictionaryWindow(MDScreen):
     """Window for handling and mending dictionary."""
 
+    def add_list_word_trans(self, word, trans):
+        """Insert new element (if it is not in dictionary) into scroll list."""
+        self.ids.container.add_widget(
+            TwoLineAvatarIconListItem(
+                IconRightWidget(
+                    icon="dots-vertical",
+                ),
+                text=word,
+                secondary_text=trans
+            )
+        )
+
     # dictionary = my_db.run_process()
     def load_dict(self):
         """Load up data from dictionary database."""
         for word, trans in my_db.run_process():
-            self.ids.container.add_widget(
-                TwoLineAvatarIconListItem(
-                    IconRightWidget(
-                        icon="dots-vertical",
-                    ),
-                    text=word,
-                    secondary_text=trans
-                )
-            )
+            self.add_list_word_trans(word, trans)
 
     # def update_dict(self, List, **kwargs):
     #     List.add_widget(
@@ -79,6 +85,25 @@ class DictionaryWindow(MDScreen):
 
 class NewCard(MDCard):
     """Implements a material card."""
+
+    def myprint(self):
+        """Test text trigger."""
+        if self.ids.word.text.isspace():
+            self.ids.word.error = True
+        else:
+            self.ids.word.text = self.ids.word.text.lstrip()
+        return self.ids.word.error
+
+    def check_translations(self):
+        """Highlights text input widget: if input is correct or non-valid."""
+        if self.ids.translation.text.isspace():
+            self.ids.translation.error = True
+        else:
+            # from re import split
+            # separate_trans = split('[,.;\\/]', self.ids.translation.text)
+            # trans = list(map(str.strip, separate_trans)) # remove whitespaces
+            self.ids.translation.text = self.ids.translation.text.lstrip()
+        return self.ids.translation.error
 
     def save_to_db(self, word, translation):
         """Insert data into database."""

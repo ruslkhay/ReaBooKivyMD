@@ -12,7 +12,6 @@
     MDScreen:
         pos_hint: {'x':40/self.width, 'y': .20}
         MDRectangleFlatIconButton:
-            # pos_hint: {'center_x':150/self.width, 'center_y': .5}
             markup: True
             text: "[size=48][b]English[/b][/size]"
             font_size:50
@@ -45,7 +44,6 @@
                         app.root.current = 'main_window'
                         app.root.transition.direction = 'right'
                         root.ids.container.clear_widgets()
-
             MDScreen:
                 pos_hint: {'x':40/self.width, 'y': .15}
                 MDIconButton:
@@ -53,8 +51,6 @@
                     icon_size: '52pt'
                     on_release:
                         root.add_new_card()
-                    
-                    
         MDScrollView:
             MDList:
                 id: container
@@ -69,9 +65,7 @@
     name: 'main_window'
     MDBoxLayout:
         orientation: 'vertical'
-
         LanguageBar:
-
         MDFloatLayout:
             md_bg_color: (0, 166/255, 1, 0.25)
             MDRectangleFlatButton:
@@ -85,7 +79,6 @@
                 md_bg_color: (1,1,1,1)
                 line_color: (0,0,0,0)
                 on_release: 
-                
             MDRectangleFlatButton:
                 markup: True
                 text: "[size=48][b]Edit[/b][/size]"
@@ -98,7 +91,6 @@
                 on_release: 
                     app.root.current = 'dictionary_window'
                     app.root.transition.direction = 'left'
-            
             # NewCard: 
 
 <NewCard>:
@@ -128,6 +120,7 @@
             _min_width: 250
             _min_height: 100
             md_bg_color: '#47525E'
+            disabled:  word.error or translation.error
             on_release:
                 root.save_to_db(word = word.text, translation = translation.text)
 
@@ -149,6 +142,7 @@
             # mode:"rectangle"
             font_size: '24pt'
             required: True
+            on_text: print(root.myprint())
             helper_text_mode: "on_focus"
             pos_hint: {'center_x': 0.5,  'center_y': 0.65}
             # helper_text_mode: "on_error"
@@ -159,6 +153,7 @@
             helper_text: "Type a translation for given word"
             helper_text_mode: "on_focus"
             required: True
+            on_text: print(root.check_translations())
             font_size: '24pt'
             pos_hint: {'center_x': 0.5,  'center_y': 0.5}
 

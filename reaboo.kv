@@ -1,9 +1,7 @@
-# : import NoTransition kivy.uix.screenmanager.NoTransition
-
 <MyScreenManager>:
-    # transition: NoTransition()
     MainWindow:
     DictionaryWindow:
+
 
 <LanguageBar>:
     size_hint_y: None
@@ -19,11 +17,6 @@
             line_color: (0, 0, 0, 0)
             text_color: (0, 0, 0, 1)
             icon_color: (0, 0, 0, 1)
-    # MDScreen:
-    #     pos_hint: {'x':960/self.width, 'y': .15}
-    #     MDIconButton:
-    #         icon: 'exit-to-app'
-    #         icon_size: '52pt'
 
 
 <DictionaryWindow>:
@@ -54,11 +47,6 @@
         MDScrollView:
             MDList:
                 id: container
-                # ThreeLineListItem:
-                #     text: "Three-line item"
-                #     secondary_text: "This is a multi-line label where you can"
-                #     tertiary_text: "fit more text than usual"
-        # NewCard:
 
 
 <MainWindow>:
@@ -91,7 +79,28 @@
                 on_release: 
                     app.root.current = 'dictionary_window'
                     app.root.transition.direction = 'left'
-            # NewCard: 
+
+
+<LineDictionary>:
+    size_hint_y: None
+    height: content.height
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": .5}
+            on_release: app.remove_item(root)
+
+    MDCardSwipeFrontBox:
+
+        TwoLineAvatarListItem:
+            id: content
+            text: root.text
+            secondary_text: root.secondary_text
+            _no_ripple_effect: True
+
 
 <NewCard>:
     id: new_card
@@ -123,6 +132,8 @@
             disabled:  word.error or translation.error
             on_release:
                 root.save_to_db(word = word.text, translation = translation.text)
+                app.root.children[0].add_to_list_word_trans(word.text, translation.text)
+                app.root.children[0].close_card(new_card)
 
         MDRoundFlatButton:
             text: "[size=48]Delete[/size]"
@@ -142,7 +153,7 @@
             # mode:"rectangle"
             font_size: '24pt'
             required: True
-            on_text: print(root.myprint())
+            on_text: root.check_word()
             helper_text_mode: "on_focus"
             pos_hint: {'center_x': 0.5,  'center_y': 0.65}
             # helper_text_mode: "on_error"
@@ -153,10 +164,6 @@
             helper_text: "Type a translation for given word"
             helper_text_mode: "on_focus"
             required: True
-            on_text: print(root.check_translations())
+            on_text: root.check_translations()
             font_size: '24pt'
             pos_hint: {'center_x': 0.5,  'center_y': 0.5}
-
-        #     multiline: True
-        #     hint_text: "Example"
-        #     pos_hint: {'center_x': 0.5,  'center_y': 0.3}

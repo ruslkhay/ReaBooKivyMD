@@ -15,6 +15,11 @@ def db_init():
         cur.executescript(f.read())
 
 
+def close():
+    """Close connection to database."""
+    con.close()
+
+
 def dummy_insert(word=None, translation=None):
     """Insert, used only for one-to-one, non-repeated input."""
     if not isinstance(word, str) and not isinstance(translation, str):
@@ -32,7 +37,17 @@ def dummy_insert(word=None, translation=None):
 
 def delete_word(word=None, translation=None):
     """Remove word out of a database."""
-
+    if not isinstance(word, str) and not isinstance(translation, str):
+        raise ValueError(
+            'only one word and one translation. '
+            + f"Got {word} with len{len(word)} and {translation}")
+    else:
+        query = """
+            DELETE FROM "dictionary"
+            WHERE "word" = ? AND "meaning" = ?
+            """
+    cur.execute(query, [word, translation])
+    con.commit()  # saving database manipulations above
     pass
 
 
@@ -63,4 +78,4 @@ if __name__ == "__main__":
     dummy_insert(word='racing', translation="гонка")
     # cur.execute("""DELETE FROM "words" WHERE "name" = 'spring'; """)
     print(run_process())
-    con.close()
+    close()

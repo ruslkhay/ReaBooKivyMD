@@ -22,7 +22,7 @@ import Database.data_base as my_db
 
 from kivy.core.window import Window
 
-Window.size = (1080, 1920)
+Window.size = (1080//2, 1920//2)
 
 
 class LanguageBar(MDFloatLayout):
@@ -116,6 +116,12 @@ class ReabooApp(MDApp):
             word=instance.text,
             translation=instance.secondary_text
         )
+
+    def exit_to_main_screen(self):
+        """Exit to main screen and clear word list on dictionary screen."""
+        self.root.current = 'main_window'
+        self.root.transition.direction = 'right'
+        self.root.children[1].ids.container.clear_widgets()
 
 
 if __name__ == "__main__":

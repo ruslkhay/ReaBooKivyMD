@@ -63,6 +63,11 @@ class DictionaryWindow(MDScreen):
 
     def add_new_card(self):
         """Pop-up widget for creating new word in dictionary."""
+        self.ids.topbar.left_action_items = [[
+            "playlist-plus",
+            lambda x: x,
+            "Add new word"
+            ]]
         self.add_widget(
             NewCard()
         )
@@ -71,6 +76,11 @@ class DictionaryWindow(MDScreen):
         """Close up 'NewCard' pop-up widget."""
         if bool:
             self.remove_widget(name)
+            self.ids.topbar.left_action_items = [[
+                "playlist-plus",
+                lambda x: self.add_new_card(),
+                "Add new word"
+                ]]
 
 
 class NewCard(MDCard):

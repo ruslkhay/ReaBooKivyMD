@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Database &#8212; ReaBoo v0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=f8c80a57"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Application components" href="gui.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="database">
+<h1>Database<a class="headerlink" href="#database" title="Link to this heading">¶</a></h1>
+<p>Dictionary is a many-to-many database: each ‘foreign’ word can have many
+translation and backwards.</p>
+<p id="module-Database.data_base">Module for handling flesh-cards storage.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Database.data_base.close">
+<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.close" title="Link to this definition">¶</a></dt>
+<dd><p>Close connection to database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Database.data_base.db_init">
+<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">db_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.db_init" title="Link to this definition">¶</a></dt>
+<dd><p>Make necessary tables for database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Database.data_base.delete_word">
+<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">delete_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.delete_word" title="Link to this definition">¶</a></dt>
+<dd><p>Remove word out of a database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Database.data_base.dummy_insert">
+<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">dummy_insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.dummy_insert" title="Link to this definition">¶</a></dt>
+<dd><p>Insert, used only for one-to-one, non-repeated input.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Database.data_base.read_data">
+<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#Database.data_base.read_data" title="Link to this definition">¶</a></dt>
+<dd><p>Return content of a database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Database.data_base.run_process">
+<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">run_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.run_process" title="Link to this definition">¶</a></dt>
+<dd><p>Call all initial functions for creating database.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ReaBoo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Application components</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.db_init"><code class="docutils literal notranslate"><span class="pre">db_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.delete_word"><code class="docutils literal notranslate"><span class="pre">delete_word()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.dummy_insert"><code class="docutils literal notranslate"><span class="pre">dummy_insert()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.read_data"><code class="docutils literal notranslate"><span class="pre">read_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.run_process"><code class="docutils literal notranslate"><span class="pre">run_process()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="gui.html" title="previous chapter">Application components</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Alena Setukha.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/database.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -3,25 +3,8 @@
     DictionaryWindow:
 
 
-<LanguageBar>:
-    size_hint_y: None
-    height: 130
-    md_bg_color: (1, 1, 1, 1)
-    MDScreen:
-        pos_hint: {'x':40/self.width, 'y': .20}
-        MDRectangleFlatIconButton:
-            markup: True
-            text: "[size=48][b]English[/b][/size]"
-            font_size:50
-            icon: 'bookshelf'
-            line_color: (0, 0, 0, 0)
-            text_color: (0, 0, 0, 1)
-            icon_color: (0, 0, 0, 1)
-
-
 <DictionaryWindow>:
     name: 'dictionary_window'
-    on_pre_enter: self.load_dict()
     MDBoxLayout:
         orientation: 'vertical'
         MDTopAppBar:
@@ -37,7 +20,6 @@
                 [["exit-to-app", 
                 lambda x: app.exit_to_main_screen(),
                 "Go back"]]
-
         MDScrollView:
             MDList:
                 id: container
@@ -47,7 +29,6 @@
     name: 'main_window'
     MDBoxLayout:
         orientation: 'vertical'
-        # LanguageBar:
         MDTopAppBar:
             md_bg_color: (0, 166/255, 1, 0.75)
             elevation: 0
@@ -85,16 +66,12 @@
 <LineDictionary>:
     size_hint_y: None
     height: content.height
-
     MDCardSwipeLayerBox:
-        # padding: "8dp"
         md_bg_color: '#CE8081'
         MDIconButton:
-            
             icon: "trash-can"
             pos_hint: {"center_y": .5}
             on_release: app.remove_item(root)
-
     MDCardSwipeFrontBox:
         radius: 0
         TwoLineAvatarListItem:
@@ -106,26 +83,20 @@
 
 <NewCard>:
     id: new_card
-    # style: "outlined"
     shadow_color: (0, 0, 0, 0.75)
     shadow_softness: 5
     elevation: 4
     padding: "64dp"
     size_hint: 0.8, 0.8
-    # size: "880dp", "1550dp"
     pos_hint: {'center_x': 0.5,  'center_y': 0.5}
     md_bg_color: (186/255, 210/255, 255/255, 1)
-
     MDRelativeLayout:
-
         MDIconButton:
             icon: "close"
             icon_size: '52pt'
             pos_hint: {"top": 1, "right": 1}
             on_release:
                 app.root.children[0].close_card(new_card)
-                # app.remove_card()
-
         MDRoundFlatButton:
             text: "[size=48]Save[/size]"
             text_color: "white"
@@ -136,24 +107,19 @@
             md_bg_color: '#47525E'
             disabled:  word.error or translation.error
             on_release:
-                root.save_to_db(word = word.text, translation = translation.text)
+                root.save_to_db(app.db, word.text, translation.text)
                 app.root.children[0].add_to_list_word_trans(word.text, translation.text)
                 app.root.children[0].close_card(new_card)
-
         MDTextField:
             id: word
             hint_text: "New word"
-            # font_name_hint_text: 'H1'
             helper_text: "Type a new word"
             _hint_lbl_font_size: '54pt'
-            # mode:"rectangle"
             font_size: '24pt'
             required: True
             on_text: root.check_word()
             helper_text_mode: "on_focus"
             pos_hint: {'center_x': 0.5,  'center_y': 0.65}
-            # helper_text_mode: "on_error"
-            
         MDTextField:
             id: translation
             hint_text: "Translation"

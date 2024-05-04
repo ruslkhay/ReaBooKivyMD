@@ -1,6 +1,6 @@
 """Provides GUI for flesh-card learning app.
 
-class LanguageBar - top bar widget for main window;
+class LineDictionary - define one row in dictionary;
 class MainWindow - first screen for user to see;
 class DictionaryWindow - screen for amending user's dictionary;
 class NewCard - widget for creating and amending words in dictionary;
@@ -9,26 +9,16 @@ class ReaBooApp - the application itself.
 """
 
 from kivymd.app import MDApp
-# from kivy.lang import Builder
-from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.uix.card import MDCard
-
 from kivy.properties import StringProperty
 from kivymd.uix.card import MDCardSwipe
 
-import Database.data_base as my_db
+import Database.database as my_db
 
 from kivy.core.window import Window
-
 Window.size = (1080//2, 1920//2)
-
-
-class LanguageBar(MDFloatLayout):
-    """Top bar with current language."""
-
-    pass
 
 
 class MainWindow(MDScreen):
@@ -45,7 +35,7 @@ class LineDictionary(MDCardSwipe):
 
 
 class DictionaryWindow(MDScreen):
-    """Window for handling and mending dictionary."""
+    """Window for handling and amending dictionary."""
 
     def add_to_list_word_trans(self, word, trans):
         """Insert new element (if it is not in dictionary) into scroll list."""
@@ -56,13 +46,14 @@ class DictionaryWindow(MDScreen):
             )
         )
 
-    def load_dict(self):
+    def load_dictionary(self, database: my_db):
         """Load up data from dictionary database."""
-        for word, trans in my_db.run_process():
+        dictionary = database.select_from('dictionary')
+        for word, trans in dictionary:
             self.add_to_list_word_trans(word, trans)
 
     def add_new_card(self):
-        """Pop-up widget for creating new word in dictionary."""
+        """Pop-up widget for creating and saving new word in dictionary."""
         self.ids.topbar.left_action_items = [[
             "playlist-plus",
             lambda x: x,
@@ -100,9 +91,9 @@ class NewCard(MDCard):
         else:
             self.ids.translation.text = self.ids.translation.text.lstrip()
 
-    def save_to_db(self, word, translation):
-        """Insert data into database."""
-        my_db.dummy_insert(word, translation)
+    def save_to_db(self, database, word, translation):
+        """Insert one word card into database."""
+        database.oto_insert(word, translation)
 
 
 class MyScreenManager(ScreenManager):
@@ -114,15 +105,33 @@ class MyScreenManager(ScreenManager):
 class ReabooApp(MDApp):
     """Main application."""
 
+    def __init__(self, **kwargs):
+        """Reload MDApp method to include database storage."""
+        from Database.database import DataBase
+        super().__init__(**kwargs)
+        self.db = DataBase(
+            name='content',
+            path='Database',
+            schema='schema.sql'
+        )
+
     def build(self):
         """Return the root of your widget tree."""
-        my_db.db_init()
         return MyScreenManager()
+
+    def on_start(self):
+        """Preload database on dictionary window.
+
+        Event handler for the on_start event which is fired after
+        initialization but before the application has started running.
+        """
+        dw: DictionaryWindow = self.root.get_screen('dictionary_window')
+        dw.load_dictionary(self.db)
 
     def remove_item(self, instance):
         """Remove one line from dictionary."""
         self.root.children[0].ids.container.remove_widget(instance)
-        my_db.delete_word(
+        self.db.delete_word(
             word=instance.text,
             translation=instance.secondary_text
         )
@@ -131,9 +140,15 @@ class ReabooApp(MDApp):
         """Exit to main screen and clear word list on dictionary screen."""
         self.root.current = 'main_window'
         self.root.transition.direction = 'right'
-        self.root.children[1].ids.container.clear_widgets()
+
+    def on_stop(self):
+        """Close database before exiting the app.
+
+        Event handler for the on_stop event which is fired when the application
+        has finished running
+        """
+        self.db.close()
 
 
 if __name__ == "__main__":
     ReabooApp().run()
-    my_db.close()

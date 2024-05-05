@@ -6,18 +6,18 @@ This is a mobile app for studying flesh-cards. Main goal for this project is to 
 - Manage cards dictionary: add, delete, amend cards.
 
 ## Main window
-<img src='Screenshots/main.png' width='300'>
+<img src='source/_static/main.png' width='300'>
 
 Here user can choose two options:
 1. Switch to "Study screen". This screen contains flesh-cards,
 2. Switch to "Dictionary screen", where user can edit dictionary.
 
-## Study window
-<img src='Screenshots/study.png' width='300'>
+## :technologist: Study window
+<img src='source/_static/study.png' width='300'>
 
 This window should provide opportunity for study current dictionary.
 
-## Dictionary window
-<img src='Screenshots/dict.png' width='300'>
+## :memo: Dictionary window
+<img src='source/_static/dict_list.png' width='300'>
 
 On this screen all amending and observing actions can be done.

@@ -6,15 +6,15 @@
 Welcome to ReaBoo's documentation!
 ==================================
 
+ReaBoo is an application for studying new languages. In current version you 
+can save unknown words into ReaBoo dictionary. 
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    gui
    database
-
-Some text here
-
 
 Indices and tables
 ==================

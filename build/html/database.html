@@ -35,43 +35,47 @@
 <h1>Database<a class="headerlink" href="#database" title="Link to this heading">¶</a></h1>
 <p>Dictionary is a many-to-many database: each ‘foreign’ word can have many
 translation and backwards.</p>
-<p id="module-Database.data_base">Module for handling flesh-cards storage.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="Database.data_base.close">
-<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.close" title="Link to this definition">¶</a></dt>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/database.png"><img alt="Альтернативный текст" src="_images/database.png" style="width: 640.0px; height: 470.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Database schema</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="module-Database.database">
+<span id="available-methods"></span><h2>Available methods<a class="headerlink" href="#module-Database.database" title="Link to this heading">¶</a></h2>
+<p>Module for handling flesh-cards storage.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Database.database.DataBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Database.database.</span></span><span class="sig-name descname"><span class="pre">DataBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'content'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.database.DataBase" title="Link to this definition">¶</a></dt>
+<dd><p>Class for handling flesh-cards storage.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Database.database.DataBase.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Database.database.DataBase.close" title="Link to this definition">¶</a></dt>
 <dd><p>Close connection to database.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="Database.data_base.db_init">
-<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">db_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.db_init" title="Link to this definition">¶</a></dt>
-<dd><p>Make necessary tables for database.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Database.database.DataBase.delete_word">
+<span class="sig-name descname"><span class="pre">delete_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.database.DataBase.delete_word" title="Link to this definition">¶</a></dt>
+<dd><p>Hide word out of a database. Mark it as deleted.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="Database.data_base.delete_word">
-<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">delete_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.delete_word" title="Link to this definition">¶</a></dt>
-<dd><p>Remove word out of a database.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Database.database.DataBase.oto_insert">
+<span class="sig-name descname"><span class="pre">oto_insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.database.DataBase.oto_insert" title="Link to this definition">¶</a></dt>
+<dd><p>One-to-one insert, used only for non-repeated input.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="Database.data_base.dummy_insert">
-<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">dummy_insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.dummy_insert" title="Link to this definition">¶</a></dt>
-<dd><p>Insert, used only for one-to-one, non-repeated input.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Database.database.DataBase.select_from">
+<span class="sig-name descname"><span class="pre">select_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'*'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Database.database.DataBase.select_from" title="Link to this definition">¶</a></dt>
+<dd><p>Query analog of ‘SELECT cols FROM table;’.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="Database.data_base.read_data">
-<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#Database.data_base.read_data" title="Link to this definition">¶</a></dt>
-<dd><p>Return content of a database.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="Database.data_base.run_process">
-<span class="sig-prename descclassname"><span class="pre">Database.data_base.</span></span><span class="sig-name descname"><span class="pre">run_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Database.data_base.run_process" title="Link to this definition">¶</a></dt>
-<dd><p>Call all initial functions for creating database.</p>
-</dd></dl>
-
+</section>
 </section>
 
 
@@ -95,12 +99,7 @@ translation and backwards.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gui.html">Application components</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Database</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.db_init"><code class="docutils literal notranslate"><span class="pre">db_init()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.delete_word"><code class="docutils literal notranslate"><span class="pre">delete_word()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.dummy_insert"><code class="docutils literal notranslate"><span class="pre">dummy_insert()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.read_data"><code class="docutils literal notranslate"><span class="pre">read_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Database.data_base.run_process"><code class="docutils literal notranslate"><span class="pre">run_process()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Database.database">Available methods</a></li>
 </ul>
 </li>
 </ul>

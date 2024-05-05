@@ -35,8 +35,47 @@
   <section id="application-components">
 <h1>Application components<a class="headerlink" href="#application-components" title="Link to this heading">¶</a></h1>
 <p>This section describes integral interface components of application.</p>
-<p id="module-main">Provides GUI for flesh-card learning app.</p>
-<p>class LanguageBar - top bar widget for main window;
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
+<p>Main screen consists of two buttons:
+* Learn - redirect onto screen with flesh-cards games,
+* Edit - redirect onto screen with dictionary.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/main.png"><img alt="Альтернативный текст" src="_images/main.png" style="width: 540.5px; height: 960.5px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Main screen</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Section “Learn” is not implemented. So button doesn’t work.</p>
+</div>
+<p>Pressing “Edit” button you’ll be redirected onto dictionary screen. Here you
+can add, delete and look up words and their translations.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/dict_list.png"><img alt="Альтернативный текст" src="_images/dict_list.png" style="width: 540.0px; height: 960.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Dictionary screen</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>On the top right corner “go back” button is located. It will return you back to
+the main window.</p>
+<p>On the top left corner “add new word” button is located. Press it and pop-up
+card appears. While card’s inputs are incorrect “Save” button is locked.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/add_new_card.png"><img alt="Альтернативный текст" src="_images/add_new_card.png" style="width: 539.5px; height: 960.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Pop-up card</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-main">
+<span id="interface-components"></span><h2>Interface components<a class="headerlink" href="#module-main" title="Link to this heading">¶</a></h2>
+<p>Provides GUI for flesh-card learning app.</p>
+<p>class LineDictionary - define one row in dictionary;
 class MainWindow - first screen for user to see;
 class DictionaryWindow - screen for amending user’s dictionary;
 class NewCard - widget for creating and amending words in dictionary;
@@ -45,11 +84,11 @@ class ReaBooApp - the application itself.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="main.DictionaryWindow">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">DictionaryWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.DictionaryWindow" title="Link to this definition">¶</a></dt>
-<dd><p>Window for handling and mending dictionary.</p>
+<dd><p>Window for handling and amending dictionary.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="main.DictionaryWindow.add_new_card">
 <span class="sig-name descname"><span class="pre">add_new_card</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.DictionaryWindow.add_new_card" title="Link to this definition">¶</a></dt>
-<dd><p>Pop-up widget for creating new word in dictionary.</p>
+<dd><p>Pop-up widget for creating and saving new word in dictionary.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -65,17 +104,11 @@ class ReaBooApp - the application itself.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="main.DictionaryWindow.load_dict">
-<span class="sig-name descname"><span class="pre">load_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.DictionaryWindow.load_dict" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main.DictionaryWindow.load_dictionary">
+<span class="sig-name descname"><span class="pre">load_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database:</span> <span class="pre">&lt;module</span> <span class="pre">'Database.database'</span> <span class="pre">from</span> <span class="pre">'/home/oplora/Desktop/Alena</span> <span class="pre">ReaBoo/Database/database.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.DictionaryWindow.load_dictionary" title="Link to this definition">¶</a></dt>
 <dd><p>Load up data from dictionary database.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="main.LanguageBar">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">LanguageBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.LanguageBar" title="Link to this definition">¶</a></dt>
-<dd><p>Top bar with current language.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -114,8 +147,8 @@ class ReaBooApp - the application itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="main.NewCard.save_to_db">
-<span class="sig-name descname"><span class="pre">save_to_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.NewCard.save_to_db" title="Link to this definition">¶</a></dt>
-<dd><p>Insert data into database.</p>
+<span class="sig-name descname"><span class="pre">save_to_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.NewCard.save_to_db" title="Link to this definition">¶</a></dt>
+<dd><p>Insert one word card into database.</p>
 </dd></dl>
 
 </dd></dl>
@@ -137,6 +170,22 @@ class ReaBooApp - the application itself.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="main.ReabooApp.on_start">
+<span class="sig-name descname"><span class="pre">on_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.ReabooApp.on_start" title="Link to this definition">¶</a></dt>
+<dd><p>Preload database on dictionary window.</p>
+<p>Event handler for the on_start event which is fired after
+initialization but before the application has started running.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.ReabooApp.on_stop">
+<span class="sig-name descname"><span class="pre">on_stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.ReabooApp.on_stop" title="Link to this definition">¶</a></dt>
+<dd><p>Close database before exiting the app.</p>
+<p>Event handler for the on_stop event which is fired when the application
+has finished running</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="main.ReabooApp.remove_item">
 <span class="sig-name descname"><span class="pre">remove_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.ReabooApp.remove_item" title="Link to this definition">¶</a></dt>
 <dd><p>Remove one line from dictionary.</p>
@@ -144,6 +193,7 @@ class ReaBooApp - the application itself.</p>
 
 </dd></dl>
 
+</section>
 </section>
 
 
@@ -166,13 +216,8 @@ class ReaBooApp - the application itself.</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Application components</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#main.DictionaryWindow"><code class="docutils literal notranslate"><span class="pre">DictionaryWindow</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main.LanguageBar"><code class="docutils literal notranslate"><span class="pre">LanguageBar</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main.LineDictionary"><code class="docutils literal notranslate"><span class="pre">LineDictionary</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main.MainWindow"><code class="docutils literal notranslate"><span class="pre">MainWindow</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main.MyScreenManager"><code class="docutils literal notranslate"><span class="pre">MyScreenManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main.NewCard"><code class="docutils literal notranslate"><span class="pre">NewCard</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#main.ReabooApp"><code class="docutils literal notranslate"><span class="pre">ReabooApp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-main">Interface components</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>

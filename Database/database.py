@@ -23,27 +23,21 @@ class DataBase:
 
     def oto_insert(self, word=None, translation=None):
         """One-to-one insert, used only for non-repeated input."""
-        if not (isinstance(word, str) and isinstance(translation, str)):
-            raise TypeError('insert method is capable only of str format')
-        else:
-            query = """
-                INSERT INTO "dictionary"("word", "meaning")
-                VALUES (?, ?);
-                """
-            self.cursor.execute(query, [word, translation])
-            self.connect.commit()  # saving database manipulations above
+        query = """
+            INSERT INTO "dictionary"("word", "meaning")
+            VALUES (?, ?);
+            """
+        self.cursor.execute(query, [word, translation])
+        self.connect.commit()  # saving database manipulations above
 
     def delete_word(self, word=None, translation=None):
         """Hide word out of a database. Mark it as deleted."""
-        if not isinstance(word, str) and not isinstance(translation, str):
-            raise TypeError('delete method is capable only of str format')
-        else:
-            query = """
-                DELETE FROM "dictionary"
-                WHERE "word" = ? AND "meaning" = ?
-                """
-            self.cursor.execute(query, [word, translation])
-            self.connect.commit()  # saving database manipulations above
+        query = """
+            DELETE FROM "dictionary"
+            WHERE "word" = ? AND "meaning" = ?
+            """
+        self.cursor.execute(query, [word, translation])
+        self.connect.commit()  # saving database manipulations above
 
     def select_from(self, table: str, cols='*'):
         """Query analog of 'SELECT cols FROM table;'."""

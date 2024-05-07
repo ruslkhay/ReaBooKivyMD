@@ -109,8 +109,8 @@
                 app.root.children[0].close_card(new_card)
         MDTextField:
             id: word
-            hint_text: "New word"
-            helper_text: "Type a new word"
+            hint_text: app._("New word")
+            helper_text: app._("Type a new word")
             required: True
             on_text: root.check_word()
             helper_text_mode: "on_focus"

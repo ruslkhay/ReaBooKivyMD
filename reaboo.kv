@@ -14,12 +14,10 @@
             title: 'ReaBoo'
             left_action_items: 
                 [["playlist-plus", 
-                lambda x: root.add_new_card(), 
-                "Add new word"]]
+                lambda x: root.add_new_card()]]
             right_action_items: 
                 [["exit-to-app", 
-                lambda x: app.exit_to_main_screen(),
-                "Go back"]]
+                lambda x: app.exit_to_main_screen()]]
         MDScrollView:
             MDList:
                 id: container
@@ -41,7 +39,7 @@
             MDRectangleFlatButton:
                 id: learn_button
                 markup: True
-                text: "[size=48][b]Learn[/b][/size]"
+                text: "[size=48][b]" + app._("Learn") + "[/b][/size]"
                 pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
                 _min_width: 410
                 _min_height: 150
@@ -51,7 +49,7 @@
                 on_release: 
             MDRectangleFlatButton:
                 markup: True
-                text: "[size=48][b]Edit[/b][/size]"
+                text: "[size=48][b]" + app._("Edit") + "[/b][/size]"
                 pos_hint: {'center_x': 0.5,  'center_y': 900/1960}
                 _min_width: learn_button._min_width
                 _min_height: learn_button._min_height
@@ -98,7 +96,7 @@
             on_release:
                 app.root.children[0].close_card(new_card)
         MDRoundFlatButton:
-            text: "[size=48]Save[/size]"
+            text: "[size=48]" + app._("Save") + "[/size]"
             text_color: "white"
             line_color: "47525E"
             pos_hint: {"bottom": 0.5, "center_x": 0.5}
@@ -112,8 +110,8 @@
                 app.root.children[0].close_card(new_card)
         MDTextField:
             id: word
-            hint_text: "New word"
-            helper_text: "Type a new word"
+            hint_text: app._("New word")
+            helper_text: app._("Type a new word")
             _hint_lbl_font_size: '54pt'
             font_size: '24pt'
             required: True
@@ -122,8 +120,8 @@
             pos_hint: {'center_x': 0.5,  'center_y': 0.65}
         MDTextField:
             id: translation
-            hint_text: "Translation"
-            helper_text: "Type a translation for given word"
+            hint_text: app._("Translation")
+            helper_text: app._("Type a translation for given word")
             helper_text_mode: "on_focus"
             required: True
             on_text: root.check_translations()

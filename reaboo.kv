@@ -87,11 +87,10 @@
     padding: "64dp"
     size_hint: 0.8, 0.8
     pos_hint: {'center_x': 0.5,  'center_y': 0.5}
-    md_bg_color: (186/255, 210/255, 255/255, 1)
+    md_bg_color: (240/255, 240/255, 240/255, 1)
     MDRelativeLayout:
         MDIconButton:
             icon: "close"
-            icon_size: '52pt'
             pos_hint: {"top": 1, "right": 1}
             on_release:
                 app.root.children[0].close_card(new_card)
@@ -110,10 +109,8 @@
                 app.root.children[0].close_card(new_card)
         MDTextField:
             id: word
-            hint_text: app._("New word")
-            helper_text: app._("Type a new word")
-            _hint_lbl_font_size: '54pt'
-            font_size: '24pt'
+            hint_text: "New word"
+            helper_text: "Type a new word"
             required: True
             on_text: root.check_word()
             helper_text_mode: "on_focus"
@@ -125,5 +122,4 @@
             helper_text_mode: "on_focus"
             required: True
             on_text: root.check_translations()
-            font_size: '24pt'
-            pos_hint: {'center_x': 0.5,  'center_y': 0.5}
+            pos_hint: {'center_x': 0.5,  'center_y': 0.45}

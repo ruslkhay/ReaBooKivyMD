@@ -1,11 +1,15 @@
 """Tests for flesh-cards database."""
 
 import unittest
-from database import DataBase
+from .database import DataBase
 
 
 class DatabaseTestCase(unittest.TestCase):
     """Tests for one-to-one insert for flesh-card database."""
+
+    from os import chdir, getcwd
+    from os.path import join
+    chdir(join(getcwd(), 'Database'))
 
     def setUp(self):
         """Create dummy flesh-card storage."""

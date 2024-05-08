@@ -1,12 +1,4 @@
-"""Provides GUI for flesh-card learning app.
-
-class LineDictionary - define one row in dictionary;
-class MainWindow - first screen for user to see;
-class DictionaryWindow - screen for amending user's dictionary;
-class NewCard - widget for creating and amending words in dictionary;
-class MyScreenManager - screen stack controller;
-class ReaBooApp - the application itself.
-"""
+"""Provides GUI for flesh-card learning app."""
 
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
@@ -104,6 +96,12 @@ class MyScreenManager(ScreenManager):
 
 class ReabooApp(MDApp):
     """Main application."""
+
+    # Internationalization and localization for GUI components.
+    import gettext
+    translation = gettext.translation('reaboo', 'po', ["ru_RU.UTF-8"])
+    # translation = gettext.NullTranslations() # Text in english
+    _ = translation.gettext
 
     def __init__(self, **kwargs):
         """Reload MDApp method to include database storage."""

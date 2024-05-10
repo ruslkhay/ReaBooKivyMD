@@ -1,0 +1,28 @@
+[project]
+name = "ReaBoo"
+version = "0.1"
+description = "Study application"
+readme = "README.md"
+license = {text = "MIT-0"}
+authors = [
+ {name = "Alena Setukha", email = "setyhaalena29@gmail.com"}
+]
+dependencies = [
+    "kivymd"
+]
+
+
+[build-system]
+requires = [
+    "Sphinx", "doit", "flake8", "pydocstyle", "kivy", "kivymd", "setuptools"
+]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.package-dir]
+ReaBoo = "."
+
+
+[tool.setuptools.package-data]
+ReaBoo = ["po/*/*/*.mo", "*.kv"]
+"ReaBoo.Database" = ["schema.sql", "database.py"]

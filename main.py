@@ -7,7 +7,7 @@ from kivymd.uix.card import MDCard
 from kivy.properties import StringProperty
 from kivymd.uix.card import MDCardSwipe
 
-import Database.database as my_db
+from .Database import database as my_db
 
 # from kivy.core.window import Window
 # Window.size = (1080//2, 1920//2)
@@ -105,9 +105,8 @@ class ReabooApp(MDApp):
 
     def __init__(self, **kwargs):
         """Reload MDApp method to include database storage."""
-        from Database.database import DataBase
         super().__init__(**kwargs)
-        self.db = DataBase(
+        self.db = my_db.DataBase(
             name='content',
             path='Database',
             schema='schema.sql'

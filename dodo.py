@@ -79,3 +79,10 @@ def task_reaboo():
             'actions': ['python3 main.py'],
             'task_dep': ['mo'],
            }
+
+def task_wheel():
+    """Create wheel file."""
+    return {
+        'actions': ['python -m build -n -w'],
+        'file_dep': ['pyproject.toml']
+        }

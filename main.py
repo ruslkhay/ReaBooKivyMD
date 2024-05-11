@@ -7,7 +7,7 @@ from kivymd.uix.card import MDCard
 from kivy.properties import StringProperty
 from kivymd.uix.card import MDCardSwipe
 
-from .Database import database as my_db
+import Database.database as my_db
 
 # from kivy.core.window import Window
 # Window.size = (1080//2, 1920//2)

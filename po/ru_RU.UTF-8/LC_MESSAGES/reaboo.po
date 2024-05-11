@@ -19,31 +19,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
 
-#: reaboo.kv:42
+#: reaboo.kv:44
 msgid "Learn"
 msgstr "Учить"
 
-#: reaboo.kv:52
+#: reaboo.kv:54
 msgid "Edit"
 msgstr "Изменить"
 
-#: reaboo.kv:98
+#: reaboo.kv:101
 msgid "Save"
 msgstr "Сохранить"
 
-#: reaboo.kv:112
+#: reaboo.kv:115
 msgid "New word"
 msgstr "Новое слово"
 
-#: reaboo.kv:113
+#: reaboo.kv:116
 msgid "Type a new word"
 msgstr "Напишите новое слово"
 
-#: reaboo.kv:120
+#: reaboo.kv:123
 msgid "Translation"
 msgstr "Перевод"
 
-#: reaboo.kv:121
+#: reaboo.kv:124
 msgid "Type a translation for given word"
 msgstr "Напишите перевод"
 

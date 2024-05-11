@@ -1,6 +1,5 @@
 """Automating task dependency management and execution."""
 
-
 from doit.tools import create_folder
 
 TRANDIR = 'po/ru_RU.UTF-8/LC_MESSAGES'  # Container for translations
@@ -17,6 +16,7 @@ def task_html():
     """Make HTML documentation."""
     return {
             'actions': ['sphinx-build -M html source build'],
+            'file_dep': [f'{TRANDIR}/reaboo.mo'],
            }
 
 
@@ -33,11 +33,15 @@ def task_test():
 
 def task_peps():
     """Check if all .py files are satisfies PEP below."""
+    ignore_dir = '.buildozer,.git,.venv,__pycache__,build,dist,' \
+        + 'CardStack,Swiper,source'
     yield {
-        'actions': ['flake8 --extend-exclude=.venv,source'],
+        'actions': ['flake8 --extend-exclude={}'.format(ignore_dir)],
         'name': "pep8"}
     yield {
-        'actions': ['pydocstyle --match-dir=\'^(?!.*(\\.venv|source)).*$\''],
+        'actions': ['pydocstyle --match-dir=\'^(?!.*(\\{})).*$\''.format(
+            ignore_dir.replace('.', '\\.').replace(',', '|')
+            )],
         'name': "pep257"}
 
 
@@ -76,13 +80,21 @@ def task_mo():
 def task_reaboo():
     """Run application."""
     return {
-            'actions': ['python3 main.py'],
+            'actions': ['python main.py'],
             'task_dep': ['mo'],
            }
 
+
 def task_wheel():
-    """Create wheel file."""
+    """Generate whl file."""
     return {
         'actions': ['python -m build -n -w'],
         'file_dep': ['pyproject.toml']
+        }
+
+
+def task_buildozer():
+    """Generate apk file."""
+    return {
+        'actions': ['buildozer android debug']
         }

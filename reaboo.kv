@@ -9,7 +9,7 @@
         orientation: 'vertical'
         MDTopAppBar:
             id: topbar
-            md_bg_color: (0, 166/255, 1, 0.75)
+            md_bg_color: (0, 166/255, 1, 1)
             elevation: 0
             title: 'ReaBoo'
             left_action_items: 
@@ -19,7 +19,9 @@
                 [["exit-to-app", 
                 lambda x: app.exit_to_main_screen()]]
         MDScrollView:
+            
             MDList:
+                padding: 0
                 id: container
 
 
@@ -28,7 +30,7 @@
     MDBoxLayout:
         orientation: 'vertical'
         MDTopAppBar:
-            md_bg_color: (0, 166/255, 1, 0.75)
+            md_bg_color: (0, 166/255, 1, 1)
             elevation: 0
             title: 'ReaBoo'
             left_action_items: 
@@ -64,6 +66,7 @@
 <LineDictionary>:
     size_hint_y: None
     height: content.height
+    type_swipe: "hand"
     MDCardSwipeLayerBox:
         md_bg_color: '#CE8081'
         MDIconButton:

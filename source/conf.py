@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 project = 'ReaBoo'
 copyright = '2024, Alena Setukha'
-author = 'Alena Setukha'
+author = 'Ruslan Khaydarpashich'
 release = 'v0'
 
 # -- General configuration ---------------------------------------------------
@@ -35,3 +35,9 @@ exclude_patterns = []
 html_theme = 'alabaster'
 html_static_path = ['_static']
 html_favicon = '_static/icon_low.png'
+html_theme_options = {
+    'logo': 'icon_low_no_background.png',
+    'github_user': 'ruslkhay',
+    'github_repo': 'ReaBoo',
+}
+html_show_sphinx = False

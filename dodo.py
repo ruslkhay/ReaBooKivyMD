@@ -89,7 +89,7 @@ def task_wheel():
     """Generate whl file."""
     return {
         'actions': ['python -m build -n -w'],
-        'file_dep': ['pyproject.toml']
+        'file_dep': ['pyproject.toml', f'{TRANDIR}/reaboo.mo']
         }
 
 

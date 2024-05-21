@@ -1,4 +1,5 @@
 """Module for handling flesh-cards storage."""
+from typing import List, Tuple, Any
 
 
 class DataBase:
@@ -17,11 +18,11 @@ class DataBase:
             with open(join(path, schema)) as f:
                 self.cursor.executescript(f.read())
 
-    def close(self):
+    def close(self) -> None:
         """Close connection to database."""
         self.connect.close()
 
-    def oto_insert(self, word=None, translation=None):
+    def oto_insert(self, word: str = None, translation: str = None) -> None:
         """One-to-one insert, used only for non-repeated input."""
         query = """
             INSERT INTO "dictionary"("word", "meaning")
@@ -30,7 +31,7 @@ class DataBase:
         self.cursor.execute(query, [word, translation])
         self.connect.commit()  # saving database manipulations above
 
-    def delete_word(self, word=None, translation=None):
+    def delete_word(self, word: str = None, translation: str = None) -> None:
         """Hide word out of a database. Mark it as deleted."""
         query = """
             DELETE FROM "dictionary"
@@ -39,7 +40,7 @@ class DataBase:
         self.cursor.execute(query, [word, translation])
         self.connect.commit()  # saving database manipulations above
 
-    def select_from(self, table: str, cols='*'):
+    def select_from(self, table: str, cols: str = '*') -> List[Tuple[Any]]:
         """Query analog of 'SELECT cols FROM table;'."""
         table_content = self.cursor.execute(f""" SELECT {cols} FROM {table}""")
         return table_content.fetchall()

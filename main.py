@@ -103,8 +103,8 @@ class ReabooApp(MDApp):
 
     # Internationalization and localization for GUI components.
     import gettext
-    translation = gettext.translation('reaboo', 'po', ["ru_RU.UTF-8"])
-    # translation = gettext.NullTranslations() # Text in english
+    # translation = gettext.translation('reaboo', 'po', ["ru_RU.UTF-8"])
+    translation = gettext.NullTranslations()  # Text in english
     _ = translation.gettext
 
     def __init__(self, **kwargs):

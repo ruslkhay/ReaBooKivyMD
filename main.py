@@ -14,18 +14,25 @@ else:
     from Database import database as my_db
 
 from kivy.core.window import Window
-Window.size = (1080//2, 1920//2)
+Window.size = (1080 // 2, 1920 // 2)
+
 
 class StudyWindow(MDScreen):
     """Window for learning flash-cards."""
 
-    pass
+    def __init__(self, *args, **kwargs):
+        """Construct initial properties."""
+        super().__init__(*args, **kwargs)
+        self.name = 'study_window'
 
 
-# class MainWindow(MDScreen):
-#     """Initial loading window."""
+class MainWindow(MDScreen):
+    """Initial loading window."""
 
-#     pass
+    def __init__(self, *args, **kwargs):
+        """Construct initial properties."""
+        super().__init__(*args, **kwargs)
+        self.name = 'main_window'
 
 
 class LineDictionary(MDCardSwipe):
@@ -37,6 +44,11 @@ class LineDictionary(MDCardSwipe):
 
 class DictionaryWindow(MDScreen):
     """Window for handling and amending dictionary."""
+
+    def __init__(self, *args, **kwargs):
+        """Construct initial properties."""
+        super().__init__(*args, **kwargs)
+        self.name = 'dictionary_window'
 
     def add_to_list_word_trans(self, word, trans):
         """Insert new element (if it is not in dictionary) into scroll list."""
@@ -59,7 +71,7 @@ class DictionaryWindow(MDScreen):
             "playlist-plus",
             lambda x: x,
             "Add new word"
-            ]]
+        ]]
         self.add_widget(
             NewCard()
         )
@@ -72,23 +84,24 @@ class DictionaryWindow(MDScreen):
                 "playlist-plus",
                 lambda x: self.add_new_card(),
                 "Add new word"
-                ]]
+            ]]
 
 
 class Card(MDCard):
     """Card widget for studying and adding into dictionary."""
 
     def __init__(self, *args, **kwargs):
+        """Construct card's basic properties."""
         super().__init__(*args, **kwargs)
-        self.pos_hint = {'center_x': 0.5,  'center_y': 0.5}
+        self.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
         self.shadow_color = (0, 0, 0, 0.75)
         self.shadow_softness = 5
         self.elevation = 4
         self.padding = "64dp"
         self.size_hint = 0.8, 0.8
-        self.md_bg_color = (240/255, 240/255, 240/255, 1)
+        self.md_bg_color = (240 / 255, 240 / 255, 240 / 255, 1)
 
-   
+
 class NewCard(Card):
     """Implements a material card."""
 
@@ -114,7 +127,12 @@ class NewCard(Card):
 class MyScreenManager(ScreenManager):
     """Screen stack controller."""
 
-    pass
+    def __init__(self, **kwargs):
+        """Construct initial properties."""
+        super().__init__(**kwargs)
+        self.add_widget(MainWindow())
+        self.add_widget(DictionaryWindow())
+        self.add_widget(StudyWindow())
 
 
 class ReabooApp(MDApp):

@@ -8,14 +8,7 @@
         lambda x: app.exit_to_main_screen()]]
 
 
-<MyScreenManager>:
-    MainWindow:
-    DictionaryWindow:
-    StudyWindow:
-
-
 <DictionaryWindow>:
-    name: 'dictionary_window'
     MDBoxLayout:
         orientation: 'vertical'
         MyTopWindowBar:
@@ -31,7 +24,6 @@
 
 
 <StudyWindow>:
-    name: 'study_window'
     MDBoxLayout:
         orientation: 'vertical'
         MyTopWindowBar:
@@ -52,9 +44,8 @@
     line_color: (0,0,0,0)
 
 
-<MainWindow@MDScreen>:
+<MainWindow>:
     # Initial loading window.
-    name: 'main_window'
     MDBoxLayout:
         orientation: 'vertical'
         MDTopAppBar:

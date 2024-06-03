@@ -1,3 +1,13 @@
+<MyTopWindowBar@MDTopAppBar>:
+    # This is a top bar for all of child windows
+    md_bg_color: (0, 166/255, 1, 1)
+    elevation: 0
+    title: 'ReaBoo'
+    right_action_items: 
+        [["exit-to-app", 
+        lambda x: app.exit_to_main_screen()]]
+
+
 <MyScreenManager>:
     MainWindow:
     DictionaryWindow:
@@ -8,17 +18,11 @@
     name: 'dictionary_window'
     MDBoxLayout:
         orientation: 'vertical'
-        MDTopAppBar:
+        MyTopWindowBar:
             id: topbar
-            md_bg_color: (0, 166/255, 1, 1)
-            elevation: 0
-            title: 'ReaBoo'
             left_action_items: 
                 [["playlist-plus", 
                 lambda x: root.add_new_card()]]
-            right_action_items: 
-                [["exit-to-app", 
-                lambda x: app.exit_to_main_screen()]]
         MDScrollView:
             
             MDList:
@@ -30,22 +34,26 @@
     name: 'study_window'
     MDBoxLayout:
         orientation: 'vertical'
-        MDTopAppBar:
-            id: topbar
-            md_bg_color: (0, 166/255, 1, 1)
-            elevation: 0
-            title: 'ReaBoo'
-            right_action_items: 
-                [["exit-to-app", 
-                lambda x: app.exit_to_main_screen()]]
+        MyTopWindowBar:
         MDFloatLayout:
             md_bg_color: (0, 166/255, 1, 0.25)
             MDLabel:
                 text: "Studing is everything!"
                 pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
-    
 
-<MainWindow>:
+    
+<MyMainButton@MDRectangleFlatButton>
+    # Buttons schema for main window.
+    markup: True
+    _min_width: 410
+    _min_height: 150
+    text_color: (0, 0, 0, 1)
+    md_bg_color: (1,1,1,1)
+    line_color: (0,0,0,0)
+
+
+<MainWindow@MDScreen>:
+    # Initial loading window.
     name: 'main_window'
     MDBoxLayout:
         orientation: 'vertical'
@@ -54,32 +62,19 @@
             elevation: 0
             title: 'ReaBoo'
             left_action_items: 
-                [["bookshelf", 
-                lambda x: x]]
+                [["bookshelf", lambda x: x]]
         MDFloatLayout:
             md_bg_color: (0, 166/255, 1, 0.25)
-            MDRectangleFlatButton:
+            MyMainButton:
                 id: learn_button
-                markup: True
                 text: "[size=48][b]" + app._("Learn") + "[/b][/size]"
                 pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
-                _min_width: 410
-                _min_height: 150
-                text_color: (0, 0, 0, 1)
-                md_bg_color: (1,1,1,1)
-                line_color: (0,0,0,0)
                 on_release: 
                     app.root.current = 'study_window'
                     app.root.transition.direction = 'left'
-            MDRectangleFlatButton:
-                markup: True
+            MyMainButton:
                 text: "[size=48][b]" + app._("Edit") + "[/b][/size]"
                 pos_hint: {'center_x': 0.5,  'center_y': 900/1960}
-                _min_width: learn_button._min_width
-                _min_height: learn_button._min_height
-                text_color: learn_button.text_color
-                md_bg_color: learn_button.md_bg_color
-                line_color: learn_button.line_color
                 on_release: 
                     app.root.current = 'dictionary_window'
                     app.root.transition.direction = 'left'
@@ -106,13 +101,6 @@
 
 <NewCard>:
     id: new_card
-    shadow_color: (0, 0, 0, 0.75)
-    shadow_softness: 5
-    elevation: 4
-    padding: "64dp"
-    size_hint: 0.8, 0.8
-    pos_hint: {'center_x': 0.5,  'center_y': 0.5}
-    md_bg_color: (240/255, 240/255, 240/255, 1)
     MDRelativeLayout:
         MDIconButton:
             icon: "close"

@@ -13,8 +13,8 @@ if __name__ != "__main__":
 else:
     from Database import database as my_db
 
-# from kivy.core.window import Window
-# Window.size = (1080//2, 1920//2)
+from kivy.core.window import Window
+Window.size = (1080//2, 1920//2)
 
 class StudyWindow(MDScreen):
     """Window for learning flash-cards."""
@@ -22,10 +22,10 @@ class StudyWindow(MDScreen):
     pass
 
 
-class MainWindow(MDScreen):
-    """Initial loading window."""
+# class MainWindow(MDScreen):
+#     """Initial loading window."""
 
-    pass
+#     pass
 
 
 class LineDictionary(MDCardSwipe):
@@ -75,7 +75,21 @@ class DictionaryWindow(MDScreen):
                 ]]
 
 
-class NewCard(MDCard):
+class Card(MDCard):
+    """Card widget for studying and adding into dictionary."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.pos_hint = {'center_x': 0.5,  'center_y': 0.5}
+        self.shadow_color = (0, 0, 0, 0.75)
+        self.shadow_softness = 5
+        self.elevation = 4
+        self.padding = "64dp"
+        self.size_hint = 0.8, 0.8
+        self.md_bg_color = (240/255, 240/255, 240/255, 1)
+
+   
+class NewCard(Card):
     """Implements a material card."""
 
     def check_word(self):

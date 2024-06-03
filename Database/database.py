@@ -1,9 +1,9 @@
-"""Module for handling flesh-cards storage."""
+"""Module for handling flash-cards storage."""
 from typing import List, Tuple, Any
 
 
 class DataBase:
-    """Class for handling flesh-cards storage."""
+    """Class for handling flash-cards storage."""
 
     def __init__(self, name='content', path='', schema=None) -> None:
         """Create connection to database and use given schema id given."""

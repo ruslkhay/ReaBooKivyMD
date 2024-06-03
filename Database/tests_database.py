@@ -1,18 +1,18 @@
-"""Tests for flesh-cards database."""
+"""Tests for flash-cards database."""
 
 import unittest
 from .database import DataBase
 
 
 class DatabaseTestCase(unittest.TestCase):
-    """Tests for one-to-one insert for flesh-card database."""
+    """Tests for one-to-one insert for flash-card database."""
 
     from os import chdir, getcwd
     from os.path import join
     chdir(join(getcwd(), 'Database'))
 
     def setUp(self):
-        """Create dummy flesh-card storage."""
+        """Create dummy flash-card storage."""
         self.db = DataBase(
             name='test',
             schema='schema.sql'

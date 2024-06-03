@@ -1,6 +1,7 @@
 <MyScreenManager>:
     MainWindow:
     DictionaryWindow:
+    StudyWindow:
 
 
 <DictionaryWindow>:
@@ -24,6 +25,25 @@
                 padding: 0
                 id: container
 
+
+<StudyWindow>:
+    name: 'study_window'
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            id: topbar
+            md_bg_color: (0, 166/255, 1, 1)
+            elevation: 0
+            title: 'ReaBoo'
+            right_action_items: 
+                [["exit-to-app", 
+                lambda x: app.exit_to_main_screen()]]
+        MDFloatLayout:
+            md_bg_color: (0, 166/255, 1, 0.25)
+            MDLabel:
+                text: "Studing is everything!"
+                pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
+    
 
 <MainWindow>:
     name: 'main_window'
@@ -49,6 +69,8 @@
                 md_bg_color: (1,1,1,1)
                 line_color: (0,0,0,0)
                 on_release: 
+                    app.root.current = 'study_window'
+                    app.root.transition.direction = 'left'
             MDRectangleFlatButton:
                 markup: True
                 text: "[size=48][b]" + app._("Edit") + "[/b][/size]"

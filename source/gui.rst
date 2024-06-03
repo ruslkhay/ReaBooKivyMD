@@ -6,7 +6,7 @@ This section describes integral interface components of application.
 Usage
 -----
 Main screen consists of two buttons:
-* Learn - redirect onto screen with flesh-cards games,
+* Learn - redirect onto screen with flash-cards games,
 * Edit - redirect onto screen with dictionary.
 
 .. figure:: _static/main.png

@@ -1,4 +1,4 @@
-"""Provides GUI for flesh-card learning app."""
+"""Provides GUI for flash-card learning app."""
 
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
@@ -15,6 +15,11 @@ else:
 
 # from kivy.core.window import Window
 # Window.size = (1080//2, 1920//2)
+
+class StudyWindow(MDScreen):
+    """Window for learning flash-cards."""
+
+    pass
 
 
 class MainWindow(MDScreen):

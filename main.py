@@ -19,36 +19,38 @@ else:
 
 class StudyWindow(MDScreen):
     """Window for learning flash-cards."""
+
     def __init__(self, *args, **kwargs):
         """Construct initial properties."""
-        from collections import deque
         super().__init__(*args, **kwargs)
         self.name = 'study_window'
-        # self.stack = deque()
-        self.add_widget(FlashCard(text='mamamia'))
-        self.add_widget(FlashCard(text='Alena'))
-        self.add_widget(FlashCard(text='Setunchos'))
 
     def load_stack(self, database: my_db.DataBase):
         """Fill stack with content."""
-        
-        self.stack.extend(database.select_from('dictionary'))
-    
+        import random
+        random.seed()
+        words = database.select_from('dictionary')
+        random.shuffle(words)
+        for word in words:
+            self.add_widget(FlashCard(text=word[0]))
+
     def right_guess(self):
         """Remove top element from stack."""
-        card_stack = [child for child in self.children if isinstance(child, FlashCard)]
+        card_stack = [
+            child for child in self.children if isinstance(
+                child, FlashCard)]
         self.remove_widget(card_stack[0])
-        # self.stack.pop()
-    
+
     def wrong_guess(self):
         """Shuffle back unguessed top element."""
-        card_stack = [child for child in self.children if isinstance(child, FlashCard)]
+        card_stack = [
+            child for child in self.children if isinstance(
+                child, FlashCard)]
         top_card = card_stack[0]
         height = len(card_stack) - 1  # widget_stack_height
         self.remove_widget(top_card)
         self.add_widget(top_card, height)
-        # card = self.stack.pop()
-        # self.stack.appendleft(card)
+
 
 class MainWindow(MDScreen):
     """Initial loading window."""
@@ -147,8 +149,8 @@ class NewCard(Card):
 
 class FlashCard(Card):
     """Flash card for study window."""
+
     text = StringProperty('')
-    pass
 
 
 class MyScreenManager(ScreenManager):
@@ -192,6 +194,8 @@ class ReabooApp(MDApp):
         """
         dw: DictionaryWindow = self.root.get_screen('dictionary_window')
         dw.load_dictionary(self.db)
+        sw: StudyWindow = self.root.get_screen('study_window')
+        sw.load_stack(self.db)
 
     def remove_item(self, instance):
         """Remove one line from dictionary."""

@@ -29,9 +29,6 @@
         MyTopWindowBar:
         MDFloatLayout:
             md_bg_color: (0, 166/255, 1, 0.25)
-            MDLabel:
-                text: "Studing is everything!"
-                pos_hint: {'center_x': 0.5, 'center_y': 1300/1960}
 
     
 <MyMainButton@MDRectangleFlatButton>
@@ -127,3 +124,28 @@
             required: True
             on_text: root.check_translations()
             pos_hint: {'center_x': 0.5,  'center_y': 0.45}
+
+
+<FlashCard>:
+    id: flash_card
+    MDRelativeLayout:
+        MDIconButton:
+            icon: "check"
+            pos_hint: {"center_y": 0, "right": 1}
+            md_bg_color: '#90ee90' 
+            on_release:
+                app.root.children[0].right_guess()
+                print("Right guess")
+                # app.root.children[0].close_card(new_card)
+        MDIconButton:
+            icon: "close"
+            pos_hint: {"center_y": 0, "x": 0}
+            md_bg_color: '#f08080'
+            on_release: app.root.children[0].wrong_guess()
+        MDLabel:
+            id: word
+            text: flash_card.text  # flash_card.text
+            halign: 'center'
+            # font_size: 20
+            # role: 'large'
+            pos_hint: {'center_x': 0.5,  'center_y': 0.5}

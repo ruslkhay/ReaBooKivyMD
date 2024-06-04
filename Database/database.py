@@ -15,7 +15,7 @@ class DataBase:
 
         # Make necessary tables for database.
         if schema:
-            with open(join(path, schema)) as f:
+            with open(schema) as f:
                 self.cursor.executescript(f.read())
 
     def close(self) -> None:

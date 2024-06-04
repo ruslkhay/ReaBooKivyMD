@@ -29,7 +29,7 @@ source.exclude_dirs = Swiper, CardStack, .venv, .buildozer, source
 source.exclude_patterns = Database/test*.py, dodo.py
 
 # (str) Application versioning (method 1)
-version = 1.1
+version = 1.2
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]

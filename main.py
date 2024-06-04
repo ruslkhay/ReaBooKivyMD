@@ -178,8 +178,9 @@ class ReabooApp(MDApp):
         super().__init__(**kwargs)
         self.db = my_db.DataBase(
             name='content',
-            path='Database',
-            schema='schema.sql'
+            # path='Database',
+            path=MDApp.get_running_app().user_data_dir,
+            schema='Database/schema.sql'
         )
 
     def build(self):

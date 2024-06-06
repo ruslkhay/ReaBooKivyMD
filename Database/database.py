@@ -22,13 +22,14 @@ class DataBase:
         """Close connection to database."""
         self.connect.close()
 
-    def oto_insert(self, word: str = None, translation: str = None) -> None:
+    def oto_insert(self, word: str = None, translation: str = None,
+                   example: str = None, image: str = None) -> None:
         """One-to-one insert, used only for non-repeated input."""
         query = """
-            INSERT INTO "dictionary"("word", "meaning")
-            VALUES (?, ?);
+            INSERT INTO "dictionary"("word", "meaning", "example", "image")
+            VALUES (?, ?, ?, ?);
             """
-        self.cursor.execute(query, [word, translation])
+        self.cursor.execute(query, [word, translation, example, image])
         self.connect.commit()  # saving database manipulations above
 
     def delete_word(self, word: str = None, translation: str = None) -> None:
@@ -44,3 +45,20 @@ class DataBase:
         """Query analog of 'SELECT cols FROM table;'."""
         table_content = self.cursor.execute(f""" SELECT {cols} FROM {table}""")
         return table_content.fetchall()
+
+if __name__ == "__main__":
+    db = DataBase(name='Database/testing', schema='Database/schema.sql')
+    db.oto_insert('raining', 'идет дождь', "It's raining", "link to png")
+    db.oto_insert('butter', 'масло')
+    db.oto_insert('bite', 'кусать', 'She bites everything, that moves', 'here')
+    db.oto_insert('bite', 'укусить', 'She bites everything, that moves', 'see there')
+    db.oto_insert('oil', 'масло', 'sport oil is used in sport cars')
+    # db.oto_insert('bite', 'кусать', 'She bites everything, that moves', "see here")
+    # db.oto_insert('bite', 'кусать', 'He bites everything, that moves')
+    # print(db.select_from('examples'))
+    # print(db.select_from('images'))
+    db.delete_word('bite', 'кусать')
+    print("words table:", *db.select_from('words'), sep='\n\t')
+    print("translations table:", *db.select_from('translations'), sep='\n\t')
+    print("translate table:", *db.select_from('translate'), sep='\n\t')
+    print("dictionary view:", *db.select_from('dictionary'), sep='\n\t')

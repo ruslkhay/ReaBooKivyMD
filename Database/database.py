@@ -49,6 +49,7 @@ class DataBase:
 if __name__ == "__main__":
     db = DataBase(name='Database/testing', schema='Database/schema.sql')
     db.oto_insert('raining', 'идет дождь', "It's raining", "link to png")
+    db.oto_insert('oil', 'нефть', 'Oil is frequently is being called \'black gold\'')
     db.oto_insert('butter', 'масло')
     db.oto_insert('bite', 'кусать', 'She bites everything, that moves', 'here')
     db.oto_insert('bite', 'укусить', 'She bites everything, that moves', 'see there')
@@ -57,6 +58,7 @@ if __name__ == "__main__":
     # db.oto_insert('bite', 'кусать', 'He bites everything, that moves')
     # print(db.select_from('examples'))
     # print(db.select_from('images'))
+    print("dictionary view:", *db.select_from('dictionary'), sep='\n\t')
     db.delete_word('bite', 'кусать')
     print("words table:", *db.select_from('words'), sep='\n\t')
     print("translations table:", *db.select_from('translations'), sep='\n\t')

@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS "translations"(
     PRIMARY KEY("id")
 );
 
+-- enables foreign key usage (if they are not enabled by default)
+PRAGMA foreign_keys=ON;
 
 -- binding between previous tables.
 CREATE TABLE IF NOT EXISTS "translate"(
@@ -22,14 +24,12 @@ CREATE TABLE IF NOT EXISTS "translate"(
     "example" INTEGER,
     "image" INTEGER,
     "deleted" INTEGER DEFAULT 0,
-    UNIQUE ("word_id", "translation_id"),
-    FOREIGN KEY("word_id") REFERENCES "words"("id"),
-    -- ON DELETE CASCADE,
+    FOREIGN KEY("word_id") REFERENCES "words"("id")
+    ON DELETE CASCADE,
     FOREIGN KEY("translation_id") REFERENCES "translations"("id")
-    -- ON DELETE CASCADE,
+    ON DELETE CASCADE,
+    UNIQUE ("word_id", "translation_id")
 );
-
-
 
 
 -- 'foreign' words next to their translation, i.e. dictionary itself
@@ -69,29 +69,13 @@ BEGIN
 END;
 
 
--- auto-delete values from all tables by given word and it's translation.
--- This trigger just marks row in "translate" table as deleted.
-CREATE TRIGGER IF NOT EXISTS "delete"
-INSTEAD OF DELETE ON "dictionary"
-FOR EACH ROW 
-BEGIN
-    UPDATE "translate" SET "deleted" = 1
-    WHERE "word_id" = (
-        SELECT "id" FROM "words"
-        WHERE "name" = (OLD."word")
-    ) AND "translation_id" = (
-        SELECT "id" FROM "translations"
-        WHERE "meaning" = (OLD."meaning")
-    );
-END;
-
 -- -- auto-delete values from all tables by given word and it's translation.
 -- -- This trigger just marks row in "translate" table as deleted.
--- CREATE TRIGGER IF NOT EXISTS "hard_delete"
+-- CREATE TRIGGER IF NOT EXISTS "delete"
 -- INSTEAD OF DELETE ON "dictionary"
 -- FOR EACH ROW 
 -- BEGIN
---     DELETE ON "translate"
+--     UPDATE "translate" SET "deleted" = 1
 --     WHERE "word_id" = (
 --         SELECT "id" FROM "words"
 --         WHERE "name" = (OLD."word")
@@ -102,43 +86,84 @@ END;
 -- END;
 
 
--- restore values if they were deleted
-CREATE TRIGGER IF NOT EXISTS "insert_when_exist"
-INSTEAD OF INSERT ON "dictionary"
-WHEN NEW."word" IN (
-    SELECT "name" FROM "words"
-) AND NEW."meaning" IN (
-    SELECT "meaning" FROM "translations"
-)
+-- -- auto-update
+-- CREATE TRIGGER IF NOT EXISTS "update"
+-- INSTEAD OF UPDATE ON "dictionary"
+-- FOR EACH ROW 
+-- BEGIN
+--     --U
+--     UPDATE "words" SET "name" = NEW."name"
+--     WHERE "words"."id" = (
+--         SELECT "word_id" FROM "translate"
+--         WHERE "translate"."id" = (NEW."id")
+--     );
+
+-- END;
+
+
+-- auto-delete values from all tables by given word and it's translation.
+-- if any row from parent table is not used in child table then it will be
+-- deleted from both tables, else it will be deleted only form child's one
+CREATE TRIGGER IF NOT EXISTS "hard_delete"
+INSTEAD OF DELETE ON "dictionary"
+FOR EACH ROW 
 BEGIN
-    UPDATE "translate" SET "deleted" = 0
+    DELETE FROM "translate"
     WHERE "word_id" = (
         SELECT "id" FROM "words"
-        WHERE "name" = (NEW."word")
+        WHERE "name" = (OLD."word")
     ) AND "translation_id" = (
         SELECT "id" FROM "translations"
-        WHERE "meaning" = (NEW."meaning")
+        WHERE "meaning" = (OLD."meaning")
+    );
+    DELETE FROM "words"
+    WHERE "id" NOT IN (
+        SELECT DISTINCT "word_id" FROM "translate"
+    );
+    DELETE FROM "translations"
+    WHERE "id" NOT IN (
+        SELECT DISTINCT "translation_id" FROM "translate"
     );
 END;
 
 
+-- -- restore values if they were deleted
+-- CREATE TRIGGER IF NOT EXISTS "insert_when_exist"
+-- INSTEAD OF INSERT ON "dictionary"
+-- WHEN NEW."word" IN (
+--     SELECT "name" FROM "words"
+-- ) AND NEW."meaning" IN (
+--     SELECT "meaning" FROM "translations"
+-- )
+-- BEGIN
+--     UPDATE "translate" SET "deleted" = 0
+--     WHERE "word_id" = (
+--         SELECT "id" FROM "words"
+--         WHERE "name" = (NEW."word")
+--     ) AND "translation_id" = (
+--         SELECT "id" FROM "translations"
+--         WHERE "meaning" = (NEW."meaning")
+--     );
+-- END;
 
-CREATE TABLE IF NOT EXISTS "flash_cards"(
-    "dictionary_id",
-    "word_id" INTEGER,
-    "translation_id" INTEGER,
-    "example" INTEGER,
-    "image" INTEGER,
-    "day_added" TEXT,
-    "day_learned" TEXT,
-    "right_guesses" INTEGER DEFAULT 0,
-    "wrong_guesses" INTEGER DEFAULT 0,
-    "score" INTEGER DEFAULT 0, 
-    "deleted" INTEGER DEFAULT 0,
-    "learned" INTEGER DEFAULT 0,
-    PRIMARY KEY ("word_id", "translation_id"),
-    FOREIGN KEY("word_id") REFERENCES "words"("id"),
-    -- ON DELETE CASCADE,
-    FOREIGN KEY("translation_id") REFERENCES "translations"("id")
-    -- ON DELETE CASCADE,
-);
+
+
+-- CREATE TABLE IF NOT EXISTS "flash_cards"(
+--     "dictionary_id",
+--     "word_id" INTEGER,
+--     "translation_id" INTEGER,
+--     "example" INTEGER,
+--     "image" INTEGER,
+--     "day_added" TEXT,
+--     "day_learned" TEXT,
+--     "right_guesses" INTEGER DEFAULT 0,
+--     "wrong_guesses" INTEGER DEFAULT 0,
+--     "score" INTEGER DEFAULT 0, 
+--     "deleted" INTEGER DEFAULT 0,
+--     "learned" INTEGER DEFAULT 0,
+--     PRIMARY KEY ("word_id", "translation_id"),
+--     FOREIGN KEY("word_id") REFERENCES "words"("id"),
+--     -- ON DELETE CASCADE,
+--     FOREIGN KEY("translation_id") REFERENCES "translations"("id")
+--     -- ON DELETE CASCADE,
+-- );

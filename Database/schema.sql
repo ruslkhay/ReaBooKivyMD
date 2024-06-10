@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "translate"(
 
 -- 'foreign' words next to their translation, i.e. dictionary itself
 CREATE VIEW IF NOT EXISTS "dictionary" AS 
-SELECT "name" AS 'word', "meaning", "example", "image" FROM "words"
+SELECT "translate"."id" AS 'id', "name" AS 'word', "meaning", "example", "image" FROM "words"
 LEFT OUTER JOIN "translate" ON "words"."id" = "translate"."word_id"
 LEFT OUTER JOIN "translations" ON "translate"."translation_id" = "translations"."id"
 WHERE "translate"."deleted" != 1;
@@ -124,6 +124,18 @@ BEGIN
     WHERE "id" NOT IN (
         SELECT DISTINCT "translation_id" FROM "translate"
     );
+END;
+
+-- New word => add it to 'words'; delete if old word is not used
+-- New translation => add it to 'translations'; delete if old one is not used
+CREATE TRIGGER IF NOT EXISTS "update"
+INSTEAD OF UPDATE ON "dictionary"
+FOR EACH ROW
+BEGIN
+    DELETE FROM "dictionary"
+    WHERE "id" = NEW."id" OR "word" = NEW."word" AND "meaning" = NEW."meaning";
+    INSERT INTO "dictionary"
+    VALUES (NEW."id", NEW."word", NEW."meaning", NEW."example", NEW."image");
 END;
 
 

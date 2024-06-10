@@ -26,7 +26,7 @@ def task_test():
         'actions': ['coverage run -m unittest Database/tests_database.py'],
         'name': "run"}
     yield {
-        'actions': ['coverage report'],
+        'actions': ['coverage report -m'],
         'verbosity': 2,
         'name': "report"}
 

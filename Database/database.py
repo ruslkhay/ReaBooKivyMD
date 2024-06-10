@@ -36,31 +36,26 @@ class DataBase:
         """Hide word out of a database. Mark it as deleted."""
         query = """
             DELETE FROM "dictionary"
-            WHERE "word" = ? AND "meaning" = ?
+            WHERE "word" = ? AND "meaning" = ?;
             """
         self.cursor.execute(query, [word, translation])
         self.connect.commit()  # saving database manipulations above
 
-    def select_from(self, table: str, cols: str = '*') -> List[Tuple[Any]]:
-        """Query analog of 'SELECT cols FROM table;'."""
-        table_content = self.cursor.execute(f""" SELECT {cols} FROM {table}""")
-        return table_content.fetchall()
+    def update_word(self, card_id: int, word: str, translation: str,
+                    example: str | None, image: str | None) -> None:
+        """Update content in tables."""
+        query = """
+            UPDATE "dictionary"
+            SET "id" = ?, "word" = ?, "meaning" = ?, "example" = ?, "image" = ?
+            """
+        print()
+        self.cursor.execute(query, [card_id, word, translation, example, image])
+        self.connect.commit()  # saving database manipulations above
 
-if __name__ == "__main__":
-    db = DataBase(name='Database/testing', schema='Database/schema.sql')
-    db.oto_insert('raining', 'идет дождь', "It's raining", "link to png")
-    db.oto_insert('oil', 'нефть', 'Oil is frequently is being called \'black gold\'')
-    db.oto_insert('butter', 'масло')
-    db.oto_insert('bite', 'кусать', 'She bites everything, that moves', 'here')
-    db.oto_insert('bite', 'укусить', 'She bites everything, that moves', 'see there')
-    db.oto_insert('oil', 'масло', 'sport oil is used in sport cars')
-    # db.oto_insert('bite', 'кусать', 'She bites everything, that moves', "see here")
-    # db.oto_insert('bite', 'кусать', 'He bites everything, that moves')
-    # print(db.select_from('examples'))
-    # print(db.select_from('images'))
-    print("dictionary view:", *db.select_from('dictionary'), sep='\n\t')
-    db.delete_word('bite', 'кусать')
-    print("words table:", *db.select_from('words'), sep='\n\t')
-    print("translations table:", *db.select_from('translations'), sep='\n\t')
-    print("translate table:", *db.select_from('translate'), sep='\n\t')
-    print("dictionary view:", *db.select_from('dictionary'), sep='\n\t')
+    def select_from(self, table: str, cols: str = '*',
+                    cond: str = '') -> List[Tuple[Any]]:
+        """Query analog of 'SELECT cols FROM table;'."""
+        table_content = self.cursor.execute(
+            f""" SELECT {cols} FROM {table} {cond}"""
+            )
+        return table_content.fetchall()

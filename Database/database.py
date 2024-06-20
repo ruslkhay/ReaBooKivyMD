@@ -49,7 +49,8 @@ class DataBase:
             SET "id" = ?, "word" = ?, "meaning" = ?, "example" = ?, "image" = ?
             """
         print()
-        self.cursor.execute(query, [card_id, word, translation, example, image])
+        self.cursor.execute(query,
+                            [card_id, word, translation, example, image])
         self.connect.commit()  # saving database manipulations above
 
     def select_from(self, table: str, cols: str = '*',

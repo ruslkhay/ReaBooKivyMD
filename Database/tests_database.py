@@ -69,7 +69,6 @@ class DeleteTestCase(unittest.TestCase):
 
     def setUp(self):
         """Create filled flash-card storage."""
-
         self.db_name = 'test'
         self.db = DataBase(
             name=self.db_name,
@@ -92,19 +91,6 @@ class DeleteTestCase(unittest.TestCase):
             translation='весна',
             example='Spring was warm.',
             image='picture\'s path')
-
-    # def test_delete_0(self):
-    #     """Delete softly (hide) word and it's translation from dictionary."""
-    #     self.db.oto_insert('hop', 'прыгать')
-    #     self.db.oto_insert('spring', 'прыгать')
-    #     self.db.oto_insert('spring', 'весна')
-
-    #     self.db.delete_word('spring', 'прыгать')
-
-    #     self.assertEqual(
-    #         self.db.select_from('translate'),
-    #         [(1, 1, 0), (2, 1, 1), (2, 2, 0)]
-    #     )
 
     def test_hard_delete_0(self):
         """Delete unique word and unique translation.
@@ -172,12 +158,11 @@ class DeleteTestCase(unittest.TestCase):
         )
 
     def test_hard_delete_2(self):
-        """"Delete unique word and not unique translation.
+        """Delete unique word and not unique translation.
 
         Delete from dictionary one row, where word is not used in another row
         by translation is.
         """
-
         self.db.delete_word('hop', 'прыгать')
         self.assertEqual(
             self.db.select_from('words'),
@@ -206,7 +191,6 @@ class DeleteTestCase(unittest.TestCase):
         Delete from dictionary one row, where word is used in another row
         but translation is not.
         """
-
         self.db.delete_word('spring', 'весна')
         self.assertEqual(
             self.db.select_from('words'),
@@ -280,234 +264,184 @@ class UpdateTestCase(unittest.TestCase):
     combinations) are updated.
     """
 
+    # Initial content of database
+    OLD_CARDS = (
+        ['raise', 'поднять', None, None],
+        ['hop', 'прыгать', 'Girl hopped from stone to stone.', None],
+        ['spring', 'прыгать', None, 'some url-link'],
+        ['spring', 'весна', 'Spring was warm.', 'picture\'s path'],
+    )
+    # Updated content of database
+    NEW_CARDS = (
+        ['lift', 'приподнимать', 'Lift heavy bar', 'bar\'s image'],
+        ['bob', 'скакать', None, 'image\'s path'],
+        ['bounce', 'пружинить', 'Walk with a bounce', 'illustration'],
+        ['autumn', 'осень', None, None],
+    )
+    # Convert contents to `dict` type
+    KEYS = [['word', 'meaning', 'example', 'image']]
+    OLD_CARDS = list(map(dict, map(zip, KEYS * len(OLD_CARDS), OLD_CARDS)))
+    NEW_CARDS = list(map(dict, map(zip, KEYS * len(NEW_CARDS), NEW_CARDS)))
+
     def setUp(self):
         """Create filled flash-card storage."""
         # Creating and connecting to database
         self.db_name = 'test'
-        self.db = DataBase(
-            name=self.db_name,
-            schema='Database/schema.sql')
+        self.db = DataBase(name=self.db_name, schema='Database/schema.sql')
         # Filling values. '*-u' = 'unique', '*-c' = 'common', 'X' = 'None'
         # 'W', 'T', 'E', 'I' - corresponding abbreviations
-        self.db.oto_insert(  # W-u T-u X X
-            word='raise', translation='поднять',
-            example=None, image=None)
-        self.db.oto_insert(  # W-u T-c E X
-            word='hop', translation='прыгать',
-            example='Girl hopped from stone to stone.', image=None)
-        self.db.oto_insert(  # W-c T-c X I
-            word='spring', translation='прыгать',
-            example=None, image='some url-link')
-        self.db.oto_insert(  # W-c T-u E I
-            word='spring', translation='весна',
-            example='Spring was warm.', image='picture\'s path')
+        self.db.oto_insert(*self.OLD_CARDS[0].values())  # W-u T-u X X
+        self.db.oto_insert(*self.OLD_CARDS[1].values())  # W-u T-c E X
+        self.db.oto_insert(*self.OLD_CARDS[2].values())  # W-c T-c X I
+        self.db.oto_insert(*self.OLD_CARDS[3].values())  # W-c T-u E I
 
-    def check_1(self, key: str, Dict: dict,
-                Word: dict, Tran: dict, newIds: tuple):
-        """Check, when unique word and unique translation."""
+    def __prepare_cases(self, card_id: int):
+        """Construct cases for testing database update option."""
+        from itertools import combinations
+
+        old_card = self.OLD_CARDS[card_id - 1]  # initial card
+        upd_card = self.NEW_CARDS[card_id - 1]  # updated card
+        # Create all possible input combinations
+        for num_param in range(1, 1 + len(self.KEYS[0])):
+            # Run update option for each of parameter's combinations
+            for comb in combinations(list(upd_card.items()), num_param):
+                params = dict(comb)
+                self.tearDown()
+                self.setUp()
+                card = old_card.copy()
+                card.update(params)
+                # Target function (update option) call
+                self.db.update_word(card_id, *card.values())
+                # Extract new database data
+                D, W, T = refreshed_content(self.db)
+                ID = get_new_ids(self.db, card['word'], card['meaning'])
+                yield D, W, T, ID, old_card, upd_card, params
+
+    @staticmethod
+    def multi_test(card_id: int):
+        """Decorate test case call."""
+        def inner_decor(func):
+            """Enable argument input option for previous decorator."""
+            import functools
+
+            @functools.wraps(func)
+            def wrapper(self: 'UpdateTestCase'):
+                """Run all subtests for given test case."""
+                case = self.__prepare_cases(card_id)
+                for args in case:
+                    *res, params = args
+                    with self.subTest(**params):
+                        list(map(lambda x: func(self, x, *res), params.keys()))
+            return wrapper
+        return inner_decor
+
+    # @unittest.skip
+    @multi_test(card_id=1)
+    def test_dec_check_1(self, key: str, Dict: dict, Word: dict, Tran: dict,
+                         newIds: tuple, old_card: dict, upd_card: dict):
+        """Check update of card, with unique word and unique translation.
+
+        Test database behavior, when all possible card's content updates are
+        applied.
+        """
         # Dictionary table should hold all updated values
-        self.assertIn(self.new[key], Dict[key])
+        self.assertIn(upd_card[key], Dict[key])
         match key:
             case 'word':
                 # previous word shouldn't be in database
-                self.assertNotIn(self.old[key], Word['name'])
-                self.assertNotIn(self.old[key], Dict[key])
+                self.assertNotIn(old_card[key], Word['name'])
+                self.assertNotIn(old_card[key], Dict[key])
                 # updated word must be in table
-                self.assertIn(self.new[key], Word['name'])
+                self.assertIn(upd_card[key], Word['name'])
             case 'meaning':
                 # previous translation shouldn't be in database
-                self.assertNotIn(self.old[key], Tran[key])
-                self.assertNotIn(self.old[key], Dict[key])
+                self.assertNotIn(old_card[key], Tran[key])
+                self.assertNotIn(old_card[key], Dict[key])
                 # updated translation must be in table
-                self.assertIn(self.new[key], Tran[key])
+                self.assertIn(upd_card[key], Tran[key])
             case 'example' | 'image':
                 self.assertNotIn(
-                    (newIds[key], self.old[key]),
+                    (newIds[key], old_card[key]),
                     list(zip(Dict['id'], Dict[key])))
 
-    def test_update_1(self):
-        """Check update on card with unique word and unique translation.
+    @multi_test(card_id=2)
+    def test_check_2(self, key: str, Dict: dict, Word: dict, Tran: dict,
+                     newIds: tuple, old_card: dict, upd_card: dict):
+        """Check update of card, with unique word and common translation.
 
-        If user change word, then it """
-        from itertools import combinations
-
-        self.old = dict(word='raise', meaning='поднять',
-                        example=None,
-                        image=None)
-        self.card_id = 1
-        self.new = dict(word='lift', meaning='приподнимать',
-                        example='Lift heavy bar',
-                        image='bar\'s image')
-        # Create all possible input combinations
-        for num_param in range(1, 1 + len(self.new)):
-            param_comb = combinations(list(self.new.items()), num_param)
-            # Run TestCase for each of them
-            for comb in param_comb:
-                params = dict(comb)
-                with self.subTest(**params):
-                    self.tearDown()
-                    self.setUp()
-                    card = self.old.copy()
-                    card.update(params)
-                    self.db.update_word(self.card_id, *card.values())
-                    D, W, T = refreshed_content(self.db)
-                    # Getting new ids
-                    ID = get_new_ids(self.db, card['word'], card['meaning'])
-                    list(map(
-                        lambda x: self.check_1(x, D, W, T, ID), params.keys()))
-
-    def check_2(self, key: str, Dict: dict,
-                Word: dict, Tran: dict, newIds: tuple):
-        """Check, when unique word and common translation."""
+        Test database behavior, when all possible card's content updates are
+        applied.
+        """
         # Dictionary table should hold all updated values
-        self.assertIn(self.new[key], Dict[key])
+        self.assertIn(upd_card[key], Dict[key])
         match key:
             case 'word':
                 # previous word shouldn't be in database
-                self.assertNotIn(self.old[key], Word['name'])
-                self.assertNotIn(self.old[key], Dict[key])
+                self.assertNotIn(old_card[key], Word['name'])
+                self.assertNotIn(old_card[key], Dict[key])
                 # updated word must be in table
-                self.assertIn(self.new[key], Word['name'])
+                self.assertIn(upd_card[key], Word['name'])
             case 'meaning':
-                self.assertIn(self.old[key], Tran[key])
-                self.assertIn(self.old[key], Dict[key])
-                self.assertIn(self.new[key], Tran[key])
+                self.assertIn(old_card[key], Tran[key])
+                self.assertIn(old_card[key], Dict[key])
+                self.assertIn(upd_card[key], Tran[key])
             case 'example' | 'image':
                 self.assertNotIn(
-                    (newIds[key], self.old[key]),
+                    (newIds[key], old_card[key]),
                     list(zip(Dict['id'], Dict[key])))
 
-    def test_update_2(self):
-        """Check update on card with unique word and common translation.
+    @multi_test(card_id=3)
+    def test_check_3(self, key: str, Dict: dict, Word: dict, Tran: dict,
+                     newIds: tuple, old_card: dict, upd_card: dict):
+        """Check update of card, with common word and common translation.
 
-        If user change word, then it """
-        from itertools import combinations
-
-        self.old = dict(word='hop', meaning='прыгать',
-                        example='Girl hopped from stone to stone.',
-                        image=None)
-        self.card_id = 2
-        self.new = dict(word='bob', meaning='скакать', example=None,
-                        image='image\'s path')
-        # Create all possible input combinations
-        for num_param in range(1, 1 + len(self.new)):
-            param_comb = combinations(list(self.new.items()), num_param)
-            # Run TestCase for each of them
-            for comb in param_comb:
-                params = dict(comb)
-                with self.subTest(**params):
-                    self.tearDown()
-                    self.setUp()
-                    card = self.old.copy()
-                    card.update(params)
-                    self.db.update_word(self.card_id, *card.values())
-                    D, W, T = refreshed_content(self.db)
-                    # Getting new ids
-                    ID = get_new_ids(self.db, card['word'], card['meaning'])
-                    list(map(
-                        lambda x: self.check_2(x, D, W, T, ID), params.keys()))
-
-    def check_3(self, key: str, Dict: dict,
-                Word: dict, Tran: dict, newIds: tuple):
-        """Check, when common word and common translation."""
+        Test database behavior, when all possible card's content updates are
+        applied.
+        """
         # Dictionary table should hold all updated values
-        self.assertIn(self.new[key], Dict[key])
+        self.assertIn(upd_card[key], Dict[key])
         match key:
             case 'word':
                 # previous word shouldn't be in database
-                self.assertIn(self.old[key], Word['name'])
-                self.assertIn(self.old[key], Dict[key])
+                self.assertIn(old_card[key], Word['name'])
+                self.assertIn(old_card[key], Dict[key])
                 # updated word must be in table
-                self.assertIn(self.new[key], Word['name'])
+                self.assertIn(upd_card[key], Word['name'])
             case 'meaning':
-                self.assertIn(self.old[key], Tran[key])
-                self.assertIn(self.old[key], Dict[key])
-                self.assertIn(self.new[key], Tran[key])
+                self.assertIn(old_card[key], Tran[key])
+                self.assertIn(old_card[key], Dict[key])
+                self.assertIn(upd_card[key], Tran[key])
             case 'example' | 'image':
                 self.assertNotIn(
-                    (newIds[key], self.old[key]),
+                    (newIds[key], old_card[key]),
                     list(zip(Dict['id'], Dict[key])))
 
-    def test_update_3(self):
-        """Check update on card with common word and common translation.
+    @multi_test(card_id=4)
+    def test_check_4(self, key: str, Dict: dict, Word: dict, Tran: dict,
+                     newIds: tuple, old_card: dict, upd_card: dict):
+        """Check update of card, with common word and unique translation.
 
-        If user change word, then it """
-        from itertools import combinations
-
-        self.old = dict(word='spring', meaning='прыгать',
-                        example=None, image='some url-link')
-        self.card_id = 3
-        self.new = dict(word='bounce', meaning='пружинить',
-                        example='Walk with a bounce',
-                        image='illustration')
-        # Create all possible input combinations
-        for num_param in range(1, 1 + len(self.new)):
-            param_comb = combinations(list(self.new.items()), num_param)
-            # Run TestCase for each of them
-            for comb in param_comb:
-                params = dict(comb)
-                with self.subTest(**params):
-                    self.tearDown()
-                    self.setUp()
-                    card = self.old.copy()
-                    card.update(params)
-                    self.db.update_word(self.card_id, *card.values())
-                    D, W, T = refreshed_content(self.db)
-                    # Getting new ids
-                    ID = get_new_ids(self.db, card['word'], card['meaning'])
-                    list(map(
-                        lambda x: self.check_3(x, D, W, T, ID), params.keys()))
-
-    def check_4(self, key: str, Dict: dict,
-                Word: dict, Tran: dict, newIds: tuple):
-        """Check, when unique word and common translation."""
+        Test database behavior, when all possible card's content updates are
+        applied.
+        """
         # Dictionary table should hold all updated values
-        self.assertIn(self.new[key], Dict[key])
+        self.assertIn(upd_card[key], Dict[key])
         match key:
             case 'word':
-                self.assertIn(self.old[key], Word['name'])
-                self.assertIn(self.old[key], Dict[key])
+                self.assertIn(old_card[key], Word['name'])
+                self.assertIn(old_card[key], Dict[key])
                 # updated word must be in table
-                self.assertIn(self.new[key], Word['name'])
+                self.assertIn(upd_card[key], Word['name'])
             case 'meaning':
                 # previous word shouldn't be in database
-                self.assertNotIn(self.old[key], Tran[key])
-                self.assertNotIn(self.old[key], Dict[key])
+                self.assertNotIn(old_card[key], Tran[key])
+                self.assertNotIn(old_card[key], Dict[key])
                 # updated word must be in table
-                self.assertIn(self.new[key], Tran[key])
+                self.assertIn(upd_card[key], Tran[key])
             case 'example' | 'image':
                 self.assertNotIn(
-                    (newIds[key], self.old[key]),
+                    (newIds[key], old_card[key]),
                     list(zip(Dict['id'], Dict[key])))
-
-    def test_update_4(self):
-        """Check update on card with unique word and common translation.
-
-        If user change word, then it """
-        from itertools import combinations
-
-        self.old = dict(word='spring', meaning='весна',
-                        example='Spring was warm.', image='picture\'s path')
-        self.card_id = 4
-        self.new = dict(word='autumn', meaning='осень', example=None,
-                        image='see here')
-        # Create all possible input combinations
-        for num_param in range(1, 1 + len(self.new)):
-            param_comb = combinations(list(self.new.items()), num_param)
-            # Run TestCase for each of them
-            for comb in param_comb:
-                params = dict(comb)
-                with self.subTest(**params):
-                    self.tearDown()
-                    self.setUp()
-                    card = self.old.copy()
-                    card.update(params)
-                    self.db.update_word(self.card_id, *card.values())
-                    D, W, T = refreshed_content(self.db)
-                    # Getting new ids
-                    ID = get_new_ids(self.db, card['word'], card['meaning'])
-                    list(map(
-                        lambda x: self.check_4(x, D, W, T, ID), params.keys()))
 
     def tearDown(self):
         """Remove storage and close connection to database."""

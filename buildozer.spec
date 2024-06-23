@@ -22,7 +22,7 @@ source.include_exts = py,png,jpg,kv,atlas,sql,mo
 # source.exclude_exts = 
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = Swiper, CardStack, .venv, .buildozer, source
+source.exclude_dirs = .venv, .vscode, .buildozer, source
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
@@ -37,18 +37,19 @@ version = 1.2
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivymd,sqlite3
+requirements = python3,kivy,kivymd
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+# presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = source/_static/icon_presplash_2048.png
 
 # (str) Icon of the application
 # icon.filename = %(source.dir)s/data/icon.png
-icon.filename = source/_static/icon_low.png
+icon.filename = source/_static/icon_512.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
@@ -82,7 +83,7 @@ fullscreen = 0
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-#android.presplash_color = #FFFFFF
+android.presplash_color = #FFFFFF
 
 # (string) Presplash animation using Lottie format.
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
@@ -102,10 +103,10 @@ fullscreen = 0
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-#android.api = 31
+# android.api = 33
 
 # (int) Minimum API your APK / AAB will support.
-#android.minapi = 21
+# android.minapi = 28
 
 # (int) Android SDK version to use
 #android.sdk = 20
@@ -207,7 +208,7 @@ fullscreen = 0
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
 # android.enable_androidx requires android.api >= 28
-#android.enable_androidx = True
+android.enable_androidx = True
 
 # (list) add java compile options
 # this can for example be necessary when importing certain java libraries using the 'android.gradle_dependencies' option

@@ -32,7 +32,7 @@ class StudyWindow(MDScreen):
         words = database.select_from('dictionary')
         random.shuffle(words)
         for word in words:
-            self.add_widget(FlashCard(text=word[0]))
+            self.add_widget(FlashCard(text=word[1]))
 
     def right_guess(self):
         """Remove top element from stack."""
@@ -85,7 +85,8 @@ class DictionaryWindow(MDScreen):
     def load_dictionary(self, database: my_db):
         """Load up data from dictionary database."""
         dictionary = database.select_from('dictionary')
-        for word, trans in dictionary:
+        for _, word, trans, *_ in dictionary:
+            print(word, trans)
             self.add_to_list_word_trans(word, trans)
 
     def add_new_card(self):

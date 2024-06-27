@@ -91,6 +91,7 @@ fullscreen = 0
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
 android.presplash_color = #FFFFFF
+android.presplash_color = #FFFFFF
 
 # (string) Presplash animation using Lottie format.
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
@@ -111,8 +112,10 @@ android.presplash_color = #FFFFFF
 
 # (int) Target Android API, should be as high as possible.
 # android.api = 33
+# android.api = 33
 
 # (int) Minimum API your APK / AAB will support.
+# android.minapi = 28
 # android.minapi = 28
 
 # (int) Android SDK version to use
@@ -215,6 +218,7 @@ android.presplash_color = #FFFFFF
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
 # android.enable_androidx requires android.api >= 28
+android.enable_androidx = True
 android.enable_androidx = True
 
 # (list) add java compile options

@@ -1,3 +1,14 @@
+import os
+if os.uname()[1] == 'VB16': # MY MACHINE NAME !!!
+    # Enlarges widgets for highly resolution screens
+    scale = 2
+    os.environ['KIVY_METRICS_DENSITY'] = str(scale) 
+    # Simulate my Xiaomi Redmi 12 screen
+    from kivy.core.window import Window
+    from kivy.metrics import sp
+    Window.size = [sp(1080)/scale, sp(2400)/scale] 
+
+
 from kivy.lang import Builder
 from kivy.properties import StringProperty, NumericProperty
                      

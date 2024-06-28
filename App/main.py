@@ -42,6 +42,7 @@ class StudyScreen(MDScreen):
 
 class CardsSet(MDCard):
     """One set of flashcards."""
+    title = StringProperty()
     ...
     
 class DictionaryScreen(MDScreen):
@@ -114,7 +115,6 @@ class ReaBooApp(MDApp):
         sm.transition = SlideTransition(direction="up")
         sm.current = 'Flashcards'
         # self.root.remove_widget(self.root.ids.navigation_bar)
-        
     def build(self):
         self.theme_cls.primary_palette = "Blue"
         pass
@@ -124,7 +124,7 @@ class ReaBooApp(MDApp):
         print(self.root.ids)
         cl: CardsListScreen = self.root.ids.screen_cardlist
         ds: DictionaryScreen = self.root.ids.screen_dict
-        for i in range(10):
+        for i in range(5):
             cl.add_item(i, f"Word {i}", f"meaning {i}", '', "data/icon_512.png")
             ds.add()
 

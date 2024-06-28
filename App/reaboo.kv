@@ -68,9 +68,11 @@ MDBoxLayout:
 
     MDScreenManager:
         id: screen_manager
-        # transition: MDNoTransition()
+        # transition: MDNoTransition
 
         # CardScreen:
+        DictionaryScreen:
+            id: screen_dict
 
         MainScreen:
             id: screen_main
@@ -89,12 +91,20 @@ MDBoxLayout:
         id: navigation_bar
 
         BaseMDNavigationItem:
+            icon: "book"
+            # text: "Dict"
+            text: screen_dict.name 
+            active: True
+
+
+        BaseMDNavigationItem:
             icon: "school"
             # text: "Learn"
             text: screen_main.name 
-            active: True
+            # active: True
 
         BaseMDNavigationItem:
             icon: "list-box-outline"
             text: screen_cardlist.name      # ATTENTION
             # text: "Cards"
+            # active: True

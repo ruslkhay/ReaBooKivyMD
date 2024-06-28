@@ -7,3 +7,4 @@ Literture/
 !.*.db
 .buildozer
 bin
+__pycache__

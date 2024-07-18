@@ -58,5 +58,5 @@ class DataBase:
         """Query analog of 'SELECT cols FROM table;'."""
         table_content = self.cursor.execute(
             f""" SELECT {cols} FROM {table} {cond}"""
-            )
+        )
         return table_content.fetchall()

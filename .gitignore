@@ -6,5 +6,5 @@ Literture/
 *.db
 !.*.db
 .buildozer
-bin
+bin/
 __pycache__

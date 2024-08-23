@@ -5,31 +5,31 @@
 
 
 
-<DictionaryScreen>:
-    name: "Dict"
-    md_bg_color: self.theme_cls.backgroundColor
+# <DictionaryScreen>:
+#     name: "Dict"
+#     md_bg_color: self.theme_cls.backgroundColor
 
-    MDScrollView:
-        do_scroll_x: False
-        so_scroll_y: True
-        MDGridLayout:
-            cols: 2
-        # MDStackLayout:
-            adaptive_height: True
-            # height: self.minimum_height
-            # size_hint_y: None 
-            # md_bg_color: "black"
-            id: container_dicts
-            orientation: 'lr-tb'
-            padding: 40
-            spacing: self.padding[0]
-            row_default_height: root.height // 5
-            CardsSet:
-                on_release: 
-                    root.add()
-                    # pos_hint_x: .5
-                MDIcon:
-                    icon: "plus"
-                    adaptive_height: True
-                    size_hint_x: .5
-                    pos_hint: {"center_x": 0.5, "center_y": .5}
+#     MDScrollView:
+#         do_scroll_x: False
+#         so_scroll_y: True
+#         MDGridLayout:
+#             cols: 2
+#         # MDStackLayout:
+#             adaptive_height: True
+#             # height: self.minimum_height
+#             # size_hint_y: None 
+#             # md_bg_color: "black"
+#             id: container_dicts
+#             orientation: 'lr-tb'
+#             padding: 40
+#             spacing: self.padding[0]
+#             row_default_height: root.height // 5
+#             CardsSet:
+#                 on_release: 
+#                     root.add()
+#                     # pos_hint_x: .5
+#                 MDIcon:
+#                     icon: "plus"
+#                     adaptive_height: True
+#                     size_hint_x: .5
+#                     pos_hint: {"center_x": 0.5, "center_y": .5}

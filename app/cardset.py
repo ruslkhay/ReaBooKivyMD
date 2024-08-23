@@ -1,4 +1,3 @@
-
 from kivy.properties import StringProperty, NumericProperty
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.list import MDListItem
@@ -6,6 +5,7 @@ from kivymd.uix.list import MDListItem
 
 class CardListItem(MDListItem):
     """Unit of card list."""
+
     card_id = NumericProperty(defaultvalue=-1)
     word = StringProperty()
     meaning = StringProperty()
@@ -27,15 +27,23 @@ class CardsListScreen(MDScreen):
         self.ids.container.remove_widget(self.get_item(card_id))
         pass
 
-    def add_item(self, card_id: int, word: str, meaning: str, example: str,
-                 image: str, *args):
+    def add_item(
+        self, card_id: int, word: str, meaning: str, example: str, image: str, *args
+    ):
         self.ids.container.add_widget(
-            CardListItem(card_id=card_id, word=word, meaning=meaning,
-                         example=example, image=image,
-                         on_release=self.open_item))
+            CardListItem(
+                card_id=card_id,
+                word=word,
+                meaning=meaning,
+                example=example,
+                image=image,
+                on_release=self.open_item,
+            )
+        )
 
-    def update_item(self, card_id: int, word: str, meaning: str, example: str,
-                    image: str, *args):
+    def update_item(
+        self, card_id: int, word: str, meaning: str, example: str, image: str, *args
+    ):
         """Update content of existed card in list."""
         card = self.get_item(card_id)
         card.word = word
@@ -60,6 +68,7 @@ class CardsListScreen(MDScreen):
 
 class CardScreen(MDScreen):
     """Manage content of one flash-card unit."""
+
     card_id = NumericProperty(defaultvalue=88)
     word = StringProperty()
     meaning = StringProperty()
@@ -71,13 +80,19 @@ class CardScreen(MDScreen):
         cl: CardsListScreen = sm.get_screen("Cards")
         if self.card_id == -1:
             cl.add_item(
-                card_id=-1, word=self.word, meaning=self.meaning,
-                example=self.example, image=self.image
+                card_id=-1,
+                word=self.word,
+                meaning=self.meaning,
+                example=self.example,
+                image=self.image,
             )
         else:  # i.e. element was in list
             cl.update_item(
-                card_id=self.card_id, word=self.word, meaning=self.meaning,
-                example=self.example, image=self.image
+                card_id=self.card_id,
+                word=self.word,
+                meaning=self.meaning,
+                example=self.example,
+                image=self.image,
             )
         self.close()
 

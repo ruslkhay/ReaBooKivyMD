@@ -32,7 +32,7 @@ class BaseMDNavigationItem(MDNavigationItem):
     text = StringProperty()
 
 
-class BaseScreen(MDScreen):
+# class BaseScreen(MDScreen):
     ...
 
 
@@ -139,7 +139,7 @@ class ReaBooApp(MDApp):
     def on_start(self):
         print(self.root.ids)
         cl: CardsListScreen = self.root.ids.screen_cardlist
-        ds: DictionaryScreen = self.root.ids.screen_dict
+        # ds: DictionaryScreen = self.root.ids.screen_dict
         for i in range(5):
             cl.add_item(
                 i,
@@ -147,7 +147,7 @@ class ReaBooApp(MDApp):
                 f"meaning {i}",
                 '',
                 "data/icon_512.png")
-            ds.add()
+            # ds.add()
 
 
 ReaBooApp().run()

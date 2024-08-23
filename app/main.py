@@ -1,55 +1,46 @@
+"""Contain key class of application."""
+
 import os
-if os.uname()[1] == 'VB16':  # MY MACHINE NAME !!!
+
+if os.uname()[1] == "VB16":  # MY MACHINE NAME !!!
     # Enlarges widgets for highly resolution screens
     scale = 2
-    os.environ['KIVY_METRICS_DENSITY'] = str(scale)
+    os.environ["KIVY_METRICS_DENSITY"] = str(scale)
     # Simulate my Xiaomi Redmi 12 screen
     from kivy.core.window import Window
     from kivy.metrics import sp
+
     Window.size = [sp(1080) / scale, sp(2400) / scale]
 
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, NumericProperty
+from kivy.properties import StringProperty
 
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.label import MDLabel
-import kivymd.uix.list as kvl
-import kivymd.uix.divider as kvdiv
-import kivymd.uix.appbar.appbar as kvap
-from kivy.uix.screenmanager import (
-    FadeTransition, SlideTransition, NoTransition
-)
+from kivy.uix.screenmanager import FadeTransition, SlideTransition, NoTransition
 from kivymd.uix.card import MDCard
 
-from cardset import CardListItem, CardsListScreen, CardScreen
+from cardset import CardsListScreen
 
 
 class BaseMDNavigationItem(MDNavigationItem):
+    """Describe widgets on navigation bar."""
+
     icon = StringProperty()
     text = StringProperty()
 
 
-# class BaseScreen(MDScreen):
-    ...
-
-
-class TopBar(kvap.MDTopAppBar):
-    """"""
-    ...
-
-
 class StudyScreen(MDScreen):
     """Main screen, that appears first."""
-    ...
 
 
 class CardsSet(MDCard):
     """One set of flashcards."""
+
     title = StringProperty()
-    ...
 
 
 class DictionaryScreen(MDScreen):
@@ -59,17 +50,17 @@ class DictionaryScreen(MDScreen):
         self.ids.container_dicts.add_widget(
             CardsSet(
                 MDLabel(
-                    text=str(len(self.ids.container_dicts.children)),
-                    halign="center"))
+                    text=str(len(self.ids.container_dicts.children)), halign="center"
+                )
+            )
         )
 
 
 def load_cards(i):
-    from kivymd.uix.card import (
-        MDCardSwipe,
-        MDCardSwipeLayerBox,
-        MDCardSwipeFrontBox)
+    """Load cards."""
+    from kivymd.uix.card import MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
     from kivymd.uix.list import OneLineListItem
+
     card_item = MDCardSwipe(
         MDCardSwipeLayerBox(),
         MDCardSwipeFrontBox(
@@ -87,6 +78,11 @@ def load_cards(i):
 
 
 class MainScreen(MDScreen):
+    """Main Screen.
+
+    I've planned that here would be something close to
+    DuoCards window with mammoth."""
+
     ...
 
 
@@ -98,6 +94,8 @@ __version__ = "2.0.0"
 
 
 class ReaBooApp(MDApp):
+    """Main application class."""
+
     def on_switch_tabs(
         self,
         bar: MDNavigationBar,
@@ -105,6 +103,7 @@ class ReaBooApp(MDApp):
         item_icon: str,
         item_text: str,
     ):
+        """Behavior for transition between screens"""
         previous = self.root.ids.screen_manager.current
         # print('prev',previous)
         # print(item_text, '\n')
@@ -128,25 +127,23 @@ class ReaBooApp(MDApp):
     def start_learning(self):
         sm = self.root.ids.screen_manager
         sm.transition = SlideTransition(direction="up")
-        sm.current = 'Flashcards'
+        sm.current = "Flashcards"
         # self.root.remove_widget(self.root.ids.navigation_bar)
 
     def build(self):
+        """Launch application, first method, that runs."""
         self.theme_cls.primary_palette = "Blue"
         pass
+
     #     return Builder.load_file(KVfile)
 
     def on_start(self):
+        """Make actions after launch, but before load up of app."""
         print(self.root.ids)
         cl: CardsListScreen = self.root.ids.screen_cardlist
         # ds: DictionaryScreen = self.root.ids.screen_dict
         for i in range(5):
-            cl.add_item(
-                i,
-                f"Word {i}",
-                f"meaning {i}",
-                '',
-                "data/icon_512.png")
+            cl.add_item(i, f"Word {i}", f"meaning {i}", "", "data/icon_512.png")
             # ds.add()
 
 

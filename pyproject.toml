@@ -13,6 +13,7 @@ dependencies = [
     "doit",
     "Sphinx",
     "setuptools",
+    "pre-commit>=3.7.1",
     # "https://github.com/kivymd/KivyMD/archive/master.zip",
 ]
 requires-python = "==3.10.*"

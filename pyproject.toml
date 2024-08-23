@@ -1,22 +1,21 @@
 [project]
 name = "ReaBoo"
-version = "1.2"
-description = "Study application"
+version = "1.2.0"
+description = "Default template for PDM package"
 readme = "README.md"
-license = {text = "MIT-0"}
+license = {text = "MIT"}
 authors = [
- {name = "Ruslan Khaydarpashich", email = "h.ruslan2000@yandex.ru"}
+    {name = "Ruslan Khaydarpashich", email = "h.ruslan2000@yandex.ru"},
+    {name = "Ruslan Khaydarpashich", email = "khayrusaf@gmail.com"},
 ]
 dependencies = [
-    "kivymd"
+    "kivymd @ https://github.com/kivymd/KivyMD/archive/master.zip",
+    "doit",
+    "Sphinx",
+    "setuptools",
+    # "https://github.com/kivymd/KivyMD/archive/master.zip",
 ]
-
-
-[build-system]
-requires = [
-    "Sphinx", "doit", "flake8", "pydocstyle", "kivy", "kivymd", "setuptools"
-]
-build-backend = "setuptools.build_meta"
+requires-python = "==3.10.*"
 
 
 [tool.setuptools.package-dir]
@@ -26,3 +25,6 @@ ReaBoo = "."
 [tool.setuptools.package-data]
 ReaBoo = ["po/*/*/*.mo", "*.kv"]
 "ReaBoo.Database" = ["schema.sql", "database.py"]
+
+[tool.pdm]
+distribution = false

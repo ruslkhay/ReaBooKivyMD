@@ -19,9 +19,7 @@ from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.label import MDLabel
 from kivy.uix.screenmanager import FadeTransition, SlideTransition, NoTransition
-from kivymd.uix.card import MDCard
 
 from cardset import CardsListScreen
 
@@ -37,23 +35,23 @@ class StudyScreen(MDScreen):
     """Main screen, that appears first."""
 
 
-class CardsSet(MDCard):
-    """One set of flashcards."""
+# class CardsSet(MDCard):
+#     """One set of flashcards."""
 
-    title = StringProperty()
+#     title = StringProperty()
 
 
-class DictionaryScreen(MDScreen):
-    """Second screen, manager of flash-cards sets."""
+# class DictionaryScreen(MDScreen):
+#     """Second screen, manager of flash-cards sets."""
 
-    def add(self):
-        self.ids.container_dicts.add_widget(
-            CardsSet(
-                MDLabel(
-                    text=str(len(self.ids.container_dicts.children)), halign="center"
-                )
-            )
-        )
+#     def add(self):
+#         self.ids.container_dicts.add_widget(
+#             CardsSet(
+#                 MDLabel(
+#                     text=str(len(self.ids.container_dicts.children)), halign="center"
+#                 )
+#             )
+#         )
 
 
 def load_cards(i):
@@ -83,11 +81,9 @@ class MainScreen(MDScreen):
     I've planned that here would be something close to
     DuoCards window with mammoth."""
 
-    ...
 
-
-Builder.load_file("screen_dict.kv")
-Builder.load_file("screen_cardset.kv")
+Builder.load_file("./screen_dict.kv")
+Builder.load_file("./screen_cardset.kv")
 
 
 __version__ = "2.0.0"
@@ -142,9 +138,10 @@ class ReaBooApp(MDApp):
         print(self.root.ids)
         cl: CardsListScreen = self.root.ids.screen_cardlist
         # ds: DictionaryScreen = self.root.ids.screen_dict
-        for i in range(5):
+        for i in range(25):
             cl.add_item(i, f"Word {i}", f"meaning {i}", "", "data/icon_512.png")
             # ds.add()
 
 
-ReaBooApp().run()
+if __name__ == "__main__":
+    ReaBooApp().run()

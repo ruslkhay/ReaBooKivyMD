@@ -73,12 +73,12 @@ MDBoxLayout:
         # DictionaryScreen:
         #     id: screen_dict
 
-        MainScreen:
-            id: screen_main
+
 
         CardsListScreen:
             id: screen_cardlist
-
+        MainScreen:
+            id: screen_main
         StudyScreen:
             id: screen_study
         
@@ -100,10 +100,10 @@ MDBoxLayout:
             icon: "school"
             # text: "Learn"
             text: screen_main.name 
-            active: True
 
         BaseMDNavigationItem:
             icon: "list-box-outline"
             text: screen_cardlist.name      # ATTENTION
+            active: True
             # text: "Cards"
             # active: True

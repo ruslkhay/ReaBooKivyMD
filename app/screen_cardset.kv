@@ -18,38 +18,38 @@
 <CardsListScreen>:
     name: "Cards"
     md_bg_color: self.theme_cls.backgroundColor
-    # SCROLLABLE LIST OF CARDS.
-    MDScrollView:
-        do_scroll_x: False
+    MDBoxLayout:
+        orientation: "vertical"
+        # SCROLLABLE LIST OF CARDS.
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                id: container 
+                orientation: "vertical"
+                # height: 100
+                adaptive_height: True
+        # LAYOUT FOR EDITIONAL "ADD" AND "SEARCH" WIDGETS
         MDBoxLayout:
-            id: container 
-            orientation: "vertical"
-            # height: 100
-            adaptive_height: True
-    # LAYOUT FOR EDITIONAL "ADD" AND "SEARCH" WIDGETS
-    MDAnchorLayout:
-        anchor_y: "bottom"
-        MDBoxLayout:
-            # md_bg_color: (0,0,0,1)
+            md_bg_color: (0,0,0,1)
             size_hint_y: 0.15
-            # "SEARCH" BUTTON
-            MDAnchorLayout:
-                anchor_x: "right"
-                # padding:20
+            orientation: "horizontal"
+            MDRelativeLayout:
+                md_bg_color: (0,1,0,1)
                 MDTextField:
+                    pos_hint: {'center_x': 0.5,'center_y': 0.5}
                     mode: "filled"
-                    pos_hint: {'center_x': 0.5,'center_y': 0.075}
-                    size_hint_x: 0.9
+                    size_hint_x: 0.85
                     MDTextFieldLeadingIcon:
                         icon: "text-search-variant"
                     MDTextFieldHintText:
-                        text: "Field with leading icon"
-            # "ADD" BUTTON
+                        text: "Search card"
             MDAnchorLayout:
-                size_hint_x: 0.2
+                size_hint_x: .5
+                anchor_x: "center"
+                # "ADD" BUTTON
                 MDIconButton:
                     style: "filled"
-                    pos_hint: {'center_x': 0.5,'center_y': 0.075}
+                    pos_hint: {'center_x': 0.5,'center_y': 0.5}
                     
                     on_release: 
                         root.open_item()

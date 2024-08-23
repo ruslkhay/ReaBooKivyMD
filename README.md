@@ -1,3 +1,35 @@
+# Connected links
+
+* Mindmap - [GitMind](https://gitmind.com/app/docs/mkgt1xiu)
+* Database design - [DrawSQL](https://drawsql.app/teams/pupsy/diagrams/reaboo)
+* Color palette - [Atmos](https://app.atmos.style/66c371d6cdbfbc09b873f826)
+* UI design - [Marvel](https://marvelapp.com/project/7011111)
+
+
+# Installation
+
+Choose folder on your computer, where you want to have this repository. 
+The use next command to clone it:
+
+```
+git clone https://github.com/ruslkhay/ReaBooKivyMD.git
+```
+
+Install PDM package manager and run:
+
+```bash
+curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+pdm install
+```
+
+In order to run formatting and linting manually use one of the following commands:
+
+```bash
+pre-commit run --files file.py
+pre-commit run --all-files
+```
+
+
 # Overview
 <!-- [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger) -->
 

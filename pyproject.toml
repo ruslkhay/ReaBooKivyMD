@@ -10,11 +10,7 @@ authors = [
 ]
 dependencies = [
     "kivymd @ https://github.com/kivymd/KivyMD/archive/master.zip",
-    "doit",
-    "Sphinx",
-    "setuptools",
-    "pre-commit>=3.7.1",
-    # "https://github.com/kivymd/KivyMD/archive/master.zip",
+    "kvhot>=2024.2.7",
 ]
 requires-python = "==3.10.*"
 
@@ -29,3 +25,20 @@ ReaBoo = ["po/*/*/*.mo", "*.kv"]
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=8.3.2",
+]
+buildozer = [
+    "Cython>=3.0.11",
+]
+doc = [
+    "Sphinx>=8.0.2",
+]
+codestyle = [
+    "pre-commit>=3.8.0",
+]
+cli = [
+    "doit>=0.36.0",
+]

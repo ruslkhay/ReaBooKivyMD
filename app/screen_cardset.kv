@@ -1,4 +1,5 @@
 <CardListItem>:
+
     # size_hint_y: .4
     height: 200
     # minimum_height:20
@@ -16,6 +17,7 @@
  
 
 <CardsListScreen>:
+
     name: "Cards"
     md_bg_color: self.theme_cls.backgroundColor
     MDBoxLayout:
@@ -50,15 +52,17 @@
                 MDIconButton:
                     style: "filled"
                     pos_hint: {'center_x': 0.5,'center_y': 0.5}
-                    
                     on_release: 
                         root.open_item()
                         # root.add_item()
                     icon: "plus"
 
+
 <TextFieldCard@MDTextField>
     
+
 <CardScreen>:
+
     name: "Card"
     AnchorLayout:
         anchor_x: "right"
@@ -159,6 +163,5 @@
                 MDButton:
                     style: "filled"
                     on_release: root.save()
-
                     MDButtonText:
                         text: "Save"

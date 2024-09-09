@@ -1,6 +1,7 @@
 from kivy.properties import StringProperty, NumericProperty
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.list import MDListItem
+from kivymd.uix.card.card import MDCard
 
 
 class CardListItem(MDListItem):
@@ -97,12 +98,18 @@ class CardScreen(MDScreen):
         self.close()
 
     def delete(self):
+        """Remove opened card from cardset content."""
         self.close()
         cl = self.parent.get_screen("Cards")
         cl.remove_item(self.card_id)
         pass
 
     def close(self):
+        """Go back from opened card to cardset screen."""
         sm = self.parent
         sm.current = "Cards"
         # print(sm.screens)
+
+
+class FlashCard(MDCard):
+    """Card, that is used in study screen."""

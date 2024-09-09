@@ -21,7 +21,7 @@ from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
 from kivymd.uix.screen import MDScreen
 from kivy.uix.screenmanager import FadeTransition, SlideTransition, NoTransition
 
-from cardset import CardsListScreen
+from cardset import CardsListScreen, FlashCard
 
 
 class BaseMDNavigationItem(MDNavigationItem):
@@ -137,7 +137,9 @@ class ReaBooApp(MDApp):
         """Make actions after launch, but before load up of app."""
         print(self.root.ids)
         cl: CardsListScreen = self.root.ids.screen_cardlist
+        s: StudyScreen = self.root.ids.screen_study
         # ds: DictionaryScreen = self.root.ids.screen_dict
+        s.add_widget(FlashCard())
         for i in range(25):
             cl.add_item(i, f"Word {i}", f"meaning {i}", "", "data/icon_512.png")
             # ds.add()

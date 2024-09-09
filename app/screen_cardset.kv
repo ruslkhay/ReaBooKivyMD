@@ -36,7 +36,7 @@
             size_hint_y: 0.15
             orientation: "horizontal"
             MDRelativeLayout:
-                md_bg_color: (0,1,0,1)
+                md_bg_color: (0,1,0,.3)
                 MDTextField:
                     pos_hint: {'center_x': 0.5,'center_y': 0.5}
                     mode: "filled"
@@ -64,36 +64,31 @@
     
 
 <CardScreen>:
-
     name: "Card"
-    AnchorLayout:
-        anchor_x: "right"
-        anchor_y: "top"
-        padding:10
-        MDIconButton:
-            icon: 'close-thick'
-            on_release: root.close()
     BoxLayout:
         orientation: "vertical"
         # Placeholder for image
-        MDAnchorLayout: 
-            # md_bg_color: (0.5,0,0,0.5)
+        padding: "16dp" 
+        MDRelativeLayout: 
+            md_bg_color: (0.5,0,0,0.5)
             size_hint_y: 0.25
-            anchor_x: "center"
-            anchor_y: "center"
-            padding: 20
+
             MDCard:
-                # background:"data/fill_image_placeholder.png" 
+                pos_hint: {'center_x': 0.5,'center_y': 0.5}
                 background: root.image
-                size_hint_x: None 
+                size_hint: .8, .8
                 width: self.height
                 on_release: print(root.image)
-                # size: "200dp", "200dp"
+            MDIconButton:
+                pos_hint: {'right': 1,'top': 1}
+                icon: 'close-thick'
+                on_release: root.close()
+
         # Placeholder for textfields
         MDBoxLayout:
             size_hint_y: 0.6
             orientation: "vertical"
-            # md_bg_color: (0,0.5,0,.5)
+            md_bg_color: (0,0.5,0,.5)
             MDBoxLayout:
                 orientation: "vertical"
                 AnchorLayout:
@@ -148,7 +143,7 @@
         MDBoxLayout:
             # id: buttons
             size_hint_y: 0.15
-            # md_bg_color: (0,0,0.5,1)
+            md_bg_color: (0,0,0.5,0.5)
             MDAnchorLayout:
                 anchor_x: "center"
                 anchor_y: "center"
@@ -167,3 +162,40 @@
                     on_release: root.save()
                     MDButtonText:
                         text: "Save"
+
+
+<FlashCard>:
+    size_hint:  0.8, 0.8
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    orientation: "vertical"
+    style: "elevated"
+    padding: "20dp"
+
+    MDAnchorLayout:
+        # md_bg_color: (0.5,0,0,0.5)
+        anchor_x: "center"
+        anchor_y: "center"
+        Image:
+            source: "data/fill_image_placeholder.png"
+            fit_mode: "fill"
+            size_hint: .8, .8
+
+            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    MDRelativeLayout:
+        # md_bg_color: (0.5,0,0,0.5)
+        MDLabel:
+            pos_hint: {'center_x': 0.5,'center_y': 0.7}
+            text: "Word"
+            halign: "center"
+            font_style: "Headline"
+            role: "small"
+        MDLabel:
+            pos_hint: {'center_x': 0.5,'center_y': 0.4}
+            text: "Meaning"
+            halign: "center"
+            font_style: "Title"
+            role: "small"
+        # MDIconButton:
+        #     pos_hint: {'center_x': 0.5,'center_y': 0.1}
+        #     md_bg_color: (0,0,0,1)
+        #     icon: 'eye'

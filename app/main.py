@@ -19,7 +19,7 @@ from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
 from kivymd.uix.screen import MDScreen
-from kivy.uix.screenmanager import FadeTransition, SlideTransition, NoTransition
+from kivy.uix.screenmanager import NoTransition
 
 from cardset import CardsListScreen, FlashCard
 
@@ -33,6 +33,17 @@ class BaseMDNavigationItem(MDNavigationItem):
 
 class StudyScreen(MDScreen):
     """Main screen, that appears first."""
+
+    def remove_top_widget(self):
+        card_stack = [child for child in self.children if isinstance(child, FlashCard)]
+        self.remove_widget(card_stack[0])
+
+    def loop_through(self):
+        card_stack = [child for child in self.children if isinstance(child, FlashCard)]
+        top_card = card_stack[0]
+        height = len(card_stack) - 1  # widget_stack_height
+        self.remove_widget(top_card)
+        self.add_widget(top_card, height)
 
 
 # class CardsSet(MDCard):
@@ -100,29 +111,29 @@ class ReaBooApp(MDApp):
         item_text: str,
     ):
         """Behavior for transition between screens"""
-        previous = self.root.ids.screen_manager.current
+        # previous = self.root.ids.screen_manager.current
         # print('prev',previous)
         # print(item_text, '\n')
         sm = self.root.ids.screen_manager
         sm.transition = NoTransition()
 
-        match previous:
-            case "Flashcards":
-                match item_text:
-                    case "Study":
-                        sm.transition = SlideTransition(direction="down")
-                    case "Cards":
-                        sm.transition = FadeTransition()
-            # case "Study":
-            #     sm.transition = SlideTransition(direction="right")
-            # case "Cards":
-            #     sm.transition = SlideTransition(direction="left")
+        # match previous:
+        #     case "Flashcards":
+        #         match item_text:
+        #             case "Study":
+        #                 sm.transition = SlideTransition(direction="down")
+        #             case "Cards":
+        #                 sm.transition = FadeTransition()
+        # case "Study":
+        #     sm.transition = SlideTransition(direction="right")
+        # case "Cards":
+        #     sm.transition = SlideTransition(direction="left")
         sm.current = item_text
         sm.transition = NoTransition()
 
     def start_learning(self):
         sm = self.root.ids.screen_manager
-        sm.transition = SlideTransition(direction="up")
+        # sm.transition = SlideTransition(direction="up")
         sm.current = "Flashcards"
         # self.root.remove_widget(self.root.ids.navigation_bar)
 
@@ -139,9 +150,11 @@ class ReaBooApp(MDApp):
         cl: CardsListScreen = self.root.ids.screen_cardlist
         s: StudyScreen = self.root.ids.screen_study
         # ds: DictionaryScreen = self.root.ids.screen_dict
-        s.add_widget(FlashCard())
-        for i in range(25):
-            cl.add_item(i, f"Word {i}", f"meaning {i}", "", "data/icon_512.png")
+        for i in range(18):
+            word = f"Word {i}"
+            meaning = f"meaning {i}"
+            cl.add_item(i, word, meaning, "", "data/icon_512.png")
+            s.add_widget(FlashCard(word=word, meaning2=meaning))
             # ds.add()
 
 

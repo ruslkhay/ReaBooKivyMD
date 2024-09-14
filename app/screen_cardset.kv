@@ -170,6 +170,9 @@
     orientation: "vertical"
     style: "elevated"
     padding: "20dp"
+    word: ""
+    meaning: ""
+    on_release: self.open_meaning()
 
     MDAnchorLayout:
         # md_bg_color: (0.5,0,0,0.5)
@@ -185,15 +188,16 @@
         # md_bg_color: (0.5,0,0,0.5)
         MDLabel:
             pos_hint: {'center_x': 0.5,'center_y': 0.7}
-            text: "Word"
+            text: root.word
             halign: "center"
             font_style: "Headline"
             role: "small"
         MDLabel:
             pos_hint: {'center_x': 0.5,'center_y': 0.4}
-            text: "Meaning"
+            text: root.meaning
             halign: "center"
             font_style: "Title"
+            # text_color: root.md_bg_color
             role: "small"
         # MDIconButton:
         #     pos_hint: {'center_x': 0.5,'center_y': 0.1}

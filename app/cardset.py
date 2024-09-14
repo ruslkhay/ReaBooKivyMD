@@ -1,4 +1,4 @@
-from kivy.properties import StringProperty, NumericProperty
+from kivy.properties import StringProperty, NumericProperty, BooleanProperty
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.list import MDListItem
 from kivymd.uix.card.card import MDCard
@@ -102,7 +102,6 @@ class CardScreen(MDScreen):
         self.close()
         cl = self.parent.get_screen("Cards")
         cl.remove_item(self.card_id)
-        pass
 
     def close(self):
         """Go back from opened card to cardset screen."""
@@ -113,3 +112,32 @@ class CardScreen(MDScreen):
 
 class FlashCard(MDCard):
     """Card, that is used in study screen."""
+
+    word = StringProperty("")
+    meaning = StringProperty("")
+    meaning2 = StringProperty("")
+    show_meaning = BooleanProperty(False)
+
+    def open_meaning(self):
+        """Change meaning on None or original one."""
+        if self.show_meaning:
+            self.meaning2 = self.meaning
+            self.meaning = ""
+        else:
+            self.meaning = self.meaning2
+        self.show_meaning = not self.show_meaning
+
+    # def show_meaning(self):
+    #     """Show meaning of the word."""
+    #     self.children[0].children[1].text_color = (0, 0, 0, 1)
+
+    def right_guess(self):
+        """Mark card as learned."""
+        self.parent.remove(self)
+
+    def wrong_guess(self):
+        """Mark card as needed to be repeated."""
+        self.parent.walk(loopback=True)
+        # self.parent.clear_widgets()
+
+        self.parent.remove_widget(self.parent.children[0])

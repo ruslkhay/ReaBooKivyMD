@@ -14,7 +14,7 @@ if os.uname()[1] == "VB16":  # MY MACHINE NAME !!!
 
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, DictProperty
 
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
@@ -33,6 +33,8 @@ class BaseMDNavigationItem(MDNavigationItem):
 
 class StudyScreen(MDScreen):
     """Main screen, that appears first."""
+
+    content = DictProperty()
 
     def remove_top_widget(self):
         card_stack = [child for child in self.children if isinstance(child, FlashCard)]
@@ -94,7 +96,7 @@ class MainScreen(MDScreen):
 
 
 Builder.load_file("./screen_dict.kv")
-Builder.load_file("./screen_cardset.kv")
+Builder.load_file("./cardset.kv")
 
 
 __version__ = "2.0.0"

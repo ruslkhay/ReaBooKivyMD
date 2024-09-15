@@ -1,0 +1,180 @@
+<CardListItem>:
+
+    # size_hint_y: .4
+    height: 200
+    # minimum_height:20
+    id: root.card_id
+    # divider: True
+    # divider_color: "red"
+
+    MDListItemLeadingAvatar:
+        source: root.image
+        # on_release: print(root.image)
+    MDListItemHeadlineText:
+        text: root.word
+    MDListItemSupportingText:
+        text: root.meaning
+ 
+
+<CardsListScreen>:
+
+    name: "Cards"
+    md_bg_color: self.theme_cls.backgroundColor
+    MDBoxLayout:
+        orientation: "vertical"
+        # SCROLLABLE LIST OF CARDS.
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                id: container 
+                orientation: "vertical"
+                # height: 100
+                adaptive_height: True
+        # LAYOUT FOR EDITIONAL "ADD" AND "SEARCH" WIDGETS
+        MDBoxLayout:
+            md_bg_color: (0,0,0,1)
+            size_hint_y: 0.15
+            orientation: "horizontal"
+            MDRelativeLayout:
+                md_bg_color: (0,1,0,.3)
+                MDTextField:
+                    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                    mode: "filled"
+                    size_hint_x: 0.85
+                    input_type: "text"
+                    keyboard_suggestions: True
+                    MDTextFieldLeadingIcon:
+                        icon: "text-search-variant"
+                    MDTextFieldHintText:
+                        text: "Search card"
+            MDAnchorLayout:
+                size_hint_x: .5
+                anchor_x: "center"
+                # "ADD" BUTTON
+                MDIconButton:
+                    style: "filled"
+                    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                    on_release: 
+                        root.open_item()
+                        # root.add_item()
+                    icon: "plus"
+
+
+<TextFieldCard@MDTextField>
+    
+
+<CardScreen>:
+    name: "Card"
+    padding: "16dp" 
+
+    MDCard:
+        pos_hint: {'center_x': 0.5,'center_y': 0.85}
+        size_hint: None, .2  # Height is 20% of the layout
+        size: self.height, self.height  # Make it square
+        background: root.image
+        on_release: print(root.image)
+
+    MDIconButton:
+        pos_hint: {'right': 1,'top': 1}
+        icon: 'close-thick'
+        on_release: root.close()
+
+    # Placeholder for textfields
+    MDTextField:
+        id: word
+        pos_hint: {'center_x': 0.5,'center_y': 0.6}
+        size_hint_x: 0.7
+        mode: "filled"
+        text: root.word
+        on_text: root.word = self.text
+        required: True
+        MDTextFieldHelperText:
+            text: "Word"  
+            mode: "on_focus"
+
+    MDTextField:
+        id: transition 
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        size_hint_x: 0.7
+        mode: "filled"
+        required: True
+        text: root.meaning
+        on_text: root.meaning = self.text
+        MDTextFieldHelperText:
+            text: "Meaning"  
+            mode: "on_focus"
+
+    MDTextField:
+        id: example 
+        pos_hint: {'center_x': 0.5,'center_y': 0.3}
+        size_hint_x: 0.7
+        write_tab: False
+        mode: "filled"
+        text: root.example
+        on_text: root.example = self.text
+        max_height: "180dp"
+        multiline: True
+        on_error: self.text = self.text[:128] 
+        MDTextFieldMaxLengthText:
+            max_text_length: 128 
+        MDTextFieldHelperText:
+            text: "Example"
+
+    # Placeholder for controll buttons
+    MDButton:
+        id: button_delete
+        pos_hint: {'center_x': 0.25,'top': 0.1}
+        style: "filled"
+        on_release: root.delete()
+        MDButtonText:
+            text: "Delete"
+
+    MDButton:
+        pos_hint: {'center_x': 0.75,'top': 0.1}
+        size: button_delete.width, button_delete.height
+        style: "filled"
+        on_release: root.save()
+        MDButtonText:
+            text: "Save"
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+
+<FlashCard>:
+    size_hint:  0.8, 0.8
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    orientation: "vertical"
+    style: "elevated"
+    padding: "20dp"
+    word: ""
+    meaning: ""
+    on_release: self.open_meaning()
+
+    MDAnchorLayout:
+        # md_bg_color: (0.5,0,0,0.5)
+        anchor_x: "center"
+        anchor_y: "center"
+        Image:
+            source: "data/fill_image_placeholder.png"
+            fit_mode: "fill"
+            size_hint: .8, .8
+
+            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    MDRelativeLayout:
+        # md_bg_color: (0.5,0,0,0.5)
+        MDLabel:
+            pos_hint: {'center_x': 0.5,'center_y': 0.7}
+            text: root.word
+            halign: "center"
+            font_style: "Headline"
+            role: "small"
+        MDLabel:
+            pos_hint: {'center_x': 0.5,'center_y': 0.4}
+            text: root.meaning
+            halign: "center"
+            font_style: "Title"
+            # text_color: root.md_bg_color
+            role: "small"
+        # MDIconButton:
+        #     pos_hint: {'center_x': 0.5,'center_y': 0.1}
+        #     md_bg_color: (0,0,0,1)
+        #     icon: 'eye'

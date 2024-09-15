@@ -15,13 +15,19 @@ if os.uname()[1] == "VB16":  # MY MACHINE NAME !!!
 
 from kivy.lang import Builder
 from kivy.properties import StringProperty, DictProperty
-
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
 from kivymd.uix.screen import MDScreen
 from kivy.uix.screenmanager import NoTransition
 
 from cardset import CardsListScreen, FlashCard
+
+
+Builder.load_file("./screen_dict.kv")
+Builder.load_file("./cardset.kv")
+
+
+__version__ = "2.0.0"
 
 
 class BaseMDNavigationItem(MDNavigationItem):
@@ -93,13 +99,6 @@ class MainScreen(MDScreen):
 
     I've planned that here would be something close to
     DuoCards window with mammoth."""
-
-
-Builder.load_file("./screen_dict.kv")
-Builder.load_file("./cardset.kv")
-
-
-__version__ = "2.0.0"
 
 
 class ReaBooApp(MDApp):

@@ -5,12 +5,12 @@ from typing import List, Tuple, Any
 class DataBase:
     """Class for handling flash-cards storage."""
 
-    def __init__(self, name='content', path='', schema=None) -> None:
+    def __init__(self, name="content", path="", schema=None) -> None:
         """Create connection to database and use given schema id given."""
         from sqlite3 import connect
         from os.path import join
 
-        self.connect = connect(join(path, name) + '.db')
+        self.connect = connect(join(path, name) + ".db")
         self.cursor = self.connect.cursor()
 
         # Make necessary tables for database.
@@ -22,12 +22,11 @@ class DataBase:
         """Close connection to database."""
         self.connect.close()
 
-    def select_from(self, table: str, cols: str = '*',
-                    cond: str = '') -> List[Tuple[Any]]:
+    def select_from(
+        self, table: str, cols: str = "*", cond: str = ""
+    ) -> List[Tuple[Any]]:
         """Query analog of 'SELECT cols FROM table;'."""
-        table_content = self.cursor.execute(
-            f""" SELECT {cols} FROM {table} {cond}"""
-        )
+        table_content = self.cursor.execute(f""" SELECT {cols} FROM {table} {cond}""")
         return table_content.fetchall()
 
     def insert(self, table: str, values: dict) -> None:
@@ -40,7 +39,7 @@ class DataBase:
         self.cursor.execute(query)
         self.connect.commit()  # saving database manipulations above
 
-    def search(self, pattern: str = '') -> Tuple[int]:
+    def search(self, pattern: str = "") -> Tuple[int]:
         """Search flashcard matching pattern.
 
         Check pattern for flashcard's word and meaning simultaneously.
@@ -71,8 +70,8 @@ class DataBase:
 
     def update(self, card_id: int, values: dict) -> None:
         """Update values of specific flashcard."""
-        vals = list(map(lambda x: f"\"{x[0]}\" = \"{x[1]}\"", values.items()))
-        vals = ', '.join(vals)
+        vals = list(map(lambda x: f'"{x[0]}" = "{x[1]}"', values.items()))
+        vals = ", ".join(vals)
         print((vals))
         query = f"""
             UPDATE content
@@ -84,8 +83,7 @@ class DataBase:
 
 
 if __name__ == "__main__":
-    db = DataBase(name="new_content", path="Database",
-                  schema="Database/new_schema.sql")
+    db = DataBase(name="new_content", path="Database", schema="Database/new_schema.sql")
     # db.insert("content", {"id_dict": 0, "word": "hello", "meaning": "привет"})
     # db.insert("content", {"id_dict": 0, "word": "world", "meaning": "мир"})
     # db.insert("content", {"id_dict": 0, "word": "I", "meaning": "я"})
@@ -97,9 +95,13 @@ if __name__ == "__main__":
     print(db.search())
     print(db.search(pattern="и"))
     print(db.search(pattern="a"))
-    db.update(card_id=3, values={
-        "example": "I wrote few examples for future generation",
-        "meaning": "Я"})
+    db.update(
+        card_id=3,
+        values={
+            "example": "I wrote few examples for future generation",
+            "meaning": "Я",
+        },
+    )
 
     # db.hard_delete(card_id=1)
     print(db.select_from(table="content"))

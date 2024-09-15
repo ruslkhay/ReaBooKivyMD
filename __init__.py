@@ -7,6 +7,6 @@ chdir(split(__file__)[0])
 
 
 if __name__ == "ReaBoo":
-    from .main import ReabooApp
+    from .app.main import ReaBooApp
 
-    ReabooApp().run()
+    ReaBooApp().run()

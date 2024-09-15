@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 -- table represented specific card set
 CREATE TABLE IF NOT EXISTS "dictionary"(
     "id" INTEGER PRIMARY KEY,
@@ -27,6 +29,6 @@ CREATE TABLE IF NOT EXISTS "statistics"(
     "date_added" TEXT DEFAULT CURRENT_TIMESTAMP,
     "right_guesses" INTEGER DEFAULT 0,
     "wrong_guesses" INTEGER DEFAULT 0,
-    FOREIGN KEY("id") REFERENCES "content"("id")
+    FOREIGN KEY("card_id") REFERENCES "content"("card_id")
     ON DELETE CASCADE
 );

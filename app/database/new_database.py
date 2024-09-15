@@ -1,5 +1,6 @@
 """Module for handling flash-cards storage."""
 from typing import List, Tuple, Any
+from sqlite3 import connect, IntegrityError
 
 
 class DataBase:
@@ -7,9 +8,9 @@ class DataBase:
 
     def __init__(self, name="content", path="", schema=None) -> None:
         """Create connection to database and use given schema id given."""
-        from sqlite3 import connect
         from os.path import join
 
+        self.name = name
         self.connect = connect(join(path, name) + ".db")
         self.cursor = self.connect.cursor()
 
@@ -21,6 +22,13 @@ class DataBase:
     def close(self) -> None:
         """Close connection to database."""
         self.connect.close()
+
+    def delete_all(self) -> None:
+        """Delete all from database.
+
+        `dictionary` table is a parent for all others, so we can clear only it."""
+        self.cursor.execute("""DELETE FROM dictionary;""")
+        self.connect.commit()
 
     def select_from(
         self, table: str, cols: str = "*", cond: str = ""
@@ -36,8 +44,22 @@ class DataBase:
         query = f"""
             INSERT INTO {table}({cols})
             VALUES ({vals});"""
-        self.cursor.execute(query)
-        self.connect.commit()  # saving database manipulations above
+        try:
+            self.cursor.execute(query)
+            self.connect.commit()  # saving database manipulations above
+        except IntegrityError as err:
+            message: str = err.args[0]
+            match message.rsplit(" ")[0]:
+                case "UNIQUE":
+                    raise ValueError(
+                        f'{err.args[0]}\nValues {values} are already in "{table}"'
+                    )
+                case "FOREIGN":
+                    raise ValueError(
+                        f"{err.args[0]}\nThere is no {values} in parent table {table}"
+                    )
+                case _:
+                    print(err.args)
 
     def search(self, pattern: str = "") -> Tuple[int]:
         """Search flashcard matching pattern.
@@ -56,14 +78,20 @@ class DataBase:
 
         return tuple(map(lambda x: x[0], self.cursor.fetchall()))
 
-    def hard_delete(self, card_id: int) -> None:
-        """Clear remove of flashcard from database.
+    def hard_delete(self, table: str, id: int) -> None:
+        """Hard remove from database table.
 
         Data can't be restored.
         """
+        match table:
+            case "content":
+                id_name = "card_id"
+            case "dictionary":
+                id_name = "id"
+
         query = f"""
-        DELETE FROM content
-        WHERE card_id = {card_id};
+        DELETE FROM {table}
+        WHERE {id_name} = {id};
         """
         self.cursor.execute(query)
         self.connect.commit()
@@ -80,28 +108,3 @@ class DataBase:
         """
         self.cursor.execute(query)
         self.connect.commit()
-
-
-if __name__ == "__main__":
-    db = DataBase(name="new_content", path="Database", schema="Database/new_schema.sql")
-    # db.insert("content", {"id_dict": 0, "word": "hello", "meaning": "привет"})
-    # db.insert("content", {"id_dict": 0, "word": "world", "meaning": "мир"})
-    # db.insert("content", {"id_dict": 0, "word": "I", "meaning": "я"})
-    # db.insert("content", {"id_dict": 0, "word": "am", "meaning": ""})
-    # db.insert("content", {"id_dict": 0, "word": "in", "meaning": "в"})
-    # db.insert("content", {"id_dict": 0, "word": "airport", "meaning": "аэропорт"})
-    print(db.select_from(table="content"))
-    print(db.search(pattern="h"))
-    print(db.search())
-    print(db.search(pattern="и"))
-    print(db.search(pattern="a"))
-    db.update(
-        card_id=3,
-        values={
-            "example": "I wrote few examples for future generation",
-            "meaning": "Я",
-        },
-    )
-
-    # db.hard_delete(card_id=1)
-    print(db.select_from(table="content"))

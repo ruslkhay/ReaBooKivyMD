@@ -88,9 +88,8 @@
         text: root.word
         on_text: root.word = self.text
         required: True
-        MDTextFieldHelperText:
+        MDTextFieldHintText:
             text: "Word"  
-            mode: "on_focus"
 
     MDTextField:
         id: transition 
@@ -100,9 +99,8 @@
         required: True
         text: root.meaning
         on_text: root.meaning = self.text
-        MDTextFieldHelperText:
+        MDTextFieldHintText:
             text: "Meaning"  
-            mode: "on_focus"
 
     MDTextField:
         id: example 
@@ -133,6 +131,7 @@
         pos_hint: {'center_x': 0.75,'top': 0.1}
         size: button_delete.width, button_delete.height
         style: "filled"
+
         on_release: root.save()
         MDButtonText:
             text: "Save"

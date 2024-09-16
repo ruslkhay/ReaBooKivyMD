@@ -1,5 +1,4 @@
 <CardListItem>:
-
     # size_hint_y: .4
     height: 200
     # minimum_height:20
@@ -10,8 +9,10 @@
     MDListItemLeadingAvatar:
         source: root.image
         # on_release: print(root.image)
+
     MDListItemHeadlineText:
         text: root.word
+
     MDListItemSupportingText:
         text: root.meaning
  
@@ -22,35 +23,44 @@
     md_bg_color: self.theme_cls.backgroundColor
     MDBoxLayout:
         orientation: "vertical"
+
         # SCROLLABLE LIST OF CARDS.
-        MDScrollView:
+        MDRecycleView:
             do_scroll_x: False
+
             MDBoxLayout:
                 id: container 
                 orientation: "vertical"
                 # height: 100
                 adaptive_height: True
+
         # LAYOUT FOR EDITIONAL "ADD" AND "SEARCH" WIDGETS
         MDBoxLayout:
             md_bg_color: (0,0,0,1)
             size_hint_y: 0.15
             orientation: "horizontal"
+            
             MDRelativeLayout:
                 md_bg_color: (0,1,0,.3)
+
                 MDTextField:
                     pos_hint: {'center_x': 0.5,'center_y': 0.5}
                     mode: "filled"
                     size_hint_x: 0.85
                     input_type: "text"
                     keyboard_suggestions: True
+
                     MDTextFieldLeadingIcon:
                         icon: "text-search-variant"
+
                     MDTextFieldHintText:
                         text: "Search card"
+
             MDAnchorLayout:
                 size_hint_x: .5
                 anchor_x: "center"
                 # "ADD" BUTTON
+
                 MDIconButton:
                     style: "filled"
                     pos_hint: {'center_x': 0.5,'center_y': 0.5}

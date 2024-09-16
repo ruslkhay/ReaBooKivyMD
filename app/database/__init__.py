@@ -1,10 +1,14 @@
-from new_database import DataBase
+from database import DataBase
 
 
 if __name__ == "__main__":
-    db = DataBase(path="app", schema="app/database/new_schema.sql")
+    db = DataBase(path="app", schema="app/database/schema.sql")
+    db.delete_all()
+
     db.insert("dictionary", {"title": "serbian", "background_image": ""})
-    db.insert("content", {"id_dict": 1, "word": "hello", "meaning": "привет"})
+    db.insert("content", {"id_dict": 1, "word": "zdravo", "meaning": "привет"})
+    db.insert("content", {"id_dict": 1, "word": "druze", "meaning": "дружище"})
+    # db.insert("content", {"id_dict": 0, "word": "hello", "meaning": "привет"})
     # db.insert("content", {"id_dict": 0, "word": "world", "meaning": "мир"})
     # db.insert("content", {"id_dict": 0, "word": "I", "meaning": "я"})
     # db.insert("content", {"id_dict": 0, "word": "am", "meaning": ""})
@@ -15,7 +19,7 @@ if __name__ == "__main__":
     print(db.select_from(table="dictionary"))
     # print(db.search(pattern="h"))
     # print(db.search())
-    # print(db.search(pattern="и"))
+    print(db.search(pattern="и"))
     # print(db.search(pattern="a"))
     # db.update(
     #     card_id=3,
@@ -28,4 +32,3 @@ if __name__ == "__main__":
     #     print(db.select_from(table="content"))
 
     # db.hard_delete("dictionary", 1)
-    db.delete_all()

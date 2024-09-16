@@ -2,20 +2,23 @@
 
     MDNavigationItemIcon:
         icon: root.icon
+
     MDNavigationItemLabel:
         text: root.text
 
 
 <TopBar>:
-
     type: "small"
     md_bg_color: self.theme_cls.backgroundColor
+
     MDTopAppBarLeadingButtonContainer:
         MDActionTopAppBarButton:
             icon: "menu"
+
     MDTopAppBarTitle:
         text: "AppBar Center-aligned"
         pos_hint: {"center_x": .5}
+
     MDTopAppBarTrailingButtonContainer:
         MDActionTopAppBarButton:
             icon: "account-circle-outline"
@@ -35,20 +38,18 @@
         on_release: root.remove_top_widget() 
 
 
-
 <MainScreen>:
-
     name: "Study"
+
     MDBoxLayout:
         orientation: 'vertical'
+
         MDRelativeLayout:  # Top screen part
             size_hint_y: 0.25
-            # MDLabel:
-            #     text: "Space for showing statistics"
-            #     halign: "center"
+
         MDRelativeLayout:  # Middle screen part
             size_hint_y: 0.8
-            # md_bg_color: (0.5,0.5,0.5,1)
+
         MDRelativeLayout:  # Botton screen part
             size_hint_y: 0.15
             MDButton:
@@ -60,7 +61,6 @@
 
 
 MDBoxLayout:
-
     orientation: "vertical"
     md_bg_color: self.theme_cls.backgroundColor
 
@@ -73,8 +73,10 @@ MDBoxLayout:
         #     id: screen_cardlist
         StudyScreen:
             id: screen_study
+
         CardsListScreen:
             id: screen_cardlist
+
         MainScreen:
             id: screen_main
         CardScreen:
@@ -88,14 +90,12 @@ MDBoxLayout:
         #     # text: "Dict"
         #     text: screen_dict.name 
         #     active: True
+
         BaseMDNavigationItem:
             icon: "school"
-            # text: "Learn"
             text: screen_main.name 
 
         BaseMDNavigationItem:
             icon: "list-box-outline"
             text: screen_cardlist.name      # ATTENTION
             active: True
-            # text: "Cards"
-            # active: True

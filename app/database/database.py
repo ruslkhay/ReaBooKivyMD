@@ -1,5 +1,6 @@
 """Module for handling flash-cards storage."""
 from typing import List, Tuple, Any
+from sqlite3 import connect, IntegrityError
 
 
 class DataBase:
@@ -7,9 +8,9 @@ class DataBase:
 
     def __init__(self, name="content", path="", schema=None) -> None:
         """Create connection to database and use given schema id given."""
-        from sqlite3 import connect
         from os.path import join
 
+        self.name = name
         self.connect = connect(join(path, name) + ".db")
         self.cursor = self.connect.cursor()
 
@@ -22,46 +23,12 @@ class DataBase:
         """Close connection to database."""
         self.connect.close()
 
-    def oto_insert(
-        self,
-        word: str = None,
-        translation: str = None,
-        example: str = None,
-        image: str = None,
-    ) -> None:
-        """One-to-one insert, used only for non-repeated input."""
-        query = """
-            INSERT INTO "dictionary"("word", "meaning", "example", "image")
-            VALUES (?, ?, ?, ?);
-            """
-        self.cursor.execute(query, [word, translation, example, image])
-        self.connect.commit()  # saving database manipulations above
+    def delete_all(self) -> None:
+        """Delete all from database.
 
-    def delete_word(self, word: str = None, translation: str = None) -> None:
-        """Hide word out of a database. Mark it as deleted."""
-        query = """
-            DELETE FROM "dictionary"
-            WHERE "word" = ? AND "meaning" = ?;
-            """
-        self.cursor.execute(query, [word, translation])
-        self.connect.commit()  # saving database manipulations above
-
-    def update_word(
-        self,
-        card_id: int,
-        word: str,
-        translation: str,
-        example: str | None,
-        image: str | None,
-    ) -> None:
-        """Update content in tables."""
-        query = """
-            UPDATE "dictionary"
-            SET "id" = ?, "word" = ?, "meaning" = ?, "example" = ?, "image" = ?
-            """
-        print()
-        self.cursor.execute(query, [card_id, word, translation, example, image])
-        self.connect.commit()  # saving database manipulations above
+        `dictionary` table is a parent for all others, so we can clear only it."""
+        self.cursor.execute("""DELETE FROM dictionary;""")
+        self.connect.commit()
 
     def select_from(
         self, table: str, cols: str = "*", cond: str = ""
@@ -69,3 +36,75 @@ class DataBase:
         """Query analog of 'SELECT cols FROM table;'."""
         table_content = self.cursor.execute(f""" SELECT {cols} FROM {table} {cond}""")
         return table_content.fetchall()
+
+    def insert(self, table: str, values: dict) -> None:
+        """Insert values into given table of database."""
+        cols = str(list(values.keys()))[1:-1]
+        vals = str(list(values.values()))[1:-1]
+        query = f"""
+            INSERT INTO {table}({cols})
+            VALUES ({vals});"""
+        try:
+            self.cursor.execute(query)
+            self.connect.commit()  # saving database manipulations above
+        except IntegrityError as err:
+            message: str = err.args[0]
+            match message.rsplit(" ")[0]:
+                case "UNIQUE":
+                    raise ValueError(
+                        f'{err.args[0]}\nValues {values} are already in "{table}"'
+                    )
+                case "FOREIGN":
+                    raise ValueError(
+                        f"{err.args[0]}\nThere is no {values} in parent table {table}"
+                    )
+                case _:
+                    print(err.args)
+
+    def search(self, pattern: str = "") -> Tuple[int]:
+        """Search flashcard matching pattern.
+
+        Check pattern for flashcard's word and meaning simultaneously.
+        If for one of this fields is matching then corresponding card id is
+        returned.
+        """
+        pat = "'%{}%'".format(pattern)
+        query = f"""
+            SELECT "card_id"
+            FROM "content"
+            WHERE "word" LIKE {pat} or "meaning" LIKE {pat};
+            """
+        self.cursor.execute(query)
+
+        return tuple(map(lambda x: x[0], self.cursor.fetchall()))
+
+    def hard_delete(self, table: str, id: int) -> None:
+        """Hard remove from database table.
+
+        Data can't be restored.
+        """
+        match table:
+            case "content":
+                id_name = "card_id"
+            case "dictionary":
+                id_name = "id"
+
+        query = f"""
+        DELETE FROM {table}
+        WHERE {id_name} = {id};
+        """
+        self.cursor.execute(query)
+        self.connect.commit()
+
+    def update(self, card_id: int, values: dict) -> None:
+        """Update values of specific flashcard."""
+        vals = list(map(lambda x: f'"{x[0]}" = "{x[1]}"', values.items()))
+        vals = ", ".join(vals)
+        print((vals))
+        query = f"""
+            UPDATE content
+            SET {vals}
+            WHERE card_id = {card_id};
+        """
+        self.cursor.execute(query)
+        self.connect.commit()

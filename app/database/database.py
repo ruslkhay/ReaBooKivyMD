@@ -1,6 +1,6 @@
 """Module for handling flash-cards storage."""
 from typing import List, Tuple, Any
-from sqlite3 import connect, IntegrityError
+from sqlite3 import connect, IntegrityError, Row
 
 
 class DataBase:
@@ -36,6 +36,17 @@ class DataBase:
         """Query analog of 'SELECT cols FROM table;'."""
         table_content = self.cursor.execute(f""" SELECT {cols} FROM {table} {cond}""")
         return table_content.fetchall()
+
+    def select_to_dicts(self, select_query):
+        """Returns data from an SQL query as a list of dicts."""
+        try:
+            self.connect.row_factory = Row
+            things = self.connect.execute(select_query).fetchall()
+            unpacked = [{k: item[k] for k in item.keys()} for item in things]
+            return unpacked
+        except Exception as e:
+            print(f"Failed to execute. Query: {select_query}\n with error:\n{e}")
+            return []
 
     def insert(self, table: str, values: dict) -> None:
         """Insert values into given table of database."""

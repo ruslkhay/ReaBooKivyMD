@@ -1,8 +1,10 @@
 """Contain key class of application."""
 
-import os
-from pathlib import Path
+__version__ = "0.1.0"
 
+import os
+
+#  Scaling application for 4k monitor
 if os.uname()[1] == "VB16":  # MY MACHINE NAME !!!
     # Enlarges widgets for highly resolution screens
     scale = 2
@@ -15,22 +17,22 @@ if os.uname()[1] == "VB16":  # MY MACHINE NAME !!!
 
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, DictProperty
+from kivy.properties import StringProperty
 from kivy.uix.screenmanager import NoTransition
 
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.card import MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
 
 from cardset import CardsListScreen, FlashCard
+from study import StudyScreen
 from database.database import DataBase
+
+from pathlib import Path
 
 Builder.load_file("./screen_dict.kv")
 Builder.load_file("./cardset.kv")
-
-
-__version__ = "0.1.0"
+Builder.load_file("./study.kv")
 
 
 class BaseMDNavigationItem(MDNavigationItem):
@@ -38,42 +40,6 @@ class BaseMDNavigationItem(MDNavigationItem):
 
     icon = StringProperty()
     text = StringProperty()
-
-
-class StudyScreen(MDScreen):
-    """Main screen, that appears first."""
-
-    content = DictProperty()
-
-    def remove_top_widget(self):
-        card_stack = [child for child in self.children if isinstance(child, FlashCard)]
-        self.remove_widget(card_stack[0])
-
-    def loop_through(self):
-        card_stack = [child for child in self.children if isinstance(child, FlashCard)]
-        top_card = card_stack[0]
-        height = len(card_stack) - 1  # widget_stack_height
-        self.remove_widget(top_card)
-        self.add_widget(top_card, height)
-
-
-def load_cards(i):
-    """Load cards."""
-    from kivymd.uix.list import OneLineListItem
-
-    card_item = MDCardSwipe(
-        MDCardSwipeLayerBox(),
-        MDCardSwipeFrontBox(
-            OneLineListItem(
-                id="content",
-                text=f"One-line item {i}",
-                _no_ripple_effect=True,
-            )
-        ),
-        size_hint_y=None,
-        height="48dp",
-    )
-    return card_item
 
 
 class MainScreen(MDScreen):

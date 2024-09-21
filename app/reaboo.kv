@@ -24,20 +24,6 @@
             icon: "account-circle-outline"
 
 
-<StudyScreen>:
-
-    name: "Flashcards"
-    md_bg_color: (0, 0, 0, 0.4)
-    MDFabButton:
-        pos_hint: {'center_x': 0.25,'center_y': 0.05}
-        icon: 'close-circle'
-        on_release: root.loop_through() 
-    MDFabButton:
-        pos_hint: {'center_x': 0.75,'center_y': 0.05}
-        icon: 'check-circle'
-        on_release: root.remove_top_widget() 
-
-
 <MainScreen>:
     name: "Study"
 

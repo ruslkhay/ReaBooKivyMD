@@ -1,6 +1,7 @@
 """Contain key class of application."""
 
 import os
+from pathlib import Path
 
 if os.uname()[1] == "VB16":  # MY MACHINE NAME !!!
     # Enlarges widgets for highly resolution screens
@@ -88,10 +89,11 @@ class ReaBooApp(MDApp):
     def __init__(self, **kwargs):
         """Reload MDApp method to include database storage."""
         super().__init__(**kwargs)
+        cwd = Path(__file__).parent
         self.db = DataBase(
-            name="content",
+            name=Path("content.db"),
             path=MDApp.get_running_app().user_data_dir,
-            schema="app/database/schema.sql",
+            schema=cwd / Path("database/schema.sql"),
         )
 
     def on_switch_tabs(

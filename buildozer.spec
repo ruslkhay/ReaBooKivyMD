@@ -22,7 +22,7 @@ source.include_exts = py,png,kv,sql,mo
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = .venv, .vscode, .buildozer, source, drafts
+source.exclude_dirs = .venv, .vscode, .buildozer, tests
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
@@ -37,7 +37,8 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,
+requirements = sqlite3, 
+    python3, 
     kivy,
     https://github.com/kivymd/KivyMD/archive/master.zip,
     materialyoucolor,
@@ -67,7 +68,7 @@ orientation = portrait
 #
 
 #
-# author = © Copyright Info
+author = Ruslan Khaydarpashich © Copyright Info
 
 # change the major version of python used by the app
 osx.python_version = 3
@@ -101,7 +102,7 @@ android.presplash_color = #FFFFFF
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-#android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18)
+# android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18)
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host

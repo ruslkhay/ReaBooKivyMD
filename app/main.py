@@ -15,19 +15,21 @@ if os.uname()[1] == "VB16":  # MY MACHINE NAME !!!
 
 from kivy.lang import Builder
 from kivy.properties import StringProperty, DictProperty
+from kivy.uix.screenmanager import NoTransition
+
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
 from kivymd.uix.screen import MDScreen
-from kivy.uix.screenmanager import NoTransition
+from kivymd.uix.card import MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
 
 from cardset import CardsListScreen, FlashCard
-
+from database.database import DataBase
 
 Builder.load_file("./screen_dict.kv")
 Builder.load_file("./cardset.kv")
 
 
-__version__ = "2.0.0"
+__version__ = "0.1.0"
 
 
 class BaseMDNavigationItem(MDNavigationItem):
@@ -54,28 +56,8 @@ class StudyScreen(MDScreen):
         self.add_widget(top_card, height)
 
 
-# class CardsSet(MDCard):
-#     """One set of flashcards."""
-
-#     title = StringProperty()
-
-
-# class DictionaryScreen(MDScreen):
-#     """Second screen, manager of flash-cards sets."""
-
-#     def add(self):
-#         self.ids.container_dicts.add_widget(
-#             CardsSet(
-#                 MDLabel(
-#                     text=str(len(self.ids.container_dicts.children)), halign="center"
-#                 )
-#             )
-#         )
-
-
 def load_cards(i):
     """Load cards."""
-    from kivymd.uix.card import MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
     from kivymd.uix.list import OneLineListItem
 
     card_item = MDCardSwipe(
@@ -90,7 +72,6 @@ def load_cards(i):
         size_hint_y=None,
         height="48dp",
     )
-
     return card_item
 
 
@@ -104,6 +85,15 @@ class MainScreen(MDScreen):
 class ReaBooApp(MDApp):
     """Main application class."""
 
+    def __init__(self, **kwargs):
+        """Reload MDApp method to include database storage."""
+        super().__init__(**kwargs)
+        self.db = DataBase(
+            name="content",
+            path=MDApp.get_running_app().user_data_dir,
+            schema="app/database/schema.sql",
+        )
+
     def on_switch_tabs(
         self,
         bar: MDNavigationBar,
@@ -112,51 +102,52 @@ class ReaBooApp(MDApp):
         item_text: str,
     ):
         """Behavior for transition between screens"""
-        # previous = self.root.ids.screen_manager.current
-        # print('prev',previous)
-        # print(item_text, '\n')
         sm = self.root.ids.screen_manager
         sm.transition = NoTransition()
-
-        # match previous:
-        #     case "Flashcards":
-        #         match item_text:
-        #             case "Study":
-        #                 sm.transition = SlideTransition(direction="down")
-        #             case "Cards":
-        #                 sm.transition = FadeTransition()
-        # case "Study":
-        #     sm.transition = SlideTransition(direction="right")
-        # case "Cards":
-        #     sm.transition = SlideTransition(direction="left")
         sm.current = item_text
-        sm.transition = NoTransition()
 
     def start_learning(self):
+        s: StudyScreen = self.root.ids.screen_study
+        for row in self.db.select_to_dicts("SELECT word, meaning FROM content;"):
+            word = row["word"]
+            meaning = row["meaning"]
+            s.add_widget(FlashCard(word=word, meaning2=meaning))
+
         sm = self.root.ids.screen_manager
-        # sm.transition = SlideTransition(direction="up")
         sm.current = "Flashcards"
-        # self.root.remove_widget(self.root.ids.navigation_bar)
 
     def build(self):
         """Launch application, first method, that runs."""
         self.theme_cls.primary_palette = "Blue"
-        pass
 
-    #     return Builder.load_file(KVfile)
+    def load_content(self, child):
+        # if isinstance(child, StudyScreen):
+        s: StudyScreen = self.root.ids.screen_study
+        for row in self.db.select_to_dicts("SELECT word, meaning FROM content;"):
+            word = row["word"]
+            meaning = row["meaning"]
+            s.add_widget(FlashCard(word=word, meaning2=meaning))
 
     def on_start(self):
         """Make actions after launch, but before load up of app."""
-        print(self.root.ids)
+        try:
+            self.db.insert("dictionary", {"title": "debug", "background_image": ""})
+        except Exception:
+            pass
         cl: CardsListScreen = self.root.ids.screen_cardlist
-        s: StudyScreen = self.root.ids.screen_study
-        # ds: DictionaryScreen = self.root.ids.screen_dict
-        for i in range(18):
-            word = f"Word {i}"
-            meaning = f"meaning {i}"
-            cl.add_item(i, word, meaning, "", "data/icon_512.png")
-            s.add_widget(FlashCard(word=word, meaning2=meaning))
-            # ds.add()
+        for row in self.db.select_to_dicts("SELECT * FROM content;"):
+            card_id = row["card_id"]
+            word = row["word"]
+            meaning = row["meaning"]
+            cl.add_item(card_id, word, meaning, "", "data/icon_512.png")
+
+    def on_stop(self):
+        """Close database before exiting the app.
+
+        Event handler for the on_stop event which is fired when the application
+        has finished running
+        """
+        self.db.close()
 
 
 if __name__ == "__main__":

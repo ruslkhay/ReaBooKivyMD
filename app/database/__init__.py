@@ -1,7 +1,6 @@
-from database import DataBase
-
-
 if __name__ == "__main__":
+    from database import DataBase
+
     db = DataBase(path="app", schema="app/database/schema.sql")
     db.delete_all()
 
@@ -19,6 +18,7 @@ if __name__ == "__main__":
     print(db.select_from(table="dictionary"))
     # print(db.search(pattern="h"))
     # print(db.search())
+    # print(db.select_to_dicts("select card_id, word from content;"))
     print(db.search(pattern="и"))
     # print(db.search(pattern="a"))
     # db.update(

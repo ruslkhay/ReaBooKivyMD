@@ -3,6 +3,8 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.list import MDListItem
 from kivymd.uix.card.card import MDCard
 
+from database.database import DataBase
+
 
 class CardListItem(MDListItem):
     """Unit of card list."""
@@ -29,7 +31,14 @@ class CardsListScreen(MDScreen):
         pass
 
     def add_item(
-        self, card_id: int, word: str, meaning: str, example: str, image: str, *args
+        self,
+        card_id: int,
+        word: str,
+        meaning: str,
+        example: str,
+        image: str,
+        *args,
+        **kwargs,
     ):
         self.ids.container.add_widget(
             CardListItem(
@@ -43,8 +52,15 @@ class CardsListScreen(MDScreen):
         )
 
     def update_item(
-        self, card_id: int, word: str, meaning: str, example: str, image: str, *args
-    ):
+        self,
+        card_id: int,
+        word: str,
+        meaning: str,
+        example: str,
+        image: str,
+        *args,
+        **kwargs,
+    ):  # TODO: rewrite
         """Update content of existed card in list."""
         card = self.get_item(card_id)
         card.word = word
@@ -66,6 +82,23 @@ class CardsListScreen(MDScreen):
         card.image = item.image
         sm.current = "Card"
 
+    def search(self, storage: DataBase):
+        """Implement functionality of search bar."""
+        # print(self.ids.search_bar.text)
+        valid_ids = storage.search(self.ids.search_bar.text)
+        self.ids.container.clear_widgets()
+        if len(valid_ids) == 1:  # For query not to crash
+            valid_ids = f"({valid_ids[0]})"
+        valid_cards = storage.select_to_dicts(
+            """
+            SELECT card_id, word, meaning, example, image FROM content
+            WHERE "card_id" IN {};
+            """.format(valid_ids)
+        )
+        for card in valid_cards:
+            self.add_item(**card)
+        # print(self.ids.container.children.card_id)
+
 
 class CardScreen(MDScreen):
     """Manage content of one flash-card unit."""
@@ -76,7 +109,7 @@ class CardScreen(MDScreen):
     example = StringProperty()
     image = StringProperty()
 
-    def save(self):
+    def save(self, storage: DataBase):
         sm = self.parent
         cl: CardsListScreen = sm.get_screen("Cards")
         if self.card_id == -1:
@@ -87,6 +120,16 @@ class CardScreen(MDScreen):
                 example=self.example,
                 image=self.image,
             )
+            storage.insert(
+                "content",
+                {
+                    "id_dict": 1,
+                    "word": self.word,
+                    "meaning": self.meaning,
+                    "example": self.example,
+                    "image": self.image,
+                },
+            )
         else:  # i.e. element was in list
             cl.update_item(
                 card_id=self.card_id,
@@ -95,13 +138,23 @@ class CardScreen(MDScreen):
                 example=self.example,
                 image=self.image,
             )
+            storage.update(
+                self.card_id,
+                {
+                    "word": self.word,
+                    "meaning": self.meaning,
+                    "example": self.example,
+                    "image": self.image,
+                },
+            )
         self.close()
 
-    def delete(self):
+    def delete(self, storage: DataBase):
         """Remove opened card from cardset content."""
-        self.close()
         cl = self.parent.get_screen("Cards")
         cl.remove_item(self.card_id)
+        storage.hard_delete("content", self.card_id)
+        self.close()
 
     def close(self):
         """Go back from opened card to cardset screen."""

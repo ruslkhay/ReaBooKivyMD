@@ -1,14 +1,9 @@
 <CardListItem>:
-    # size_hint_y: .4
     height: 200
-    # minimum_height:20
     id: root.card_id
-    # divider: True
-    # divider_color: "red"
 
     MDListItemLeadingAvatar:
         source: root.image
-        # on_release: print(root.image)
 
     MDListItemHeadlineText:
         text: root.word
@@ -31,24 +26,25 @@
             MDBoxLayout:
                 id: container 
                 orientation: "vertical"
-                # height: 100
                 adaptive_height: True
 
         # LAYOUT FOR EDITIONAL "ADD" AND "SEARCH" WIDGETS
         MDBoxLayout:
-            md_bg_color: (0,0,0,1)
+            # md_bg_color: (0,0,0,1)
             size_hint_y: 0.15
             orientation: "horizontal"
             
             MDRelativeLayout:
-                md_bg_color: (0,1,0,.3)
+                # md_bg_color: (0,1,0,.3)
 
                 MDTextField:
+                    id: search_bar
                     pos_hint: {'center_x': 0.5,'center_y': 0.5}
                     mode: "filled"
                     size_hint_x: 0.85
                     input_type: "text"
                     keyboard_suggestions: True
+                    on_text: root.search(app.db)
 
                     MDTextFieldLeadingIcon:
                         icon: "text-search-variant"
@@ -59,14 +55,12 @@
             MDAnchorLayout:
                 size_hint_x: .5
                 anchor_x: "center"
-                # "ADD" BUTTON
 
                 MDIconButton:
                     style: "filled"
                     pos_hint: {'center_x': 0.5,'center_y': 0.5}
                     on_release: 
                         root.open_item()
-                        # root.add_item()
                     icon: "plus"
 
 
@@ -133,7 +127,7 @@
         id: button_delete
         pos_hint: {'center_x': 0.25,'top': 0.1}
         style: "filled"
-        on_release: root.delete()
+        on_release: root.delete(app.db)
         MDButtonText:
             text: "Delete"
 
@@ -142,7 +136,7 @@
         size: button_delete.width, button_delete.height
         style: "filled"
 
-        on_release: root.save()
+        on_release: root.save(app.db)
         MDButtonText:
             text: "Save"
             pos_hint: {"center_x": .5, "center_y": .5}
@@ -152,7 +146,6 @@
     size_hint:  0.8, 0.8
     pos_hint: {'center_x': 0.5,'center_y': 0.5}
     orientation: "vertical"
-    style: "elevated"
     padding: "20dp"
     word: ""
     meaning: ""
@@ -183,7 +176,3 @@
             font_style: "Title"
             # text_color: root.md_bg_color
             role: "small"
-        # MDIconButton:
-        #     pos_hint: {'center_x': 0.5,'center_y': 0.1}
-        #     md_bg_color: (0,0,0,1)
-        #     icon: 'eye'

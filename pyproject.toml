@@ -32,6 +32,7 @@ test = [
 ]
 buildozer = [
     "Cython>=3.0.11",
+    "python-for-android",
 ]
 doc = [
     "Sphinx>=8.0.2",

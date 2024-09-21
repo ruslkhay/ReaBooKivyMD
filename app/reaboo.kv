@@ -66,36 +66,28 @@ MDBoxLayout:
 
     MDScreenManager:
         id: screen_manager
-        # transition: MDNoTransition
-        # DictionaryScreen:
-        #     id: screen_dict
-        # CardsListScreen:
-        #     id: screen_cardlist
+
+        MainScreen:
+            id: screen_main
+
         StudyScreen:
             id: screen_study
 
         CardsListScreen:
             id: screen_cardlist
 
-        MainScreen:
-            id: screen_main
         CardScreen:
             id: screen_card
 
     MDNavigationBar:
         on_switch_tabs: app.on_switch_tabs(*args)
         id: navigation_bar
-        # BaseMDNavigationItem:
-        #     icon: "book"
-        #     # text: "Dict"
-        #     text: screen_dict.name 
-        #     active: True
 
         BaseMDNavigationItem:
             icon: "school"
             text: screen_main.name 
+            active: True
 
         BaseMDNavigationItem:
             icon: "list-box-outline"
             text: screen_cardlist.name      # ATTENTION
-            active: True

@@ -83,7 +83,8 @@ class DataBase:
         query = f"""
             SELECT "card_id"
             FROM "content"
-            WHERE "word" LIKE {pat} or "meaning" LIKE {pat};
+            WHERE "word" LIKE {pat} or "meaning" LIKE {pat}
+            ORDER BY "card_id";
             """
         self.cursor.execute(query)
 

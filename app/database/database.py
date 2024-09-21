@@ -1,17 +1,19 @@
 """Module for handling flash-cards storage."""
 from typing import List, Tuple, Any
 from sqlite3 import connect, IntegrityError, Row
+from pathlib import Path
 
 
 class DataBase:
     """Class for handling flash-cards storage."""
 
-    def __init__(self, name="content", path="", schema=None) -> None:
+    def __init__(
+        self, name=Path("content.db"), path=Path("."), schema: Path = None
+    ) -> None:
         """Create connection to database and use given schema id given."""
-        from os.path import join
 
         self.name = name
-        self.connect = connect(join(path, name) + ".db")
+        self.connect = connect(path / name)
         self.cursor = self.connect.cursor()
 
         # Make necessary tables for database.

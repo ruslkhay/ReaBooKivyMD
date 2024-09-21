@@ -1,7 +1,8 @@
 if __name__ == "__main__":
     from database import DataBase
+    from pathlib import Path
 
-    db = DataBase(path="app", schema="app/database/schema.sql")
+    db = DataBase(path=Path("app"), schema=Path("./app/database/schema.sql"))
     db.delete_all()
 
     db.insert("dictionary", {"title": "serbian", "background_image": ""})

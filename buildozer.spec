@@ -37,8 +37,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = sqlite3, 
-    python3, 
+requirements = sqlite3, python3, 
     kivy,
     https://github.com/kivymd/KivyMD/archive/master.zip,
     materialyoucolor,

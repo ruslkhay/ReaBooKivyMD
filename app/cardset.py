@@ -194,3 +194,28 @@ class FlashCard(MDCard):
         # self.parent.clear_widgets()
 
         self.parent.remove_widget(self.parent.children[0])
+
+
+if __name__ == "__main__":
+    from kivymd.app import MDApp
+
+    class CardsetApp(MDApp):
+        """Main application class."""
+
+        def build(self):
+            """Launch application, first method, that runs."""
+            self.theme_cls.primary_palette = "Blue"
+            return CardsListScreen()
+
+        def on_start(self):
+            """Make actions after launch, but before load up of app."""
+            try:
+                self.db.insert("dictionary", {"title": "debug", "background_image": ""})
+            except Exception:
+                pass
+            cl: CardsListScreen = self.root.ids.screen_cardlist
+            for row in self.db.select_to_dicts("SELECT * FROM content;"):
+                card_id = row["card_id"]
+                word = row["word"]
+                meaning = row["meaning"]
+                cl.add_item(card_id, word, meaning, "", "data/icon_512.png")

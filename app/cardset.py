@@ -13,7 +13,7 @@ class CardListItem(MDListItem):
     word = StringProperty()
     meaning = StringProperty()
     example = StringProperty()
-    image = StringProperty(defaultvalue="data/fill_image_placeholder.png")
+    image = StringProperty(defaultvalue="data/icon_512.png")
 
 
 class CardsListScreen(MDScreen):

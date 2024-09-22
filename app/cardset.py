@@ -84,7 +84,6 @@ class CardsListScreen(MDScreen):
 
     def search(self, storage: DataBase):
         """Implement functionality of search bar."""
-        # print(self.ids.search_bar.text)
         valid_ids = storage.search(self.ids.search_bar.text)
         self.ids.container.clear_widgets()
         if len(valid_ids) == 1:  # For query not to crash
@@ -97,7 +96,6 @@ class CardsListScreen(MDScreen):
         )
         for card in valid_cards:
             self.add_item(**card)
-        # print(self.ids.container.children.card_id)
 
 
 class CardScreen(MDScreen):
@@ -180,10 +178,6 @@ class FlashCard(MDCard):
             self.meaning = self.meaning2
         self.show_meaning = not self.show_meaning
 
-    # def show_meaning(self):
-    #     """Show meaning of the word."""
-    #     self.children[0].children[1].text_color = (0, 0, 0, 1)
-
     def right_guess(self):
         """Mark card as learned."""
         self.parent.remove(self)
@@ -191,8 +185,6 @@ class FlashCard(MDCard):
     def wrong_guess(self):
         """Mark card as needed to be repeated."""
         self.parent.walk(loopback=True)
-        # self.parent.clear_widgets()
-
         self.parent.remove_widget(self.parent.children[0])
 
 

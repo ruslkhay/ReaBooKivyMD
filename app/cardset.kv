@@ -13,14 +13,12 @@
  
 
 <CardsListScreen>:
-
     name: "Cards"
     md_bg_color: self.theme_cls.backgroundColor
+
     MDBoxLayout:
         orientation: "vertical"
-
-        # SCROLLABLE LIST OF CARDS.
-        MDRecycleView:
+        MDRecycleView:  # SCROLLABLE LIST OF CARDS.
             do_scroll_x: False
 
             MDBoxLayout:
@@ -28,8 +26,7 @@
                 orientation: "vertical"
                 adaptive_height: True
 
-        # LAYOUT FOR EDITIONAL "ADD" AND "SEARCH" WIDGETS
-        MDBoxLayout:
+        MDBoxLayout: # LAYOUT FOR EDITIONAL "ADD" AND "SEARCH" WIDGETS
             # md_bg_color: (0,0,0,1)
             size_hint_y: 0.15
             orientation: "horizontal"
@@ -83,8 +80,7 @@
         icon: 'close-thick'
         on_release: root.close()
 
-    # Placeholder for textfields
-    MDTextField:
+    MDTextField:  # Placeholder for textfields
         id: word
         pos_hint: {'center_x': 0.5,'center_y': 0.6}
         size_hint_x: 0.7
@@ -92,6 +88,7 @@
         text: root.word
         on_text: root.word = self.text
         required: True
+
         MDTextFieldHintText:
             text: "Word"  
 
@@ -117,8 +114,10 @@
         max_height: "180dp"
         multiline: True
         on_error: self.text = self.text[:128] 
+
         MDTextFieldMaxLengthText:
             max_text_length: 128 
+
         MDTextFieldHelperText:
             text: "Example"
 
@@ -128,6 +127,7 @@
         pos_hint: {'center_x': 0.25,'top': 0.1}
         style: "filled"
         on_release: root.delete(app.db)
+
         MDButtonText:
             text: "Delete"
 
@@ -135,8 +135,8 @@
         pos_hint: {'center_x': 0.75,'top': 0.1}
         size: button_delete.width, button_delete.height
         style: "filled"
-
         on_release: root.save(app.db)
+
         MDButtonText:
             text: "Save"
             pos_hint: {"center_x": .5, "center_y": .5}
@@ -155,24 +155,26 @@
         # md_bg_color: (0.5,0,0,0.5)
         anchor_x: "center"
         anchor_y: "center"
+
         Image:
             source: "data/fill_image_placeholder.png"
             fit_mode: "fill"
             size_hint: .8, .8
-
             pos_hint: {'center_x': 0.5,'center_y': 0.5}
+
     MDRelativeLayout:
         # md_bg_color: (0.5,0,0,0.5)
+
         MDLabel:
             pos_hint: {'center_x': 0.5,'center_y': 0.7}
             text: root.word
             halign: "center"
             font_style: "Headline"
             role: "small"
+
         MDLabel:
             pos_hint: {'center_x': 0.5,'center_y': 0.4}
             text: root.meaning
             halign: "center"
             font_style: "Title"
-            # text_color: root.md_bg_color
             role: "small"

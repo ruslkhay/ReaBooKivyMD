@@ -7,25 +7,6 @@
         text: root.text
 
 
-<TopBar>:
-    type: "small"
-    md_bg_color: self.theme_cls.backgroundColor
-
-    MDTopAppBarLeadingButtonContainer:
-
-        MDActionTopAppBarButton:
-            icon: "menu"
-
-    MDTopAppBarTitle:
-        text: "AppBar Center-aligned"
-        pos_hint: {"center_x": .5}
-
-    MDTopAppBarTrailingButtonContainer:
-
-        MDActionTopAppBarButton:
-            icon: "account-circle-outline"
-
-
 <MainScreen>:
     name: "Study"
 
@@ -73,9 +54,9 @@ MDBoxLayout:
 
         BaseMDNavigationItem:
             icon: "school"
-            text: screen_main.name 
+            text: screen_main.name
             active: True
 
         BaseMDNavigationItem:
             icon: "list-box-outline"
-            text: screen_cardlist.name      # ATTENTION
+            text: screen_cardlist.name

@@ -85,29 +85,28 @@
         pos_hint: {'center_x': 0.5,'center_y': 0.6}
         size_hint_x: 0.7
         mode: "filled"
+        required: True
         text: root.word
         on_text: root.word = self.text
-        required: True
 
         MDTextFieldHintText:
             text: "Word"  
 
     MDTextField:
-        id: transition 
         pos_hint: {'center_x': 0.5,'center_y': 0.5}
         size_hint_x: 0.7
         mode: "filled"
         required: True
         text: root.meaning
         on_text: root.meaning = self.text
+
         MDTextFieldHintText:
             text: "Meaning"  
 
     MDTextField:
-        id: example 
         pos_hint: {'center_x': 0.5,'center_y': 0.3}
         size_hint_x: 0.7
-        write_tab: False
+        # write_tab: False
         mode: "filled"
         text: root.example
         on_text: root.example = self.text

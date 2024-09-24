@@ -103,11 +103,9 @@ class ReaBooApp(MDApp):
         except Exception:
             pass
         cl: CardsListScreen = self.root.ids.screen_cardlist
-        for row in self.db.select_to_dicts("SELECT * FROM content;"):
-            card_id = row["card_id"]
-            word = row["word"]
-            meaning = row["meaning"]
-            cl.add_item(card_id, word, meaning, "", "data/icon_512.png")
+        query = """SELECT card_id FROM content ORDER BY card_id;"""
+        for card_id in self.db.select_to_dicts(query):
+            cl.add_item(**card_id)
 
     def on_stop(self):
         """Close database before exiting the app.

@@ -133,8 +133,9 @@ class CardsListScreen(MDScreen):
             self.add_item(**card)
 
 
-# TODO: check whitespace and general validity of inputs
+# TODO: check whitespace and general validity of inputs.
 # TODO: secure valid inputs to database to store.
+# TODO: check if word is already in database.
 class CardScreen(MDScreen):
     """Manage content of one flash-card unit."""
 

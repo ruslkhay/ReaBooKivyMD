@@ -1,6 +1,6 @@
 """Contain key class of application."""
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import os
 
@@ -76,11 +76,7 @@ class ReaBooApp(MDApp):
 
     def start_learning(self):
         s: StudyScreen = self.root.ids.screen_study
-        for row in self.db.select_to_dicts("SELECT word, meaning FROM content;"):
-            word = row["word"]
-            meaning = row["meaning"]
-            s.add_widget(FlashCard(word=word, meaning2=meaning))
-
+        s.fill()
         sm = self.root.ids.screen_manager
         sm.current = "Flashcards"
 

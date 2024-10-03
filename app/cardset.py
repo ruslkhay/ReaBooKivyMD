@@ -17,6 +17,7 @@ from kivy.properties import StringProperty, NumericProperty, BooleanProperty
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.list import MDListItem
 from kivymd.uix.card.card import MDCard
+from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.app import MDApp
 
 from database.database import DataBase
@@ -48,6 +49,7 @@ class CardListItem(MDListItem):
 
 
 # TODO: Implement "order by" option for showing content
+# TODO: Change color or add divider to see brim of each word
 class CardsListScreen(MDScreen):
     """Cardset content as scrollable list."""
 
@@ -135,7 +137,6 @@ class CardsListScreen(MDScreen):
 
 # TODO: check whitespace and general validity of inputs.
 # TODO: secure valid inputs to database to store.
-# TODO: check if word is already in database.
 class CardScreen(MDScreen):
     """Manage content of one flash-card unit."""
 
@@ -164,22 +165,33 @@ class CardScreen(MDScreen):
         sm = self.parent
         cl: CardsListScreen = sm.get_screen("Cards")
         if self.card_id == 0:  # i.e. element wasn't in list
-            # Saving to database
-            storage.insert(
-                "content",
-                {
-                    "id_dict": 1,
-                    "word": self.word,
-                    "meaning": self.meaning,
-                    "example": self.example,
-                    "image": self.image,
-                },
-            )
-            # Adding to screen
-            new_card = storage.select_to_dicts(
-                """SELECT MAX(card_id) as card_id FROM content;"""
-            )
-            cl.add_item(**new_card[0])
+            try:  # TODO: move it to separated `check_input` function
+                # Saving to database
+                storage.insert(
+                    "content",
+                    {
+                        "id_dict": 1,
+                        "word": self.word,
+                        "meaning": self.meaning,
+                        "example": self.example,
+                        "image": self.image,
+                    },
+                )
+                # Adding to screen
+                new_card = storage.select_to_dicts(
+                    """SELECT MAX(card_id) as card_id FROM content;"""
+                )
+                cl.add_item(**new_card[0])
+                self.close()
+            except ValueError:
+                MDSnackbar(
+                    MDSnackbarText(
+                        text="Word with same meaning is\nalready in list. Change it.",
+                        halign="center",
+                    ),
+                    pos_hint={"center_x": 0.5, "center_y": 0.45},
+                    size_hint_x=0.5,
+                ).open()
         else:
             # Update in database
             storage.update(
@@ -193,8 +205,7 @@ class CardScreen(MDScreen):
             )
             # Update on screen
             cl.update_item(card_id=self.card_id)
-
-        self.close()
+            self.close()
 
     def delete(self, storage: DataBase):
         """Remove opened card from cardset and database content."""

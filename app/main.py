@@ -1,6 +1,6 @@
 """Contain key class of application."""
 
-__version__ = "0.1.1"
+__version__ = "0.1.0"
 
 import os
 
@@ -80,6 +80,7 @@ class ReaBooApp(MDApp):
         sm = self.root.ids.screen_manager
         sm.current = "Flashcards"
 
+    # TODO: Manage colors for hole application: bind app attribute to all widgets
     def build(self):
         """Launch application, first method, that runs."""
         self.theme_cls.primary_palette = "Blue"

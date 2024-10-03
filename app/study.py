@@ -6,6 +6,7 @@ Purpose of Stack class:
 2. Optimize performance (load just a part of content)
 """
 
+# TODO: Implement Stack class
 
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
@@ -15,6 +16,7 @@ from cardset import FlashCard
 from database.database import DataBase
 
 
+# TODO: Manage pile. Now "card_stack = [child ... if isinstance(child, FlashCard)]""
 class StudyScreen(MDScreen):
     """Main screen, that appears first."""
 
@@ -31,8 +33,8 @@ class StudyScreen(MDScreen):
 
         self.content: list = self.db.select_to_dicts(
             """
-                SELECT word, meaning, image FROM content;
-                """
+            SELECT word, meaning, image FROM content;
+            """
         )
         match order:
             case "random":
@@ -42,10 +44,13 @@ class StudyScreen(MDScreen):
         """Pull content and add initial cards."""
         if self.empty:
             self.__load_content()
-            for _ in range(self.stack_height):
-                card = self.content.pop(0)
-                self.add_widget(FlashCard(word=card["word"], meaning2=card["meaning"]))
-            self.empty = False
+            if self.content is not None:
+                for _ in range(self.stack_height):
+                    card = self.content.pop(0)
+                    self.add_widget(
+                        FlashCard(word=card["word"], meaning2=card["meaning"])
+                    )
+                self.empty = False
 
     def remove_top_widget(self):
         """Action when card is considered as learned.
@@ -66,6 +71,7 @@ class StudyScreen(MDScreen):
                     self.stack_height - 1,
                 )
 
+    # TODO: Put not learned card on the bottom of the pile
     def loop_through(self):
         """Action when card is considered as not learned.
 
